@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en"><!-- v4 -->
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ewan Simpson — AI Research</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    :root {
+      --ink:#1A1A1A; --mid:#4A4A4A; --soft:#7A7A7A;
+      --rule:#E0E0E0; --bg:#FAFAF8; --accent:#1A3A5C; --gold:#C4922A;
+      --serif:'Lora',Georgia,serif; --sans:'Inter',system-ui,sans-serif;
+    }
+    html { scroll-behavior:smooth; }
+    body { background:var(--bg); color:var(--ink); font-family:var(--sans); font-size:16px; line-height:1.7; }
+
+    nav {
+      position:sticky; top:0; z-index:50;
+      background:rgba(250,250,248,0.96); backdrop-filter:blur(8px);
+      border-bottom:1px solid var(--rule);
+      padding:0 40px; display:flex; align-items:center; justify-content:space-between; height:60px;
+    }
+    .nav-name { font-family:var(--serif); font-size:17px; font-weight:600; color:var(--accent); text-decoration:none; }
+    .nav-links { display:flex; gap:28px; }
+    .nav-links a { font-size:13px; font-weight:500; letter-spacing:0.06em; text-transform:uppercase; color:var(--mid); text-decoration:none; transition:color 0.2s; }
+    .nav-links a:hover { color:var(--accent); }
+    .nav-links a.nav-highlight { color:var(--gold); }
+    .nav-links a.nav-highlight:hover { color:var(--accent); }
+
+    /* HERO */
+    #home {
+      max-width:860px; margin:0 auto; padding:90px 40px 70px;
+      display:grid; grid-template-columns:1fr 220px; gap:56px; align-items:start;
+    }
+    .eyebrow { font-size:11px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:var(--gold); margin-bottom:18px; }
+    h1 { font-family:var(--serif); font-size:clamp(32px,4.5vw,48px); font-weight:600; line-height:1.18; color:var(--accent); margin-bottom:24px; }
+    .hero-body { font-size:17px; line-height:1.78; color:var(--mid); max-width:580px; }
+    .hero-body p + p { margin-top:14px; }
+
+    .hero-photo { position:sticky; top:80px; }
+    .hero-photo-wrap {
+      width:100%; aspect-ratio:3/4; overflow:hidden; border-radius:3px;
+      box-shadow:0 6px 24px rgba(0,0,0,0.15);
+    }
+    .hero-photo-wrap img { width:100%; height:100%; object-fit:cover; object-position:center top; }
+    .hero-photo a {
+      display:block; margin-top:10px; text-align:center;
+      font-size:11px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase;
+      color:var(--soft); text-decoration:none; transition:color 0.2s;
+    }
+    .hero-photo a:hover { color:var(--accent); }
+
+    /* STATS */
+    .stats {
+      margin-top:36px; display:flex; gap:0; flex-wrap:wrap;
+      border:1px solid var(--rule); border-radius:4px; overflow:hidden; background:white;
+      max-width:580px;
+    }
+    .stat { flex:1; min-width:120px; padding:18px 20px; border-right:1px solid var(--rule); }
+    .stat:last-child { border-right:none; }
+    .stat-num { font-family:var(--serif); font-size:24px; font-weight:600; color:var(--accent); line-height:1; }
+    .stat-label { font-size:10px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:var(--soft); margin-top:5px; }
+
+    /* PROFILE LINKS */
+    .profile-links { margin-top:28px; display:flex; gap:10px; flex-wrap:wrap; }
+    .profile-link {
+      display:inline-flex; align-items:center;
+      font-size:11px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase;
+      color:var(--accent); text-decoration:none;
+      border:1px solid var(--rule); border-radius:3px; padding:7px 12px; background:white;
+      transition:border-color 0.2s;
+    }
+    .profile-link:hover { border-color:var(--accent); }
+
+    hr.rule { border:none; border-top:1px solid var(--rule); max-width:860px; margin:0 auto; }
+    section { padding:70px 40px; max-width:860px; margin:0 auto; }
+
+    h2 { font-family:var(--serif); font-size:28px; font-weight:600; color:var(--accent); margin-bottom:6px; }
+    .section-sub { font-size:14px; color:var(--soft); margin-bottom:36px; padding-bottom:22px; border-bottom:1px solid var(--rule); }
+
+    /* THEME GROUPS */
+    .theme-group { margin-bottom:48px; }
+    .theme-group:last-child { margin-bottom:0; }
+    .theme-label {
+      font-size:10px; font-weight:700; letter-spacing:0.16em; text-transform:uppercase;
+      color:var(--gold); margin-bottom:18px;
+      display:flex; align-items:center; gap:12px;
+    }
+    .theme-label::after { content:''; flex:1; height:1px; background:var(--rule); }
+
+    .paper { padding:20px 0; border-bottom:1px solid var(--rule); }
+    .paper:last-child { border-bottom:none; }
+    .paper-meta { font-size:11px; font-weight:600; letter-spacing:0.10em; text-transform:uppercase; color:var(--soft); margin-bottom:6px; }
+    .paper h3 { font-family:var(--serif); font-size:16px; font-weight:600; color:var(--ink); line-height:1.38; margin-bottom:8px; }
+    .paper p { font-size:14px; color:var(--mid); line-height:1.65; margin-bottom:10px; }
+    .paper-links { display:flex; gap:14px; flex-wrap:wrap; }
+    .paper-link {
+      font-size:11px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase;
+      color:var(--accent); text-decoration:none;
+      border-bottom:1px solid var(--accent); padding-bottom:1px;
+      transition:color 0.2s, border-color 0.2s;
+    }
+    .paper-link:hover { color:var(--gold); border-color:var(--gold); }
+    .paper-link.alt { color:var(--soft); border-color:var(--soft); }
+    .paper-link.alt:hover { color:var(--gold); border-color:var(--gold); }
+
+    /* CONTACT */
+    .contact-block { background:white; border:1px solid var(--rule); border-radius:4px; padding:40px; }
+    .contact-block p { font-size:16px; color:var(--mid); margin-bottom:28px; max-width:540px; }
+    .contact-block a.email { font-size:16px; font-weight:500; color:var(--accent); text-decoration:none; border-bottom:2px solid var(--gold); padding-bottom:2px; }
+    .contact-block a.email:hover { color:var(--gold); }
+
+    footer { border-top:1px solid var(--rule); padding:32px 40px; text-align:center; font-size:12px; color:var(--soft); letter-spacing:0.04em; }
+    footer a { color:var(--soft); text-decoration:none; }
+    footer a:hover { color:var(--accent); }
+
+    /* VIRTUOUS CITY + GREY SWAN — shared dark card style */
+    .vc-eyebrow { font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--gold); margin-bottom:20px; }
+    .vc-intro { max-width:660px; margin-bottom:32px; }
+    .vc-intro p { font-size:16px; color:var(--mid); line-height:1.78; }
+    .vc-cards { display:grid; grid-template-columns:1fr 1fr; gap:16px; max-width:660px; }
+    .vc-card {
+      display:block; text-decoration:none; color:inherit;
+      background:#1A2830; border:1px solid rgba(255,255,255,0.08);
+      border-radius:6px; padding:24px;
+      transition:border-color 0.2s, transform 0.2s;
+    }
+    .vc-card:hover { border-color:rgba(196,146,42,0.4); transform:translateY(-2px); }
+    .vc-card-tag { font-size:10px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--gold); margin-bottom:8px; }
+    .vc-card-title { font-family:var(--serif); font-size:16px; font-weight:600; color:#E8E4DC; line-height:1.38; margin-bottom:8px; }
+    .vc-card-desc { font-size:13px; color:#888; line-height:1.7; margin-bottom:14px; }
+    .vc-card-link { font-size:12px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:var(--gold); }
+
+    /* GREY SWAN — run badge */
+    .gs-run-badge {
+      display:inline-flex; align-items:center; gap:8px;
+      font-size:10px; font-weight:700; letter-spacing:0.10em; text-transform:uppercase;
+      color:var(--gold); margin-bottom:20px;
+    }
+    .gs-run-dot { width:6px; height:6px; border-radius:50%; background:var(--gold); animation:pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
+
+    /* FARABI AUDIT BANNER */
+    .farabi-banner {
+      max-width:860px; margin:0 auto; padding:0 40px;
+    }
+    .farabi-banner-inner {
+      background:#1A2830; border:1px solid rgba(196,146,42,0.25);
+      border-radius:6px; padding:24px 28px;
+      display:flex; align-items:center; justify-content:space-between; gap:24px;
+    }
+    .farabi-banner-text { }
+    .farabi-banner-tag { font-size:10px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--gold); margin-bottom:6px; }
+    .farabi-banner-title { font-family:var(--serif); font-size:17px; font-weight:600; color:#E8E4DC; margin-bottom:4px; }
+    .farabi-banner-desc { font-size:13px; color:#888; line-height:1.6; }
+    .farabi-banner-btn {
+      display:inline-block; white-space:nowrap;
+      font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;
+      color:#1A2830; background:var(--gold); text-decoration:none;
+      border-radius:3px; padding:10px 18px;
+      transition:opacity 0.2s; flex-shrink:0;
+    }
+    .farabi-banner-btn:hover { opacity:0.85; }
+
+    @media (max-width:600px) { .vc-cards { grid-template-columns:1fr; } .farabi-banner-inner { flex-direction:column; align-items:flex-start; } }
+
+    @media (max-width:680px) {
+      #home { grid-template-columns:1fr; padding:50px 20px 40px; gap:32px; }
+      .hero-photo { position:static; max-width:180px; }
+      nav { padding:0 20px; } .nav-links { gap:16px; }
+      section { padding:50px 20px; }
+      .stats { max-width:100%; }
+      .stat { min-width:100px; }
+      .contact-block { padding:28px 20px; }
+      footer { padding:24px 20px; }
+      .farabi-banner { padding:0 20px; }
+    }
+  </style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-GQCDZ9YGX7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-GQCDZ9YGX7');
+</script>
+</head>
+<body>
+
+<nav>
+  <a class="nav-name" href="#home">Ewan Simpson</a>
+  <div class="nav-links">
+    <a href="#research">Research</a>
+    <a href="about.html">About</a>
+    <a href="#grey-swan">Grey Swan</a>
+    <a href="#virtuous-city">The Virtuous City</a>
+    <a href="#contact">Contact</a>
+    <a href="farabi-audit.html" class="nav-highlight">FARABI Audit</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div id="home">
+  <div class="text-col">
+    <div class="eyebrow">PhD &nbsp;·&nbsp; Narxoz Business School, Almaty</div>
+    <h1>Agency or abdication:<br>AI, empowerment, and<br>the futures we are choosing.</h1>
+    <div class="hero-body">
+      <p>I work on one organizing question: when AI is adopted, who gains agency and who loses it? The research spans education, organizational management, labor markets, knowledge production, and strategic foresight — unified by a single analytical commitment: distinguishing genuine empowerment from dependency dressed up as adoption.</p>
+      <p>I am based at Narxoz Business School in Almaty, where I lead research on AI governance, institutional futures, and the application of these frameworks in a Central Asian context. I publish through working papers — a deliberate choice that reflects one of my own central arguments: that conventional academic publishing moves too slowly for the world it is trying to describe.</p>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="stat-num">Top 3%</div><div class="stat-label">SSRN all-time authors</div></div>
+      <div class="stat"><div class="stat-num">Top 10</div><div class="stat-label">SSRN recent downloads</div></div>
+      <div class="stat"><div class="stat-num">#1</div><div class="stat-label">Business researcher Central Asia</div></div>
+      <div class="stat"><div class="stat-num">32+</div><div class="stat-label">Working papers 2025–26</div></div>
+    </div>
+    <div class="profile-links">
+      <a class="profile-link" href="https://papers.ssrn.com/Sol3/Cf_Dev/AbsByAuth.cfm?per_id=4530382" target="_blank">SSRN</a>
+      <a class="profile-link" href="https://scholar.google.com/citations?user=HBWv6vYAAAAJ&hl=en" target="_blank">Google Scholar</a>
+      <a class="profile-link" href="https://orcid.org/0009-0009-1133-5467" target="_blank">ORCID</a>
+      <a class="profile-link" href="https://almatyscot.substack.com/" target="_blank">Substack</a>
+      <a class="profile-link" href="https://www.linkedin.com/in/ewan-simpson-208931377/" target="_blank">LinkedIn</a>
+      <a class="profile-link" href="https://nbs.narxoz.kz/" target="_blank">Narxoz Business School</a>
+      <a class="profile-link" href="about.html">About me &rarr;</a>
+    </div>
+  </div>
+  <div class="hero-photo">
+    <div class="hero-photo-wrap">
+      <img src="profile.jpg" alt="Ewan Simpson"/>
+    </div>
+    <a href="about.html">About &rarr;</a>
+  </div>
+</div>
+
+<hr class="rule"/>
+
+<!-- FARABI AUDIT BANNER -->
+<div class="farabi-banner">
+  <div class="farabi-banner-inner">
+    <div class="farabi-banner-text">
+      <div class="farabi-banner-tag">Free tool</div>
+      <div class="farabi-banner-title">FARABI Assessment Audit</div>
+      <div class="farabi-banner-desc">Upload a module handbook and find out how defensible your assessments are under AI conditions. Free one-module analysis.</div>
+    </div>
+    <a href="farabi-audit.html" class="farabi-banner-btn">Try it free &rarr;</a>
+  </div>
+</div>
+
+<hr class="rule" style="margin-top:40px;"/>
+
+<!-- RESEARCH -->
+<section id="research">
+  <h2>Research</h2>
+  <p class="section-sub">Working papers published open access on Zenodo and SSRN. Where multiple versions exist, the latest is listed.</p>
+
+  <!-- FOUNDATIONAL FRAMEWORKS -->
+  <div class="theme-group">
+    <div class="theme-label">Foundational Frameworks</div>
+
+    <div class="paper">
+      <div class="paper-meta">2026 &nbsp;·&nbsp; Framework</div>
+      <h3>The AI Matrix as Diagnostic: Access, Agency, and Adoption</h3>
+      <p>The foundational framework separating access to AI tools from agency in their use. Broad access without agency produces passive dependency — high-looking outputs, weakened judgment. Defines the target condition for institutions and societies: high access and high agency, not merely adoption.</p>
+      <div class="paper-links">
+        <a class="paper-link" href="https://doi.org/10.5281/zenodo.18181372" target="_blank">Zenodo &rarr;</a>
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-meta">2026 &nbsp;·&nbsp; Framework</div>
+      <h3>Decomposing the Capability Overhang: Access, Agency, and the Geography of AI Adoption</h3>
+      <p>Extends the AI Matrix framework into a geographic and organizational analysis of why AI capability accumulates unevenly. The capability overhang — the gap between what AI can do and what organizations actually do with it — is explained by the access-agency distinction, not by technology availability alone.</p>
+      <div class="paper-links">
+        <a class="paper-link" href="https://doi.org/10.5281/zenodo.19250306" target="_blank">Zenodo &rarr;</a>
+        <a class="paper-link alt" href="https://doi.org/10.5281/zenodo.19250415" target="_blank">Key findings &rarr;</a>
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-meta">2026 &nbsp;·&nbsp; Governance</div>
+      <h3>Managing AI Like It Matters: The Artificial Intelligence Operating System (AI-OS)</h3>
+      <p>AI-OS is a governance-centered architecture treating AI adoption as an operating model question rather than a tool rollout. Works at the task level — assigning each task a permitted mode of use based on stakes, ambiguity, reversibility, and sensitivity — making the human-AI boundary visible, auditable, and adjustable by evidence.</p>
+      <div class="paper-links">
+        <a class="paper-link" href="https://doi.org/10.5281/zenodo.18184826" target="_blank">Zenodo &rarr;</a>
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-meta">2026 &nbsp;·&nbsp; Assessment</div>
+      <h3>Beyond Detection: FARABI and the Assessment Credibility Shock in Higher Education</h3>
+      <p>FARABI (Framework for AI-Resilient Assessment and Balanced Integrity) reframes assessment integrity as an evidence design problem. The primary problem is not misconduct but validity: if AI can satisfy an assessment without the student demonstrating the targeted reasoning, the assessment was already weak evidence. FARABI provides a portfolio-level triage method for restoring defensible inference.</p>
+      <div class="paper-links">
+        <a class="paper-link" href="https://doi.org/10.5281/zenodo.18185052" target="_blank">Zenodo &rarr;</a>
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-meta">2026 &nbsp;·&nbsp; Knowledge Work</div>
+      <h3>Orchestrated Intelligence: Rethinking Knowledge Work in the Age of AI</h3>
+      <p>The defining capacity of an AI-era leader is the ability to design, sequence, and stage-manage complex human-AI workflows. Orchestrated intelligence is a teachable, assessable competence — decomposing problems, running accountable iteration loops, and making reasoning visible.</p>
+      <div class="paper-links">
+        <a class="paper-link" href="https://doi.org/10.5281/zenodo.18184765" target="_blank">Zenodo &rarr;</a>
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-meta">2026 &nbsp;·&nbsp; Epistemology</div>
+      <h3>Flow Acceleration and the IHACC Model: Human-AI Co-Creation in Epistemology</h3>
+      <p>IHACC (Iterative Human-AI Co-Creation) argues that AI changes the structure of knowledge production, not just its speed. Acceleration without proof standards produces noise. Human judgment, verification, and epistemic standards must remain explicit throughout AI-assisted inquiry.</p>
+      <div class="paper-links">
+        <a class="paper-link" href="https://doi.org/10.5281/zenodo.18181459" target="_blank">Zenodo &rarr;</a>
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-meta">2025 &nbsp;·&nbsp; Credentialing</div>
+      <h3>The AI Passport: Towards a New Conceptual Framework for Global Skills Certification</h3>
+      <p>Proposes a portable, renewable credential structure linked to program-level proof standards. Designed to make a degree's capability claims legible to employers and to help people navigate AI-driven labor market transitions rather than being stranded by them.</p>
+      <div class="paper-links">
+        <a class="paper-link" href="https://doi.org/10.5281/zenodo.18264859" target="_blank">Zenodo &rarr;</a>
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-meta">2026 &nbsp;·&nbsp; Research Methods</div>
+      <h3>Too Slow for the AI Age? Building a Dynamic Research Continuum</h3>
+      <p>Academic publishing is structurally misaligned with the pace of AI change. The Dynamic Research Continuum proposes a versioned, continuously updated pipeline that maintains quality standards while closing the gap between frontier developments and peer-reviewed knowledge.</p>
+      <div class="paper-links">
+        <a class="paper-link" href="https://doi.org/10.5281/zenodo.18184657" target="_blank">Zenodo &rarr;</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- EDUCATION & CREDENTIALS -->
+  <div class="theme-group">
+    <div class="theme-label">Education, Credentials &amp; Institutional Futures</div>
+
+    <div class="paper">
+      <div class="paper-meta">2026 &nbsp;·&nbsp; Manifesto</div>
+      <h3>Business School 2030: A Manifesto for the AI Operating Environment</h3>
+      <p>Business schools must redesign themselves as capability-and-proof institutions. Integrates the AI Matrix, FARABI, AI-OS, Orchestrated Intelligence, the AI Passport, and the Dynamic Research Continuum into a single operating model for schools that need to remain credible when AI assistance is everywhere.</p>
+      <div class="paper-links">
+        <a class="paper-link" href="https://doi.org/10.5281/zenodo.18325926" target="_blank">Zenodo &rarr;</a>
+        <a class="paper-link alt" href="https://doi.org/10.5281/zenodo.18326099" target="_blank">Op-ed version &rarr;</a>
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-meta">2026 &nbsp;·&nbsp; Manifesto</div>
+      <h3>HEI 2030: A Manifesto for the Higher Education AI Operating Environment</h3>
+      <p>Extends the business school manifesto to higher education institutions more broadly — addressing the structural challenges facing universities as AI weakens the evidentiary link between student outputs and the learning claims that underwrite degrees.</p>
+      <div class="paper-links">
+        <a class="paper-link" href="https://doi.org/10.5281/zenodo.18338403" target="_blank">Zenodo &rarr;</a>
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-meta">2026 &nbsp;·&nbsp; Scenario Planning &nbsp;·&nbsp; Co-authored with A. Wachtel</div>
+      <h3>The Proof and Trust Shock: Generative AI and the Future of Mass Higher Education</h3>
+      <p>Maps six futures for mass higher education — from utopia through muddling along to legitimacy crisis. Current evidence places the highest probability on the more disruptive scenarios. The system faces four interacting walls: a proof wall, a jobs wall, a cost wall, and a legitimacy wall that reinforce each other.</p>
+      <div class="paper-links">
+        <a class="paper-link" href="https://doi.org/10.5281/zenodo.18787230" target="_blank">Zenodo (v1.2) &rarr;</a>
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-meta">2026 &nbsp;·&nbsp; Evidence Synthesis</div>
+      <h3>General-Purpose Versus Learning-Oriented AI: A Structured Cross-Source Synthesis</h3>
+      <p>A systematic synthesis of evidence on AI and learning, distinguishing between general-purpose AI tools and those specifically designed to support learning. Examines what the evidence actually supports about AI's role in education — and where the inferential gaps remain.</p>
+      <div class="paper-links">
+        <a class="paper-link" href="https://doi.org/10.5281/zenodo.19251178" target="_blank">Zenodo &rarr;</a>
+        <a class="paper-link alt" href="https://doi.org/10.5281/zenodo.19254710" target="_blank">Key findings &rarr;</a>
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-meta">2026 &nbsp;·&nbsp; Creativity</div>
+      <h3>A Generation at Risk? Creativity, PISA 2022, and the Demands of an AI Economy</h3>
+      <p>Uses PISA 2022 creative thinking results as a warning about capability readiness for an AI-saturated world. Creativity must be treated as a measurable, teachable competence — not rhetorical aspiration — built into curriculum, assessment, and proof routines.</p>
+      <div class="paper-links">
+        <a class="paper-link" href="https://doi.org/10.5281/zenodo.18265245" target="_blank">Zenodo &rarr;</a>
+        <a class="paper-link alt" href="https://doi.org/10.5281/zenodo.18265320" target="_blank">Research agenda &rarr;</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- LABOR MARKETS -->
+  <div class="theme-group">
+    <div class="theme-label">Labor Markets &amp; the Jobs Wall</div>
+
+    <div class="paper">
+      <div class="paper-meta">2026 &nbsp;·&nbsp; Research Agenda</div>
+      <h3>Is AI Part of the Recruitment Recession? A Research Agenda</h3>
+      <p>The labor market is quietly closing off the entry-level routes that have historically justified mass higher education. The "Jobs Wall" captures the risk that AI tightens junior hiring pathways even while headline employment figures remain stable.</p>
+      <div class="paper-links">
+        <a class="paper-link" href="https://doi.org/10.5281/zenodo.18849062" target="_blank">Zenodo &rarr;</a>
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-meta">2026 &nbsp;·&nbsp; Data Analysis</div>
+      <h3>The Proof and Trust Shock: What the BLS 2024&ndash;34 Projections Suggest About the Jobs Wall</h3>
+      <p>Using US Bureau of Labor Statistics projections, provides empirical grounding for the Jobs Wall concept — showing how graduate employment routes are narrowing in ways that standard labor market analysis tends to understate.</p>
+      <div class="paper-links">
+        <a class="paper-link" href="https://doi.org/10.5281/zenodo.18799857" target="_blank">Zenodo &rarr;</a>
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-meta">2026 &nbsp;·&nbsp; Commentary</div>
+      <h3>Beyond Adoption: Intensity and Integration as the Missing Link in Firm-Level AI Impact</h3>
+      <p>A response to Yotzov et al.'s firm-level AI impact research, arguing that adoption rates are the wrong unit of analysis. What matters is intensity of use and depth of integration — the same distinction between access and agency that runs through the broader research agenda.</p>
+      <div class="paper-links">
+        <a class="paper-link" href="https://doi.org/10.5281/zenodo.18845259" target="_blank">Zenodo &rarr;</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORESIGHT & STRATEGY -->
+  <div class="theme-group">
+    <div class="theme-label">Foresight, Strategy &amp; Geopolitics</div>
+
+    <div class="paper">
+      <div class="paper-meta">2026 &nbsp;·&nbsp; Foresight Framework</div>
+      <h3>Using AI in Scenario Planning: Letting It Rip or Doing the Right Thing?</h3>
+      <p>Introduces the Grey Swan / Archimedes framework for governed, AI-assisted strategic foresight. A grey swan is a plausible, consequential disruption with visible signposts already present in current data — one that goes unaddressed not because it is unknowable but because it is uncomfortable. Results are currently sobering.</p>
+      <div class="paper-links">
+        <a class="paper-link" href="https://doi.org/10.5281/zenodo.18184921" target="_blank">Zenodo &rarr;</a>
+        <a class="paper-link alt" href="grey-swan.html">Live intelligence brief &rarr;</a>
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-meta">2026 &nbsp;·&nbsp; Geopolitics</div>
+      <h3>The AI Triad: Power, Infrastructure, and Agency in US-EU-China Strategy</h3>
+      <p>Applies the access-agency framework to the geopolitics of AI — examining how the three major blocs are positioning on infrastructure, governance, and the distribution of AI-derived agency across their populations and institutions. Updated in a subsequent paper.</p>
+      <div class="paper-links">
+        <a class="paper-link" href="https://doi.org/10.5281/zenodo.18677286" target="_blank">Zenodo &rarr;</a>
+        <a class="paper-link alt" href="https://doi.org/10.5281/zenodo.19248117" target="_blank">Updated version &rarr;</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- EVIDENCE & COMMENTARY -->
+  <div class="theme-group">
+    <div class="theme-label">Evidence, Commentary &amp; Strategic Reading</div>
+
+    <div class="paper">
+      <div class="paper-meta">2026 &nbsp;·&nbsp; Commentary</div>
+      <h3>Speed Is Not the Whole Story: Anthropic&rsquo;s Claude Study and Orchestrated Intelligence</h3>
+      <p>A close reading of Anthropic's research on Claude's impact on knowledge work. Speed gains are real but secondary. What the data supports is the importance of orchestration — structured human-AI workflows — over unmanaged acceleration.</p>
+      <div class="paper-links">
+        <a class="paper-link" href="https://doi.org/10.5281/zenodo.18376201" target="_blank">Zenodo (updated) &rarr;</a>
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-meta">2026 &nbsp;·&nbsp; Commentary</div>
+      <h3>The LLM Usage Gap: Evidence from Anthropic, Microsoft, and OpenAI</h3>
+      <p>Examines the gap between reported AI adoption rates and actual intensity of use. Widespread nominal adoption coexists with shallow, unmanaged use in most organizations — supporting the access-agency distinction at organizational scale.</p>
+      <div class="paper-links">
+        <a class="paper-link" href="https://doi.org/10.5281/zenodo.18322837" target="_blank">Zenodo &rarr;</a>
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-meta">2026 &nbsp;·&nbsp; Strategic Toolkit</div>
+      <h3>Strategic Toolkits: Reading the Major AI Usage Reports</h3>
+      <p>Practical frameworks for cutting through vendor framing in the Microsoft Copilot and OpenAI enterprise usage reports — identifying what the data actually supports and where the inferential gaps are.</p>
+      <div class="paper-links">
+        <a class="paper-link" href="https://doi.org/10.5281/zenodo.18322703" target="_blank">Microsoft Copilot toolkit &rarr;</a>
+        <a class="paper-link alt" href="https://doi.org/10.5281/zenodo.18322664" target="_blank">OpenAI toolkit &rarr;</a>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- GREY SWAN -->
+<hr class="rule"/>
+
+<section id="grey-swan">
+  <div class="vc-eyebrow">Grey Swan / Archimedes</div>
+  <div class="vc-intro">
+    <p>A governed, AI-assisted foresight framework that converts public data into auditable probabilities for two global scenarios and four outcomes. Named after Taleb&rsquo;s concept: a grey swan is consequential and visible in today&rsquo;s data, but uncomfortable enough to ignore. This model refuses to look away. The framework runs on a six-month cadence against a live public evidence base. Results are updated each run. Results are currently sobering.</p>
+  </div>
+  <div class="vc-cards">
+    <a href="grey-swan.html" class="vc-card">
+      <div class="vc-card-tag">
+        <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--gold);margin-right:6px;vertical-align:middle;animation:pulse 2s infinite;"></span>
+        Spring 2026 &nbsp;&middot;&nbsp; Intelligence Brief
+      </div>
+      <div class="vc-card-title">The Grey Swan Scenario Framework: The Spring 2026 state of play</div>
+      <div class="vc-card-desc">Trade fragmentation and health surveillance degradation have driven deterioration since the October 2025 baseline. A third risk &mdash; economic stress &mdash; is approaching threshold under the revised v11.9 architecture. Two flags are active. The Wealth-Diffusion Gate remains closed.</div>
+      <div class="vc-card-link">Read the brief &rarr;</div>
+    </a>
+    <a href="https://doi.org/10.5281/zenodo.18184921" target="_blank" class="vc-card">
+      <div class="vc-card-tag">Working Paper &nbsp;&middot;&nbsp; WP11</div>
+      <div class="vc-card-title">The framework: methodology and first-run results</div>
+      <div class="vc-card-desc">Full documentation of the Grey Swan / Archimedes foresight model &mdash; the evidence tier architecture, the six Archimedes Levers, the two scenarios, the four outcomes, and the governance rules that keep the model honest. Published open access on Zenodo.</div>
+      <div class="vc-card-link">Zenodo &rarr;</div>
+    </a>
+  </div>
+</section>
+
+<!-- VIRTUOUS CITY -->
+<hr class="rule"/>
+
+<section id="virtuous-city">
+  <div class="vc-eyebrow">The Virtuous City</div>
+  <div class="vc-intro">
+    <p>A parallel project: recovering the civic framework of Abu Nasr al-Farabi (c.&nbsp;872&ndash;950), philosopher from what is now Kazakhstan, and asking what it still demands of modern cities. Al-Farabi built the most systematic account of civic purpose in the medieval world. His questions &mdash; what is a city for, how does governance fail, how does institutional wisdom survive its founders &mdash; are more rigorous than most current answers. This work sits alongside the AI research agenda. The name FARABI is not a coincidence.</p>
+  </div>
+  <div class="vc-cards">
+    <a href="essay.html" class="vc-card">
+      <div class="vc-card-tag">Essay</div>
+      <div class="vc-card-title">The Second Teacher</div>
+      <div class="vc-card-desc">What a tenth-century philosopher from Kazakhstan knew about cities that we keep forgetting. A public essay on Al-Farabi&rsquo;s civic framework and the tradition it represents.</div>
+      <div class="vc-card-link">Read &rarr;</div>
+    </a>
+    <a href="scorecard.html" class="vc-card">
+      <div class="vc-card-tag">Self-assessment</div>
+      <div class="vc-card-title">The Virtuous City Scorecard</div>
+      <div class="vc-card-desc">A governance diagnostic based on Al-Farabi&rsquo;s framework. Eighteen statements across six dimensions of civic governance, with a diagnostic drawn from his failure typology.</div>
+      <div class="vc-card-link">Open scorecard &rarr;</div>
+    </a>
+  </div>
+</section>
+
+<hr class="rule"/>
+
+<!-- CONTACT -->
+<section id="contact">
+  <h2>Contact</h2>
+  <p class="section-sub">Research enquiries, collaboration, speaking, and executive education.</p>
+  <div class="contact-block">
+    <p>I am open to conversations about research collaboration, speaking engagements, consultancy on AI governance and assessment design, and executive education for organisations navigating the shift to AI-mediated work. Based in Almaty; working globally.</p>
+    <a class="email" href="mailto:ewan@ewansimpson.org">ewan@ewansimpson.org</a>
+  </div>
+</section>
+
+<footer>
+  &copy; 2026 Ewan Simpson &nbsp;&middot;&nbsp;
+  <a href="https://nbs.narxoz.kz/" target="_blank">Narxoz Business School</a>, Almaty
+  &nbsp;&middot;&nbsp;
+  <a href="about.html">About</a>
+</footer>
+
+<style>
+  @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
+</style>
+
+</body>
+</html>
