@@ -1,0 +1,12 @@
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+[build]
+  publish = "."
+
+[[headers]]
+  for = "/farabi-audit.html"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"

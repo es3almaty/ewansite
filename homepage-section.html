@@ -1,0 +1,128 @@
+<!-- ============================================================
+     THE VIRTUOUS CITY — drop-in section for index.html
+     Paste this block immediately before your ## Contact section
+     Also add "The Virtuous City" to your nav links, e.g.:
+     <a href="#virtuous-city">The Virtuous City</a>
+     ============================================================ -->
+
+<section id="virtuous-city">
+  <div class="section-label">The Virtuous City</div>
+
+  <div class="vc-intro">
+    <p>A parallel project: recovering the civic framework of Abu Nasr al-Farabi (c.&nbsp;872–950), philosopher from what is now Kazakhstan, and asking what it still demands of modern cities. Al-Farabi built the most systematic account of civic purpose in the medieval world. His questions — what is a city for, how does governance fail, how does institutional wisdom survive its founders — are more rigorous than most current answers. This work sits alongside the AI research agenda. The name FARABI is not a coincidence.</p>
+  </div>
+
+  <div class="vc-cards">
+    <a href="/essay.html" class="vc-card">
+      <div class="vc-card-tag">Essay</div>
+      <div class="vc-card-title">The Second Teacher</div>
+      <div class="vc-card-desc">What a tenth-century philosopher from Kazakhstan knew about cities that we keep forgetting. A public essay on Al-Farabi's civic framework and the tradition it represents.</div>
+      <div class="vc-card-links">
+        <span class="vc-link">Read →</span>
+        <a href="/alfarabi-second-teacher.docx" class="vc-link" onclick="event.stopPropagation()">Download .docx →</a>
+      </div>
+    </a>
+
+    <a href="/scorecard.html" class="vc-card">
+      <div class="vc-card-tag">Self-assessment</div>
+      <div class="vc-card-title">The Virtuous City Scorecard</div>
+      <div class="vc-card-desc">A governance diagnostic based on Al-Farabi's framework. Eighteen statements across six dimensions of civic governance, with a diagnostic drawn from his failure typology.</div>
+      <div class="vc-card-links">
+        <span class="vc-link">Open scorecard →</span>
+      </div>
+    </a>
+  </div>
+</section>
+
+<style>
+/* Virtuous City section styles — scoped so they don't affect the rest of the site */
+#virtuous-city {
+  padding: 5rem 0;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+#virtuous-city .section-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #c9b89a;
+  margin-bottom: 1.5rem;
+}
+
+.vc-intro {
+  max-width: 600px;
+  margin-bottom: 2.5rem;
+}
+
+.vc-intro p {
+  font-size: 15px;
+  color: #888;
+  line-height: 1.8;
+}
+
+.vc-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  max-width: 700px;
+}
+
+@media (max-width: 600px) {
+  .vc-cards { grid-template-columns: 1fr; }
+}
+
+.vc-card {
+  display: block;
+  background: #161616;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.2s;
+}
+
+.vc-card:hover {
+  border-color: rgba(201,184,154,0.3);
+}
+
+.vc-card-tag {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #c9b89a;
+  margin-bottom: 0.6rem;
+}
+
+.vc-card-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: #e8e6e1;
+  margin-bottom: 0.6rem;
+  line-height: 1.4;
+}
+
+.vc-card-desc {
+  font-size: 13px;
+  color: #888;
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+
+.vc-card-links {
+  display: flex;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.vc-link {
+  font-size: 13px;
+  color: #c9b89a;
+  text-decoration: none;
+}
+
+.vc-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+</style>

@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Virtuous City Scorecard · Ewan Simpson</title>
+<meta name="description" content="A governance self-assessment for city leadership based on Al-Farabi's civic framework.">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0f0f0f;
+    --bg-card: #161616;
+    --bg-input: #1c1c1c;
+    --border: rgba(255,255,255,0.08);
+    --text: #e8e6e1;
+    --muted: #888;
+    --accent: #c9b89a;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    padding: 1.25rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(15,15,15,0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+  }
+
+  .nav-brand { font-size: 15px; font-weight: 500; color: var(--text); text-decoration: none; }
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-links a { font-size: 14px; color: var(--muted); text-decoration: none; }
+  .nav-links a:hover { color: var(--text); }
+  .nav-links .nav-active { color: var(--accent); }
+
+  .page { max-width: 700px; margin: 0 auto; padding: 7rem 2rem 6rem; }
+
+  .back-link {
+    font-size: 13px; color: var(--muted); text-decoration: none;
+    display: inline-flex; align-items: center; gap: 6px; margin-bottom: 2.5rem;
+  }
+  .back-link:hover { color: var(--text); }
+
+  .meta-tag {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--accent); margin-bottom: 1rem;
+  }
+
+  h1 {
+    font-size: 1.75rem; font-weight: 400; line-height: 1.25;
+    color: var(--text); margin-bottom: 0.75rem; letter-spacing: -0.01em;
+  }
+
+  .intro { font-size: 14px; color: var(--muted); line-height: 1.8; max-width: 580px; margin-bottom: 2.5rem; }
+
+  .progress-wrap { margin-bottom: 2rem; }
+  .progress-label { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+  .progress-bar { height: 2px; background: var(--border); border-radius: 1px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--accent); border-radius: 1px; transition: width 0.3s; width: 0; }
+
+  .category {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 8px; padding: 1.5rem; margin-bottom: 1rem;
+    transition: border-color 0.2s;
+  }
+  .category.complete { border-color: rgba(201,184,154,0.2); }
+
+  .cat-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 1.25rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border);
+  }
+
+  .cat-title { font-size: 13px; font-weight: 500; color: var(--text); }
+  .cat-right { display: flex; align-items: center; gap: 10px; }
+  .cat-score { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+  .cat-pill {
+    font-size: 10px; padding: 2px 8px; border-radius: 20px;
+    font-weight: 500; letter-spacing: 0.04em;
+  }
+  .pill-teal { background: rgba(29,158,117,0.15); color: #5DCAA5; }
+  .pill-blue { background: rgba(55,138,221,0.15); color: #85B7EB; }
+  .pill-purple { background: rgba(127,119,221,0.15); color: #AFA9EC; }
+  .pill-amber { background: rgba(239,159,39,0.15); color: #FAC775; }
+  .pill-coral { background: rgba(216,90,48,0.15); color: #F0997B; }
+  .pill-red { background: rgba(226,75,74,0.15); color: #F09595; }
+
+  .question { margin-bottom: 1.25rem; }
+  .question:last-child { margin-bottom: 0; }
+  .q-text { font-size: 13px; color: var(--text); margin-bottom: 8px; line-height: 1.6; }
+
+  .rating-row { display: flex; align-items: center; gap: 5px; }
+
+  .r-btn {
+    width: 38px; height: 38px; border: 1px solid var(--border);
+    border-radius: 6px; background: var(--bg-input); cursor: pointer;
+    font-size: 12px; font-weight: 500; color: var(--muted);
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s; flex-shrink: 0; font-family: inherit;
+  }
+  .r-btn:hover { border-color: rgba(201,184,154,0.3); color: var(--text); }
+  .r-btn.on { background: rgba(201,184,154,0.1); border-color: rgba(201,184,154,0.4); color: var(--accent); }
+
+  .r-label { font-size: 11px; color: var(--muted); margin-left: 8px; min-width: 80px; }
+
+  .summary {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 8px; padding: 1.5rem; margin-top: 1.5rem;
+  }
+
+  .sum-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem; }
+  .sum-label { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 3px; }
+  .sum-sub { font-size: 12px; color: var(--muted); }
+  .sum-score { font-size: 2.5rem; font-weight: 300; color: var(--text); line-height: 1; }
+  .sum-denom { font-size: 12px; color: var(--muted); margin-top: 4px; text-align: right; }
+
+  .bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .bar-name { font-size: 11px; color: var(--muted); width: 155px; flex-shrink: 0; }
+  .bar-track { flex: 1; height: 3px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 2px; transition: width 0.4s; }
+  .bar-val { font-size: 11px; color: var(--muted); width: 32px; text-align: right; font-variant-numeric: tabular-nums; }
+
+  .diagnosis { border-top: 1px solid var(--border); padding-top: 1.25rem; margin-top: 1.25rem; display: none; }
+  .diag-eyebrow { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 6px; }
+  .diag-badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 500; margin-bottom: 0.75rem; }
+  .diag-text { font-size: 13px; color: var(--muted); line-height: 1.75; }
+
+  .submit-area { border-top: 1px solid var(--border); padding-top: 1.25rem; margin-top: 1.25rem; display: none; }
+  .submit-note { font-size: 12px; color: var(--muted); line-height: 1.7; margin-bottom: 1rem; }
+
+  .submit-btn {
+    background: rgba(201,184,154,0.08); border: 1px solid rgba(201,184,154,0.25);
+    color: var(--accent); padding: 8px 18px; border-radius: 6px;
+    font-size: 13px; font-weight: 500; cursor: pointer;
+    transition: all 0.15s; font-family: inherit;
+  }
+  .submit-btn:hover { background: rgba(201,184,154,0.15); border-color: rgba(201,184,154,0.4); }
+  .submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .thank-you { font-size: 13px; color: var(--muted); display: none; padding: 8px 0; }
+
+  .reset-btn {
+    background: none; border: none; color: var(--muted); font-size: 12px;
+    cursor: pointer; text-decoration: underline; text-underline-offset: 3px;
+    font-family: inherit; margin-top: 10px; display: block;
+  }
+  .reset-btn:hover { color: var(--text); }
+
+  .hidden-form { display: none; }
+
+  footer {
+    text-align: center; padding: 3rem 2rem; font-size: 13px;
+    color: var(--muted); border-top: 1px solid var(--border); margin-top: 2rem;
+  }
+  footer a { color: var(--muted); text-decoration: none; }
+  footer a:hover { color: var(--text); }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-brand">Ewan Simpson</a>
+  <div class="nav-links">
+    <a href="/#research">Research</a>
+    <a href="/#virtuous-city" class="nav-active">The Virtuous City</a>
+    <a href="/#contact">Contact</a>
+  </div>
+</nav>
+
+<div class="page">
+  <a href="/#virtuous-city" class="back-link">← The Virtuous City</a>
+
+  <div class="meta-tag">Self-assessment · 2026</div>
+  <h1>The Virtuous City Scorecard</h1>
+  <p class="intro">Eighteen statements across six dimensions of Al-Farabi's civic framework. Score each 1 (never true) to 5 (consistently true). Designed for honest private reflection — not public reporting. Responses are submitted anonymously and contribute to ongoing research on urban governance.</p>
+
+  <div class="progress-wrap">
+    <div class="progress-label" id="progress-label">0 of 18 answered</div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  </div>
+
+  <div id="scorecard"></div>
+
+  <div class="summary">
+    <div class="sum-top">
+      <div>
+        <div class="sum-label">Overall score</div>
+        <div class="sum-sub">six dimensions · 90 points total</div>
+      </div>
+      <div>
+        <div class="sum-score" id="total-score">—</div>
+        <div class="sum-denom">/ 90</div>
+      </div>
+    </div>
+    <div id="bars"></div>
+    <div class="diagnosis" id="diagnosis">
+      <div class="diag-eyebrow">Diagnosis</div>
+      <div class="diag-badge" id="diag-badge"></div>
+      <div class="diag-text" id="diag-text"></div>
+    </div>
+    <div class="submit-area" id="submit-area">
+      <p class="submit-note">No identifying information is collected. Aggregate scores inform research on how cities apply civic governance frameworks. Your submission is anonymous.</p>
+      <button class="submit-btn" id="submit-btn" onclick="doSubmit()">Submit anonymously →</button>
+      <div class="thank-you" id="thank-you">Submitted — thank you. Your responses contribute to the research base.</div>
+      <button class="reset-btn" onclick="doReset()">Start again</button>
+    </div>
+  </div>
+</div>
+
+<!-- Netlify Forms — do not remove -->
+<form name="virtuous-city-scorecard" netlify netlify-honeypot="bot-field" class="hidden-form" id="nl-form">
+  <input name="bot-field">
+  <input type="hidden" name="form-name" value="virtuous-city-scorecard">
+  <input type="hidden" name="score_total" id="f-total">
+  <input type="hidden" name="score_civic_purpose" id="f-telos">
+  <input type="hidden" name="score_knowledge" id="f-knowledge">
+  <input type="hidden" name="score_translation" id="f-translation">
+  <input type="hidden" name="score_law" id="f-law">
+  <input type="hidden" name="score_leadership" id="f-leadership">
+  <input type="hidden" name="score_failure_diagnosis" id="f-diag">
+  <input type="hidden" name="diagnosis_label" id="f-label">
+</form>
+
+<footer>
+  <p>© 2026 Ewan Simpson · <a href="/">ewansimpson.org</a> · Narxoz Business School, Almaty</p>
+</footer>
+
+<script>
+const CATS = [
+  { id:'telos', title:'Civic purpose', pill:'Telos', cls:'pill-teal', bar:'#1D9E75',
+    qs:['Our city has a clearly stated civic purpose that goes beyond growth targets or economic output.',
+        'Budget decisions are explicitly referenced against that stated purpose in public documents.',
+        'A resident could read our civic purpose and use it to hold us to account.'] },
+  { id:'knowledge', title:'Knowledge as infrastructure', pill:'Episteme', cls:'pill-blue', bar:'#378ADD',
+    qs:['Citizens have meaningful access to the reasoning behind major decisions, not just the decisions themselves.',
+        'Technical advisors are held accountable for the quality of their reasoning, not just their credentials.',
+        'Our schools and public institutions treat argument literacy as a civic priority.'] },
+  { id:'translation', title:'Translation layers', pill:'Culture', cls:'pill-purple', bar:'#7F77DD',
+    qs:['Our cultural life — public spaces, festivals, civic narratives — reflects the same values as our governance priorities.',
+        'We invest in cultural and civic institutions as infrastructure, not as discretionary amenities.',
+        'We have a way of detecting when public culture and governance purpose have come apart.'] },
+  { id:'law', title:'Institutional durability', pill:'Law', cls:'pill-amber', bar:'#EF9F27',
+    qs:['Our core civic commitments are embedded in law and institutional design, not dependent on current leadership.',
+        'When policy adapts, we explain publicly how the change serves the original civic purpose.',
+        "A change in political leadership would not fundamentally alter the city's civic direction."] },
+  { id:'leadership', title:'Leadership quality', pill:'Governance', cls:'pill-coral', bar:'#D85A30',
+    qs:['Selection for senior roles prioritises demonstrated competence and integrity over political loyalty.',
+        'Governance capacities are distributed across qualified people rather than concentrated in individuals.',
+        'Legitimacy is measured by contribution to civic purpose, not by popularity or spectacle.'] },
+  { id:'diagnosis', title:'Failure diagnosis', pill:'Diagnostic', cls:'pill-red', bar:'#E24B4A',
+    qs:['When governance fails, we identify what kind of failure it is before choosing a remedy.',
+        'We distinguish between failures of knowledge, failures of institutional design, and failures of integrity.',
+        'We apply accountability measures where corruption is identified, rather than as a substitute for genuine reform.'] }
+];
+
+const LABELS = ['','Never','Rarely','Sometimes','Mostly','Consistently'];
+const scores = {};
+CATS.forEach(c => c.qs.forEach((_,i) => { scores[c.id+'_'+i] = 0; }));
+
+const catTotal = c => c.qs.reduce((s,_,i) => s + (scores[c.id+'_'+i]||0), 0);
+const grandTotal = () => CATS.reduce((s,c) => s + catTotal(c), 0);
+const answered = () => Object.values(scores).filter(v=>v>0).length;
+const allDone = () => answered() === 18;
+
+function render() {
+  const el = document.getElementById('scorecard');
+  el.innerHTML = '';
+  CATS.forEach(cat => {
+    const t = catTotal(cat);
+    const done = cat.qs.every((_,i) => scores[cat.id+'_'+i] > 0);
+    const div = document.createElement('div');
+    div.className = 'category' + (done ? ' complete' : '');
+    div.innerHTML = `
+      <div class="cat-header">
+        <span class="cat-title">${cat.title}</span>
+        <div class="cat-right">
+          <span class="cat-score">${t}/15</span>
+          <span class="cat-pill ${cat.cls}">${cat.pill}</span>
+        </div>
+      </div>
+      ${cat.qs.map((q,i) => {
+        const v = scores[cat.id+'_'+i];
+        return `<div class="question">
+          <div class="q-text">${q}</div>
+          <div class="rating-row">
+            ${[1,2,3,4,5].map(n=>`<button class="r-btn${v===n?' on':''}" onclick="setScore('${cat.id}',${i},${n})">${n}</button>`).join('')}
+            <span class="r-label">${v ? LABELS[v] : ''}</span>
+          </div>
+        </div>`;
+      }).join('')}
+    `;
+    el.appendChild(div);
+  });
+  updateSummary();
+  updateProgress();
+}
+
+function setScore(catId, qi, val) {
+  scores[catId+'_'+qi] = val;
+  render();
+}
+
+function updateProgress() {
+  const n = answered();
+  document.getElementById('progress-label').textContent = `${n} of 18 answered`;
+  document.getElementById('progress-fill').style.width = Math.round((n/18)*100) + '%';
+}
+
+function updateSummary() {
+  const gt = grandTotal();
+  const done = allDone();
+  document.getElementById('total-score').textContent = done ? gt : '—';
+
+  document.getElementById('bars').innerHTML = CATS.map(c => {
+    const t = catTotal(c);
+    return `<div class="bar-row">
+      <div class="bar-name">${c.title}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${Math.round((t/15)*100)}%;background:${c.bar};"></div></div>
+      <div class="bar-val">${t}/15</div>
+    </div>`;
+  }).join('');
+
+  const diagEl = document.getElementById('diagnosis');
+  const submitEl = document.getElementById('submit-area');
+  if (!done) { diagEl.style.display='none'; submitEl.style.display='none'; return; }
+  diagEl.style.display='block'; submitEl.style.display='block';
+
+  const weak = [...CATS].sort((a,b)=>catTotal(a)-catTotal(b)).slice(0,2).map(c=>c.title.toLowerCase());
+  let label, style, text;
+  if (gt>=75) {
+    label='Virtuous city'; style='background:rgba(29,158,117,0.15);color:#5DCAA5;';
+    text='Strong alignment across the framework. The primary risk at this level is drift — the gradual erosion of institutional purpose without obvious failure events. The key question is whether these strengths are embedded in law and institutional design, or dependent on the quality of current leadership.';
+  } else if (gt>=55) {
+    label='Errant city'; style='background:rgba(239,159,39,0.15);color:#FAC775;';
+    text=`In Al-Farabi's typology, an errant city has the right intentions but pursues them through imperfect means or drifted institutions. The remedy is clarification and redesign, not political change or communications campaigns. Weakest areas — ${weak.join(' and ')} — indicate where institutional redesign should concentrate.`;
+  } else if (gt>=35) {
+    label='Mixed — structural problems present'; style='background:rgba(216,90,48,0.15);color:#F0997B;';
+    text=`Significant structural problems are present. Before choosing remedies, diagnose the type of failure carefully. Weak scores in ${weak.join(' and ')} may indicate ignorance (wrong civic ends), error (right ends, wrong means), or corruption (known ends, deliberately ignored). Each requires a different response. Applying the wrong remedy to the wrong failure type produces reform that looks serious but leaves the underlying problem intact.`;
+  } else {
+    label='Civic deficit'; style='background:rgba(226,75,74,0.15);color:#F09595;';
+    text='Fundamental reorientation is indicated. Al-Farabi reserved this category for cities that have organised themselves around the wrong ends entirely — survival, accumulation, or dominance in place of human flourishing. The remedy is generational and begins with honestly naming what the city is actually for, rather than what it claims to be for.';
+  }
+
+  const badge = document.getElementById('diag-badge');
+  badge.style.cssText = style; badge.textContent = label;
+  document.getElementById('diag-text').textContent = text;
+
+  document.getElementById('f-total').value = gt;
+  document.getElementById('f-telos').value = catTotal(CATS[0]);
+  document.getElementById('f-knowledge').value = catTotal(CATS[1]);
+  document.getElementById('f-translation').value = catTotal(CATS[2]);
+  document.getElementById('f-law').value = catTotal(CATS[3]);
+  document.getElementById('f-leadership').value = catTotal(CATS[4]);
+  document.getElementById('f-diag').value = catTotal(CATS[5]);
+  document.getElementById('f-label').value = label;
+}
+
+function doSubmit() {
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true; btn.textContent = 'Submitting…';
+  const data = new FormData(document.getElementById('nl-form'));
+  fetch('/', { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body: new URLSearchParams(data).toString() })
+    .then(() => { btn.style.display='none'; document.getElementById('thank-you').style.display='block'; })
+    .catch(() => { btn.disabled=false; btn.textContent='Submit anonymously →'; });
+}
+
+function doReset() {
+  Object.keys(scores).forEach(k => { scores[k]=0; });
+  const btn = document.getElementById('submit-btn');
+  btn.style.display='inline-block'; btn.disabled=false; btn.textContent='Submit anonymously →';
+  document.getElementById('thank-you').style.display='none';
+  render(); window.scrollTo({top:0,behavior:'smooth'});
+}
+
+render();
+</script>
+</body>
+</html>

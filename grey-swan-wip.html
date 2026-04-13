@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Grey Swan: Work in Progress Note — Ewan Simpson</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    :root {
+      --ink:#1A1A1A; --mid:#4A4A4A; --soft:#7A7A7A;
+      --rule:#E0E0E0; --bg:#FAFAF8; --accent:#1A3A5C; --gold:#C4922A;
+      --serif:'Lora',Georgia,serif; --sans:'Inter',system-ui,sans-serif;
+    }
+    html { scroll-behavior:smooth; }
+    body { background:var(--bg); color:var(--ink); font-family:var(--sans); font-size:16px; line-height:1.7; }
+
+    nav {
+      position:sticky; top:0; z-index:50;
+      background:rgba(250,250,248,0.96); backdrop-filter:blur(8px);
+      border-bottom:1px solid var(--rule);
+      padding:0 40px; display:flex; align-items:center; justify-content:space-between; height:60px;
+    }
+    .nav-name { font-family:var(--serif); font-size:17px; font-weight:600; color:var(--accent); text-decoration:none; }
+    .nav-links { display:flex; gap:28px; align-items:center; }
+    .nav-links a { font-size:13px; font-weight:500; letter-spacing:0.06em; text-transform:uppercase; color:var(--mid); text-decoration:none; transition:color 0.2s; }
+    .nav-links a:hover { color:var(--accent); }
+    .nav-links a.active { color:var(--accent); border-bottom:2px solid var(--gold); padding-bottom:1px; }
+
+    hr.rule { border:none; border-top:1px solid var(--rule); max-width:720px; margin:0 auto; }
+
+    /* HEADER */
+    .wip-header { max-width:720px; margin:0 auto; padding:80px 40px 56px; }
+    .eyebrow { font-size:11px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:var(--gold); margin-bottom:18px; }
+    .wip-header h1 {
+      font-family:var(--serif); font-size:clamp(28px,3.5vw,40px);
+      font-weight:600; line-height:1.22; color:var(--accent); margin-bottom:28px;
+    }
+    .wip-intro {
+      font-size:17px; line-height:1.82; color:var(--mid);
+      padding-bottom:40px; border-bottom:1px solid var(--rule);
+    }
+
+    /* BODY */
+    .wip-body { max-width:720px; margin:0 auto; padding:0 40px 80px; }
+
+    .wip-section { padding:48px 0; border-bottom:1px solid var(--rule); }
+    .wip-section:last-of-type { border-bottom:none; }
+
+    .wip-section h2 {
+      font-family:var(--serif); font-size:22px; font-weight:600;
+      color:var(--accent); margin-bottom:20px;
+    }
+    .wip-section p {
+      font-size:16px; color:var(--mid); line-height:1.82; margin-bottom:18px;
+    }
+    .wip-section p:last-child { margin-bottom:0; }
+    .wip-section p strong { font-weight:600; color:var(--ink); }
+
+    /* Limitation list */
+    .limit-list { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:24px; margin-bottom:0; }
+    .limit-item { display:flex; gap:20px; align-items:flex-start; }
+    .limit-num {
+      font-family:var(--serif); font-size:20px; font-weight:600;
+      color:var(--gold); flex-shrink:0; min-width:20px; line-height:1.4;
+    }
+    .limit-content h3 {
+      font-family:var(--sans); font-size:14px; font-weight:600;
+      color:var(--ink); margin-bottom:6px;
+    }
+    .limit-content p { font-size:15px; color:var(--mid); line-height:1.75; margin-bottom:0; }
+
+    /* Callout */
+    .wip-callout {
+      border-left:3px solid var(--accent); padding:18px 22px;
+      background:white; border-radius:0 4px 4px 0;
+      border-top:1px solid var(--rule); border-right:1px solid var(--rule); border-bottom:1px solid var(--rule);
+      margin:28px 0;
+    }
+    .wip-callout p { font-size:15px; color:var(--mid); line-height:1.75; margin-bottom:0; font-style:italic; }
+
+    /* Back link */
+    .back-link {
+      display:inline-flex; align-items:center; gap:6px;
+      font-size:12px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase;
+      color:var(--accent); text-decoration:none;
+      border-bottom:1px solid var(--accent); padding-bottom:1px;
+      transition:color 0.2s, border-color 0.2s;
+    }
+    .back-link:hover { color:var(--gold); border-color:var(--gold); }
+
+    /* Development table */
+    .dev-table { width:100%; border-collapse:collapse; margin-top:24px; }
+    .dev-table th {
+      text-align:left; font-size:10px; font-weight:700;
+      letter-spacing:0.12em; text-transform:uppercase; color:var(--soft);
+      padding:0 0 10px; border-bottom:1px solid var(--rule);
+    }
+    .dev-table td {
+      padding:14px 16px 14px 0; border-bottom:1px solid var(--rule);
+      font-size:14px; color:var(--mid); line-height:1.65; vertical-align:top;
+    }
+    .dev-table td:first-child {
+      font-weight:600; color:var(--ink); white-space:nowrap;
+      padding-right:32px; min-width:160px;
+    }
+    .dev-table tr:last-child td { border-bottom:none; }
+    .tag-done { font-size:10px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--gold); }
+    .tag-open { font-size:10px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--soft); }
+
+    footer { border-top:1px solid var(--rule); padding:32px 40px; text-align:center; font-size:12px; color:var(--soft); letter-spacing:0.04em; }
+    footer a { color:var(--soft); text-decoration:none; }
+    footer a:hover { color:var(--accent); }
+
+    @media (max-width:680px) {
+      nav { padding:0 20px; } .nav-links { gap:14px; }
+      .wip-header { padding:50px 20px 40px; }
+      .wip-body { padding:0 20px 60px; }
+      footer { padding:24px 20px; }
+      .dev-table td:first-child { white-space:normal; min-width:0; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-name" href="index.html">Ewan Simpson</a>
+  <div class="nav-links">
+    <a href="index.html#research">Research</a>
+    <a href="about.html">About</a>
+    <a href="index.html#grey-swan" class="active">Grey Swan</a>
+    <a href="index.html#virtuous-city">The Virtuous City</a>
+    <a href="index.html#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- HEADER -->
+<div class="wip-header">
+  <div class="eyebrow">Grey Swan / Archimedes &nbsp;&middot;&nbsp; Work in Progress &nbsp;&middot;&nbsp; April 2026</div>
+  <h1>What this model does and does not claim</h1>
+  <div class="wip-intro">
+    <p>The honest question about any foresight model is whether it is making the world clearer or just making uncertainty look more manageable than it is. This note addresses that question directly. The methodology deserves scrutiny, and the people reading the intelligence brief deserve to know what the numbers do and do not mean.</p>
+    <p>The short answer is: not delusional, genuinely limited, worth continuing.</p>
+  </div>
+</div>
+
+<!-- BODY -->
+<div class="wip-body">
+
+  <div class="wip-section">
+    <h2>What the model genuinely does well</h2>
+    <p>The governance architecture is the strongest element. Most scenario planning is built in workshops, refreshed irregularly, and justified by expert narrative with no audit trail. Grey Swan makes an explicit mechanism for every probability move, requires persistence across multiple readings before any change is registered, reverses prior moves when signals fade, and logs every change with its source and rationale. That is a real methodological improvement over standard practice in the field.</p>
+    <p>The public-data-only constraint is a genuine discipline. The evidence tiers separate slow structural context from operational signals in a way that prevents the model from reacting to noise while remaining sensitive to genuine shifts. The six-monthly cadence enforced by the persistence requirement is correct: long enough to test whether a signal is real, short enough to remain useful for strategic decision-making.</p>
+    <p>The cross-cutting driver architecture is sound. Treating climate, geopolitical shocks, and economic conditions as forces that operate across multiple levers — rather than assigning each a standalone lever — avoids double-counting while keeping their effects visible in the data. The Economic Stress Flag, added in v11.9, was the right correction to a model originally designed in a more stable environment.</p>
+    <p>The flag system is an honest acknowledgment that the data environment itself can deteriorate. When surveillance coverage degrades or geopolitical stress suppresses institutional capacity, positive signals in exposed levers require stronger corroboration before being credited. This asymmetric logic — harder to register progress under stress, not harder to register deterioration — reflects how reform actually works in practice.</p>
+  </div>
+
+  <div class="wip-section">
+    <h2>Known limitations</h2>
+    <ul class="limit-list">
+      <li class="limit-item">
+        <div class="limit-num">1</div>
+        <div class="limit-content">
+          <h3>False precision in the probability numbers</h3>
+          <p>The numbers look precise but are not derived from a calibrated probabilistic model in the statistical sense. They encode governed expert judgment — bounded, logged, and reversible, but judgment nonetheless. A reader who treats 22% vs 25% as meaningfully different is being misled. The numbers communicate direction, relative weight, and trend. They should be read as "this outcome is more likely than that one, and it has worsened since the last run" rather than as frequency probabilities.</p>
+        </div>
+      </li>
+      <li class="limit-item">
+        <div class="limit-num">2</div>
+        <div class="limit-content">
+          <h3>Proprietary threshold definitions</h3>
+          <p>The model is transparent about its architecture but the threshold and movement-limit parameters are proprietary. An outside party cannot fully replicate the model from the published documentation alone. This limits the accountability claim. A fully open-source version would strengthen the methodology and is on the development roadmap.</p>
+        </div>
+      </li>
+      <li class="limit-item">
+        <div class="limit-num">3</div>
+        <div class="limit-content">
+          <h3>Global scope, OECD-weighted evidence base</h3>
+          <p>The model produces global probabilities from an evidence base that is structurally weighted toward OECD economies and English-language reporting. Health surveillance coverage degradation is now a formal flag, but similar coverage gaps affect the energy, education, and compute indicators across lower-income countries. The global figures are more accurately described as OECD-plus-proxies than genuinely global readings. This does not invalidate the model, but it is a limitation that the results should carry.</p>
+        </div>
+      </li>
+      <li class="limit-item">
+        <div class="limit-num">4</div>
+        <div class="limit-content">
+          <h3>Wealth-Diffusion Gate measurement lag</h3>
+          <p>The household savings, profit-sharing, and inequality data that feeds the gate carries a two-to-three year structural lag at global scale. In practice, the gate may remain closed throughout the forecast period not because gains are absent but because the measurement infrastructure cannot confirm them in time. The model cannot distinguish between "gains are not diffusing" and "the data cannot yet see whether gains are diffusing." This ambiguity is acknowledged but not resolved.</p>
+        </div>
+      </li>
+      <li class="limit-item">
+        <div class="limit-num">5</div>
+        <div class="limit-content">
+          <h3>No adversarial testing</h3>
+          <p>A well-designed foresight framework should be stress-tested by asking: what specific sequence of events would move the model to the best outcome, and is that sequence internally consistent given current conditions? This work has not been done. The model identifies what would change the picture but has not been run through a structured test of whether those conditions could co-occur in practice. This is on the development roadmap.</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="wip-section">
+    <h2>What the numbers actually mean</h2>
+    <p>The probabilities in Grey Swan encode three things: direction (this outcome is currently more likely than that one), trend (things have moved in this direction since the last run), and distance from the boundaries of the outcome space (some outcomes are credibly near-zero under current conditions).</p>
+    <div class="wip-callout">
+      <p>They do not encode frequentist probability in the sense that "if we ran this scenario 100 times, this outcome would occur 22 times." Treating them that way is a misreading of the model.</p>
+    </div>
+    <p>The persistence and corroboration requirements mean the model is deliberately slow to move. This is a feature rather than a bug for a six-monthly strategic instrument, but it means the numbers should not be compared directly with probabilistic forecasting systems that update continuously on high-frequency data.</p>
+    <p>The most useful way to read the outputs is comparatively and directionally: across the two scenarios, across the four outcomes, and across the three time horizons. The 2030 figures are more constrained than the 2050 figures because there is less time for compounding effects to operate in either direction. The gap between the DTR and LIR probabilities at any horizon is a reasonable indicator of how much the choice of leadership behaviour matters at that time point. The movement between runs is the most reliable signal the model produces.</p>
+  </div>
+
+  <div class="wip-section">
+    <h2>Development trajectory</h2>
+    <p>The model is at v11.9. The Spring 2026 run is only the second run in the model's history. Two data points do not make a trend. The value of the methodology will become clearer over multiple runs as the reversion logic, persistence requirements, and flag system are tested against actual evidence trajectories. The most important test of the model is not whether the current probability estimates are correct — they cannot be verified against future events in real time — but whether the process of updating them is disciplined, transparent, and resistant to motivated reasoning. That test is ongoing.</p>
+
+    <table class="dev-table">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Governance architecture, persistence rules, reversion logic</td>
+          <td><span class="tag-done">Complete</span> &nbsp; Documented in WP11 and the v11.9 transfer prompt.</td>
+        </tr>
+        <tr>
+          <td>Three cross-cutting drivers (climate, geopolitical, economic)</td>
+          <td><span class="tag-done">Complete</span> &nbsp; Introduced in v11.9 with associated flag system.</td>
+        </tr>
+        <tr>
+          <td>Public-data-only constraint and Tier-1/Tier-2 evidence architecture</td>
+          <td><span class="tag-done">Complete</span> &nbsp; Operational from v11.6 onward.</td>
+        </tr>
+        <tr>
+          <td>Full open-source publication of threshold and movement-limit parameters</td>
+          <td><span class="tag-open">Open</span> &nbsp; Currently proprietary. Target: WP12.</td>
+        </tr>
+        <tr>
+          <td>Calibration against historical base rates</td>
+          <td><span class="tag-open">Open</span> &nbsp; Requires more runs and a formal calibration methodology.</td>
+        </tr>
+        <tr>
+          <td>Adversarial scenario testing</td>
+          <td><span class="tag-open">Open</span> &nbsp; Not yet attempted. On the roadmap for v12.</td>
+        </tr>
+        <tr>
+          <td>Non-OECD evidence base expansion</td>
+          <td><span class="tag-open">Open</span> &nbsp; Partial progress via global proxies; systematic coverage work outstanding.</td>
+        </tr>
+        <tr>
+          <td>WP12: full technical companion paper</td>
+          <td><span class="tag-open">Open</span> &nbsp; Will document operating parameters in sufficient detail for independent replication.</td>
+        </tr>
+        <tr>
+          <td>Sector and country-level applications</td>
+          <td><span class="tag-open">Open</span> &nbsp; Architecture supports this; no sector or country runs completed yet.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="wip-section">
+    <h2>The bottom line</h2>
+    <p>Grey Swan is a significant improvement over standard qualitative scenario planning. It is a genuine methodological contribution in a field where audit trails are thin, update cadences are irregular, and the link between evidence and revised judgments is opaque. The governance architecture is serious and the public-data constraint is real.</p>
+    <p>It is not yet a fully calibrated probabilistic forecasting system. The probability numbers should be read as disciplined ordinal judgments, not as frequentist likelihoods. The global scope claim outruns the evidence base in the current version. The Wealth-Diffusion Gate has a measurement lag that cannot be resolved with currently available data. The model has not been adversarially tested.</p>
+    <p>These are honest limitations, not disqualifying ones. The model is improving with each version and each run. The gap between what it claims and what it can deliver is closing. This note exists to make that gap visible rather than to pretend it is not there.</p>
+
+    <div style="margin-top:40px; padding-top:32px; border-top:1px solid var(--rule);">
+      <a class="back-link" href="grey-swan.html">&larr; Return to the Spring 2026 intelligence brief</a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  &copy; 2026 Ewan Simpson &nbsp;&middot;&nbsp;
+  <a href="https://nbs.narxoz.kz/" target="_blank">Narxoz Business School</a>, Almaty
+  &nbsp;&middot;&nbsp;
+  <a href="index.html">ewansimpson.org</a>
+</footer>
+
+</body>
+</html>

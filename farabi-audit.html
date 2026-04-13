@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FARABI Assessment Audit — Free Analysis</title>
+<meta name="description" content="Upload your module handbook and find out how defensible your assessments are under AI conditions. Free one-module analysis powered by the FARABI framework.">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --amber: #B45309;
+    --amber-light: #FEF3C7;
+    --amber-border: #D97706;
+    --text: #1C1917;
+    --muted: #78716C;
+    --border: #E5E2D9;
+    --bg: #FAFAF8;
+    --surface: #FFFFFF;
+    --red-bg: #FEF2F2; --red-tx: #991B1B; --red-bd: #FECACA;
+    --amber-bg: #FFFBEB; --amber-tx: #92400E; --amber-bd: #FDE68A;
+    --blue-bg: #EFF6FF; --blue-tx: #1E40AF; --blue-bd: #BFDBFE;
+    --green-bg: #F0FDF4; --green-tx: #166534; --green-bd: #BBF7D0;
+    --radius: 8px;
+    --radius-lg: 12px;
+  }
+
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; font-size: 16px; }
+
+  a { color: var(--amber); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .page { max-width: 680px; margin: 0 auto; padding: 0 20px 80px; }
+
+  /* Header */
+  .site-header { border-bottom: 1px solid var(--border); padding: 16px 0; margin-bottom: 0; }
+  .site-header-inner { max-width: 680px; margin: 0 auto; padding: 0 20px; display: flex; align-items: center; gap: 8px; }
+  .site-logo { font-size: 14px; font-weight: 600; color: var(--amber); letter-spacing: 0.02em; }
+  .site-logo-sep { color: var(--border); }
+  .site-logo-name { font-size: 14px; color: var(--muted); }
+
+  /* Hero */
+  .hero { padding: 56px 0 40px; }
+  .hero-eyebrow { font-size: 12px; font-weight: 600; color: var(--amber); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 12px; }
+  .hero h1 { font-size: 32px; font-weight: 700; line-height: 1.2; margin-bottom: 16px; letter-spacing: -0.02em; }
+  .hero-sub { font-size: 17px; color: var(--muted); line-height: 1.7; margin-bottom: 0; }
+
+  /* Explainer */
+  .explainer { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 36px 0; }
+  .exp-step { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
+  .exp-num { font-size: 11px; font-weight: 700; color: var(--amber); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+  .exp-text { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+  /* Form card */
+  .form-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 32px; }
+  .form-card h2 { font-size: 18px; font-weight: 600; margin-bottom: 6px; }
+  .form-card-sub { font-size: 14px; color: var(--muted); margin-bottom: 24px; line-height: 1.6; }
+
+  .field { margin-bottom: 18px; }
+  .field label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+  .field input[type="email"],
+  .field input[type="text"] { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 14px; font-family: inherit; color: var(--text); background: var(--bg); transition: border-color 0.1s; }
+  .field input:focus { outline: none; border-color: var(--amber-border); }
+  .field-hint { font-size: 12px; color: var(--muted); margin-top: 5px; }
+
+  .upload-zone { border: 2px dashed var(--border); border-radius: var(--radius); padding: 28px; text-align: center; cursor: pointer; transition: all 0.15s; background: var(--bg); }
+  .upload-zone:hover, .upload-zone.drag-over { border-color: var(--amber-border); background: var(--amber-light); }
+  .upload-zone.has-file { border-color: #10B981; border-style: solid; background: #F0FDF4; }
+  .upload-icon { font-size: 28px; margin-bottom: 8px; }
+  .upload-label { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .upload-hint { font-size: 12px; color: var(--muted); }
+  .upload-filename { font-size: 13px; font-weight: 600; color: #166534; margin-top: 6px; }
+  #file-input { display: none; }
+
+  .submit-btn { width: 100%; padding: 14px; background: var(--amber); border: none; border-radius: var(--radius); font-size: 15px; font-weight: 600; font-family: inherit; color: #fff; cursor: pointer; margin-top: 20px; transition: background 0.1s; }
+  .submit-btn:hover { background: #92400E; }
+  .submit-btn:disabled { background: #D4CAC4; cursor: not-allowed; }
+
+  .trust-line { font-size: 12px; color: var(--muted); text-align: center; margin-top: 12px; }
+  .error-msg { background: var(--red-bg); border: 1px solid var(--red-bd); border-radius: var(--radius); padding: 12px 16px; font-size: 14px; color: var(--red-tx); margin-top: 16px; display: none; }
+
+  /* Loading */
+  #loading-state { display: none; text-align: center; padding: 80px 20px; }
+  .spinner { width: 40px; height: 40px; border: 3px solid var(--border); border-top-color: var(--amber); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 24px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-msg { font-size: 16px; color: var(--muted); min-height: 24px; }
+
+  /* Results */
+  #results-state { display: none; }
+
+  .results-header { padding: 48px 0 32px; }
+  .results-header h2 { font-size: 26px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.01em; }
+  .programme-name { font-size: 14px; color: var(--muted); margin-bottom: 20px; }
+
+  .summary-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px 24px; margin-bottom: 28px; }
+  .summary-text { font-size: 14px; color: var(--muted); line-height: 1.7; }
+
+  .cat-counts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 32px; }
+  .cat-count { border-radius: var(--radius); padding: 12px 14px; text-align: center; }
+  .cat-count-num { font-size: 24px; font-weight: 700; margin-bottom: 2px; }
+  .cat-count-lbl { font-size: 11px; font-weight: 600; letter-spacing: 0.04em; }
+  .cat-count.critical { background: var(--red-bg); color: var(--red-tx); }
+  .cat-count.review { background: var(--amber-bg); color: var(--amber-tx); }
+  .cat-count.monitor { background: var(--blue-bg); color: var(--blue-tx); }
+  .cat-count.robust { background: var(--green-bg); color: var(--green-tx); }
+
+  .assessments-label { font-size: 11px; font-weight: 700; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px; }
+
+  .assessment-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); margin-bottom: 14px; overflow: hidden; }
+  .assessment-card-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+  .assessment-name { font-size: 15px; font-weight: 600; margin-bottom: 2px; }
+  .assessment-meta { font-size: 12px; color: var(--muted); }
+  .cat-badge { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 100px; white-space: nowrap; flex-shrink: 0; }
+  .cat-badge.critical { background: var(--red-bg); color: var(--red-tx); border: 1px solid var(--red-bd); }
+  .cat-badge.review { background: var(--amber-bg); color: var(--amber-tx); border: 1px solid var(--amber-bd); }
+  .cat-badge.monitor { background: var(--blue-bg); color: var(--blue-tx); border: 1px solid var(--blue-bd); }
+  .cat-badge.robust { background: var(--green-bg); color: var(--green-tx); border: 1px solid var(--green-bd); }
+
+  .assessment-scores { display: flex; gap: 20px; padding: 12px 20px; border-bottom: 1px solid var(--border); background: var(--bg); }
+  .score-item { display: flex; flex-direction: column; gap: 2px; }
+  .score-label { font-size: 10px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+  .score-val { font-size: 14px; font-weight: 700; }
+
+  .assessment-body { padding: 16px 20px; }
+  .claim-label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+  .claim-text { font-size: 13px; color: var(--muted); font-style: italic; margin-bottom: 14px; }
+  .rec-label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+  .rec-item { display: flex; gap: 8px; font-size: 13px; line-height: 1.6; margin-bottom: 6px; }
+  .rec-arrow { color: var(--amber); flex-shrink: 0; }
+
+  .locked-recs { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: var(--bg); border: 1px dashed var(--border); border-radius: var(--radius); margin-top: 10px; font-size: 13px; color: var(--muted); }
+  .lock-icon { font-size: 14px; }
+
+  /* CTA */
+  .cta-section { background: var(--text); border-radius: var(--radius-lg); padding: 36px 32px; margin-top: 36px; color: #fff; }
+  .cta-eyebrow { font-size: 11px; font-weight: 700; color: #D97706; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
+  .cta-section h3 { font-size: 22px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.01em; }
+  .cta-section p { font-size: 14px; color: #A8A29E; line-height: 1.7; margin-bottom: 24px; }
+  .cta-list { list-style: none; margin-bottom: 28px; display: flex; flex-direction: column; gap: 8px; }
+  .cta-list li { display: flex; gap: 10px; font-size: 14px; color: #D6D3D1; }
+  .cta-check { color: #D97706; flex-shrink: 0; }
+  .cta-btn { display: inline-block; padding: 13px 28px; background: var(--amber); border-radius: var(--radius); font-size: 15px; font-weight: 600; color: #fff; text-decoration: none; }
+  .cta-btn:hover { background: #92400E; text-decoration: none; }
+  .cta-email { font-size: 13px; color: #A8A29E; margin-top: 14px; }
+  .cta-email a { color: #FCD34D; }
+
+  .restart-link { text-align: center; margin-top: 28px; }
+  .restart-link button { background: none; border: none; font-size: 13px; color: var(--muted); cursor: pointer; text-decoration: underline; font-family: inherit; }
+
+  @media (max-width: 540px) {
+    .hero h1 { font-size: 26px; }
+    .explainer { grid-template-columns: 1fr; }
+    .cat-counts { grid-template-columns: repeat(2, 1fr); }
+    .assessment-scores { flex-wrap: wrap; gap: 14px; }
+    .cta-section { padding: 28px 20px; }
+    .form-card { padding: 24px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <span class="site-logo">FARABI</span>
+    <span class="site-logo-sep">|</span>
+    <span class="site-logo-name">ewansimpson.org</span>
+  </div>
+</header>
+
+<!-- Form state -->
+<div id="form-state">
+  <div class="page">
+    <div class="hero">
+      <div class="hero-eyebrow">Free module analysis</div>
+      <h1>How defensible is your programme's assessment under AI conditions?</h1>
+      <p class="hero-sub">Upload one module handbook or syllabus. FARABI will identify your assessments, score each on four vulnerability dimensions, and show you where your credential claims are most exposed.</p>
+    </div>
+
+    <div class="explainer">
+      <div class="exp-step">
+        <div class="exp-num">Step 1</div>
+        <div class="exp-text">Enter your email and upload a PDF syllabus or module handbook.</div>
+      </div>
+      <div class="exp-step">
+        <div class="exp-num">Step 2</div>
+        <div class="exp-text">FARABI scores each assessment on substitutability, visibility, condition clarity, and stakes.</div>
+      </div>
+      <div class="exp-step">
+        <div class="exp-num">Step 3</div>
+        <div class="exp-text">See your risk triage and first-line recommendations. Get in touch for the full redesign plan.</div>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <h2>Analyse your module</h2>
+      <p class="form-card-sub">Upload a PDF syllabus or module handbook. One free analysis per submission — no account required.</p>
+
+      <div class="field">
+        <label for="email">Your email address <span style="color:#B45309">*</span></label>
+        <input type="email" id="email" placeholder="you@institution.ac.uk" autocomplete="email">
+      </div>
+
+      <div class="field">
+        <label for="institution">Institution or organisation <span style="color:#B45309">*</span></label>
+        <input type="text" id="institution" placeholder="e.g. University of Edinburgh">
+        <div class="field-hint">Helps us follow up with context relevant to your setting.</div>
+      </div>
+
+      <div class="field">
+        <label>Module handbook or syllabus (PDF) <span style="color:#B45309">*</span></label>
+        <div class="upload-zone" id="upload-zone" onclick="document.getElementById('file-input').click()" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+          <div class="upload-icon">📄</div>
+          <div class="upload-label" id="upload-label">Click to choose a PDF, or drag and drop here</div>
+          <div class="upload-hint">PDF only · Maximum 5MB</div>
+          <div class="upload-filename" id="upload-filename" style="display:none;"></div>
+        </div>
+        <input type="file" id="file-input" accept=".pdf,application/pdf" onchange="handleFileSelect(event)">
+        <div class="field-hint">Only module handbooks and syllabi with formal assessments listed will produce useful results.</div>
+      </div>
+
+      <button class="submit-btn" id="submit-btn" onclick="submitForm()" disabled>Analyse my assessments →</button>
+      <div class="error-msg" id="error-msg"></div>
+      <p class="trust-line">Your document is processed securely and not stored. Results appear immediately.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Loading state -->
+<div id="loading-state">
+  <div class="spinner"></div>
+  <div class="loading-msg" id="loading-msg">Reading your syllabus…</div>
+</div>
+
+<!-- Results state -->
+<div id="results-state">
+  <div class="page">
+    <div class="results-header">
+      <h2 id="results-headline"></h2>
+      <div class="programme-name" id="programme-name"></div>
+      <div class="summary-card">
+        <div class="summary-text" id="summary-text"></div>
+      </div>
+      <div class="cat-counts" id="cat-counts"></div>
+    </div>
+
+    <div class="assessments-label">Assessment triage</div>
+    <div id="assessment-cards"></div>
+
+    <div class="cta-section" id="cta-section">
+      <div class="cta-eyebrow">Full FARABI report</div>
+      <h3 id="cta-headline">Get the complete redesign plan</h3>
+      <p id="cta-body">The free analysis shows your risk triage and first-line recommendations. The full FARABI report includes all redesign recommendations, programme-level notes, a portfolio risk matrix, and an export-ready document for quality review.</p>
+      <ul class="cta-list">
+        <li><span class="cta-check">→</span> All redesign recommendations for each exposed assessment</li>
+        <li><span class="cta-check">→</span> Programme-level credibility analysis across all modules</li>
+        <li><span class="cta-check">→</span> Governance and policy recommendations</li>
+        <li><span class="cta-check">→</span> Export-ready triage report for QA documentation</li>
+      </ul>
+      <a class="cta-btn" id="cta-link" href="mailto:ewan@ewansimpson.org?subject=FARABI%20Full%20Report%20Request">Get in touch →</a>
+      <div class="cta-email">Or email directly: <a href="mailto:ewan@ewansimpson.org">ewan@ewansimpson.org</a></div>
+    </div>
+
+    <div class="restart-link">
+      <button onclick="restart()">← Analyse a different module</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  let selectedFile = null;
+
+  const CATS = {
+    critical: { label: "Priority redesign" },
+    review:   { label: "Review recommended" },
+    monitor:  { label: "Monitor" },
+    robust:   { label: "Robust" },
+  };
+
+  // File handling
+  function handleFileSelect(e) {
+    const file = e.target.files[0];
+    if (file) setFile(file);
+  }
+
+  function handleDragOver(e) {
+    e.preventDefault();
+    document.getElementById("upload-zone").classList.add("drag-over");
+  }
+
+  function handleDragLeave() {
+    document.getElementById("upload-zone").classList.remove("drag-over");
+  }
+
+  function handleDrop(e) {
+    e.preventDefault();
+    document.getElementById("upload-zone").classList.remove("drag-over");
+    const file = e.dataTransfer.files[0];
+    if (file && file.type === "application/pdf") {
+      setFile(file);
+    } else {
+      showError("Please drop a PDF file.");
+    }
+  }
+
+  function setFile(file) {
+    if (file.type !== "application/pdf") {
+      showError("Please select a PDF file.");
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      showError("File is too large. Please use a PDF under 5MB.");
+      return;
+    }
+    selectedFile = file;
+    document.getElementById("upload-zone").classList.add("has-file");
+    document.getElementById("upload-label").textContent = "File selected";
+    document.getElementById("upload-filename").style.display = "block";
+    document.getElementById("upload-filename").textContent = file.name;
+    hideError();
+    checkReady();
+  }
+
+  function checkReady() {
+    const email = document.getElementById("email").value.trim();
+    const institution = document.getElementById("institution").value.trim();
+    document.getElementById("submit-btn").disabled = !(email && email.includes("@") && institution && selectedFile);
+  }
+
+  document.getElementById("email").addEventListener("input", checkReady);
+  document.getElementById("institution").addEventListener("input", checkReady);
+
+  function showError(msg) {
+    const el = document.getElementById("error-msg");
+    el.textContent = msg;
+    el.style.display = "block";
+  }
+
+  function hideError() {
+    document.getElementById("error-msg").style.display = "none";
+  }
+
+  // Loading messages
+  const LOADING_MSGS = [
+    "Reading your syllabus…",
+    "Identifying assessments…",
+    "Applying FARABI framework…",
+    "Scoring each assessment…",
+    "Generating your triage report…",
+  ];
+
+  let loadingInterval;
+  function startLoadingMessages() {
+    let i = 0;
+    document.getElementById("loading-msg").textContent = LOADING_MSGS[0];
+    loadingInterval = setInterval(() => {
+      i = (i + 1) % LOADING_MSGS.length;
+      document.getElementById("loading-msg").textContent = LOADING_MSGS[i];
+    }, 2800);
+  }
+
+  function stopLoadingMessages() {
+    clearInterval(loadingInterval);
+  }
+
+  // Form submission
+  async function submitForm() {
+    hideError();
+    const email = document.getElementById("email").value.trim();
+    const institution = document.getElementById("institution").value.trim();
+
+    if (!email || !email.includes("@")) { showError("Please enter a valid email address."); return; }
+    if (!institution) { showError("Please enter your institution or organisation."); return; }
+    if (!selectedFile) { showError("Please select a PDF file."); return; }
+
+    // Read file as base64
+    let pdfBase64;
+    try {
+      pdfBase64 = await fileToBase64(selectedFile);
+    } catch {
+      showError("Could not read the file. Please try again.");
+      return;
+    }
+
+    // Show loading
+    document.getElementById("form-state").style.display = "none";
+    document.getElementById("loading-state").style.display = "block";
+    startLoadingMessages();
+
+    try {
+      const response = await fetch("/.netlify/functions/analyze-syllabus", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, institution, pdfBase64 }),
+      });
+
+      const data = await response.json();
+
+      stopLoadingMessages();
+      document.getElementById("loading-state").style.display = "none";
+
+      if (!response.ok || !data.success) {
+        document.getElementById("form-state").style.display = "block";
+        showError(data.error || "Something went wrong. Please try again.");
+        return;
+      }
+
+      renderResults(data.result, email, institution);
+
+    } catch (err) {
+      stopLoadingMessages();
+      document.getElementById("loading-state").style.display = "none";
+      document.getElementById("form-state").style.display = "block";
+      showError("Network error. Please check your connection and try again.");
+    }
+  }
+
+  function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64 = reader.result.split(",")[1];
+        resolve(base64);
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  // Results rendering
+  function renderResults(result, email, institution) {
+    const { programme, assessments, summary } = result;
+    const counts = { critical: 0, review: 0, monitor: 0, robust: 0 };
+    assessments.forEach(a => { if (counts[a.category] !== undefined) counts[a.category]++; });
+
+    // Headline
+    const critCount = counts.critical + counts.review;
+    let headline;
+    if (critCount === 0) {
+      headline = `Your module has ${assessments.length} assessment${assessments.length !== 1 ? "s" : ""} — mostly defensible`;
+    } else {
+      headline = `${critCount} of your ${assessments.length} assessment${assessments.length !== 1 ? "s" : ""} need${critCount === 1 ? "s" : ""} attention`;
+    }
+    document.getElementById("results-headline").textContent = headline;
+
+    // Programme name
+    if (programme) {
+      document.getElementById("programme-name").textContent = programme + (institution ? ` · ${institution}` : "");
+    }
+
+    // Summary
+    document.getElementById("summary-text").textContent = summary || "";
+
+    // Category counts
+    document.getElementById("cat-counts").innerHTML = Object.entries(counts).map(([cat, n]) =>
+      `<div class="cat-count ${cat}">
+        <div class="cat-count-num">${n}</div>
+        <div class="cat-count-lbl">${CATS[cat].label}</div>
+      </div>`
+    ).join("");
+
+    // Assessment cards
+    document.getElementById("assessment-cards").innerHTML = assessments.map(a => {
+      const vuln = typeof a.vulnerability === "number" ? a.vulnerability.toFixed(1) : "—";
+      const recs = Array.isArray(a.recommendations) ? a.recommendations : [];
+      const firstRec = recs[0] || null;
+      const lockedCount = recs.length - 1;
+
+      return `<div class="assessment-card">
+        <div class="assessment-card-header">
+          <div>
+            <div class="assessment-name">${esc(a.name)}</div>
+            <div class="assessment-meta">${esc(a.type)}${a.weight ? " · " + esc(a.weight) : ""}</div>
+          </div>
+          <span class="cat-badge ${a.category}">${CATS[a.category]?.label || a.category}</span>
+        </div>
+        <div class="assessment-scores">
+          <div class="score-item">
+            <div class="score-label">Vulnerability</div>
+            <div class="score-val">${vuln}/5</div>
+          </div>
+          <div class="score-item">
+            <div class="score-label">Stakes</div>
+            <div class="score-val">${a.dims?.stakes || "—"}/5</div>
+          </div>
+          <div class="score-item">
+            <div class="score-label">AI substitutability</div>
+            <div class="score-val">${a.dims?.sub || "—"}/5</div>
+          </div>
+          <div class="score-item">
+            <div class="score-label">Process visibility</div>
+            <div class="score-val">${a.dims?.vis || "—"}/5</div>
+          </div>
+          <div class="score-item">
+            <div class="score-label">Condition clarity</div>
+            <div class="score-val">${a.dims?.cond || "—"}/5</div>
+          </div>
+        </div>
+        <div class="assessment-body">
+          ${a.claim ? `<div class="claim-label">Capability claim</div><div class="claim-text">${esc(a.claim)}</div>` : ""}
+          ${firstRec ? `
+            <div class="rec-label">First recommendation</div>
+            <div class="rec-item"><span class="rec-arrow">→</span><span>${esc(firstRec)}</span></div>
+            ${lockedCount > 0 ? `<div class="locked-recs"><span class="lock-icon">🔒</span><span>${lockedCount} more recommendation${lockedCount > 1 ? "s" : ""} in the full report</span></div>` : ""}
+          ` : ""}
+        </div>
+      </div>`;
+    }).join("");
+
+    // CTA customisation
+    if (counts.critical > 0) {
+      document.getElementById("cta-headline").textContent = `${counts.critical} of your assessments need immediate redesign`;
+    } else if (counts.review > 0) {
+      document.getElementById("cta-headline").textContent = "Get the complete redesign plan for your programme";
+    }
+
+    // Pre-fill email in CTA link
+    const subject = encodeURIComponent("FARABI Full Report Request" + (programme ? " — " + programme : ""));
+    const body = encodeURIComponent(`Hi Ewan,\n\nI just ran the free FARABI analysis on ${programme || "my module"} at ${institution}.\n\nI'd like to discuss the full report.\n\nBest,\n`);
+    document.getElementById("cta-link").href = `mailto:ewan@ewansimpson.org?subject=${subject}&body=${body}`;
+
+    document.getElementById("results-state").style.display = "block";
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function restart() {
+    document.getElementById("results-state").style.display = "none";
+    document.getElementById("form-state").style.display = "block";
+    selectedFile = null;
+    document.getElementById("email").value = "";
+    document.getElementById("institution").value = "";
+    document.getElementById("file-input").value = "";
+    document.getElementById("upload-zone").className = "upload-zone";
+    document.getElementById("upload-label").textContent = "Click to choose a PDF, or drag and drop here";
+    document.getElementById("upload-filename").style.display = "none";
+    document.getElementById("submit-btn").disabled = true;
+    hideError();
+    window.scrollTo({ top: 0 });
+  }
+
+  function esc(s) {
+    return String(s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+</script>
+</body>
+</html>
