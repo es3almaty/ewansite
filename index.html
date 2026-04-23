@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"><!-- v4 -->
+<html lang="en"><!-- v5 -->
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -114,10 +114,12 @@
     footer a { color:var(--soft); text-decoration:none; }
     footer a:hover { color:var(--accent); }
 
-    /* VIRTUOUS CITY + GREY SWAN — shared dark card style */
+    /* SHARED DARK CARD STYLE */
     .vc-eyebrow { font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--gold); margin-bottom:20px; }
     .vc-intro { max-width:660px; margin-bottom:32px; }
     .vc-intro p { font-size:16px; color:var(--mid); line-height:1.78; }
+    .vc-intro a { color:var(--accent); text-decoration:none; border-bottom:1px solid var(--rule); transition:color 0.2s, border-color 0.2s; }
+    .vc-intro a:hover { color:var(--gold); border-color:var(--gold); }
     .vc-cards { display:grid; grid-template-columns:1fr 1fr; gap:16px; max-width:660px; }
     .vc-card {
       display:block; text-decoration:none; color:inherit;
@@ -131,13 +133,6 @@
     .vc-card-desc { font-size:13px; color:#888; line-height:1.7; margin-bottom:14px; }
     .vc-card-link { font-size:12px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:var(--gold); }
 
-    /* GREY SWAN — run badge */
-    .gs-run-badge {
-      display:inline-flex; align-items:center; gap:8px;
-      font-size:10px; font-weight:700; letter-spacing:0.10em; text-transform:uppercase;
-      color:var(--gold); margin-bottom:20px;
-    }
-    .gs-run-dot { width:6px; height:6px; border-radius:50%; background:var(--gold); animation:pulse 2s infinite; }
     @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
 
     @media (max-width:600px) { .vc-cards { grid-template-columns:1fr; } }
@@ -169,6 +164,7 @@
   <div class="nav-links">
     <a href="#research">Research</a>
     <a href="about.html">About</a>
+    <a href="#ai-matrix-live">AI Matrix Live</a>
     <a href="#grey-swan">Grey Swan</a>
     <a href="#virtuous-city">The Virtuous City</a>
     <a href="#contact">Contact</a>
@@ -401,6 +397,24 @@
         <a class="paper-link alt" href="https://doi.org/10.5281/zenodo.19248117" target="_blank">Updated version &rarr;</a>
       </div>
     </div>
+
+    <div class="paper">
+      <div class="paper-meta">2026 &nbsp;·&nbsp; Governance &nbsp;·&nbsp; WP35</div>
+      <h3>The Governance Gap: Public Priorities for the AI Economy</h3>
+      <p>Draws on two major surveys — the Windfall Trust and Collective Intelligence Project's 62-country Global Dialogues study and Anthropic's 81,000-person interview study — to assess four prominent government AI strategies against what populations say they actually need. Across five dimensions (jobs protection, redistribution of gains, safety, institutional accountability, and meaningful work) government frameworks are materially under-aligned with public priorities. Argues this represents a legitimacy risk, not just a policy gap.</p>
+      <div class="paper-links">
+        <a class="paper-link" href="https://doi.org/10.5281/zenodo.19706249" target="_blank">Zenodo &rarr;</a>
+      </div>
+    </div>
+
+    <div class="paper">
+      <div class="paper-meta">2026 &nbsp;·&nbsp; Labor Markets &nbsp;·&nbsp; WP36</div>
+      <h3>The AI Labor Transition</h3>
+      <p>Examines the structural dynamics of AI-driven labor market change — how transitions are actually unfolding across sectors, what the evidence shows about displacement versus augmentation, and what governance frameworks need to address if the transition is to be managed equitably rather than absorbed unevenly by those with the least capacity to adapt.</p>
+      <div class="paper-links">
+        <a class="paper-link" href="https://doi.org/10.5281/zenodo.19706342" target="_blank">Zenodo &rarr;</a>
+      </div>
+    </div>
   </div>
 
   <!-- EVIDENCE & COMMENTARY -->
@@ -436,6 +450,35 @@
     </div>
   </div>
 
+</section>
+
+<!-- AI MATRIX LIVE -->
+<hr class="rule"/>
+
+<section id="ai-matrix-live">
+  <div class="vc-eyebrow">AI Matrix Live</div>
+
+  <div class="vc-intro">
+    <p>AI Matrix Live tracks how 115 countries are navigating the shift to AI — not just who has access to the tools, but who is actually using them well. Built on the AI Matrix framework by Ewan Simpson in collaboration with <a href="https://www.msquinn.com/" target="_blank">Michael Quinn</a>, the dashboard separates two dimensions that adoption headlines routinely collapse: access (how many people per capita are using AI) and agency (whether they are co-creating with it or just issuing commands). Each country appears as a dot on a live scatter plot, updated with each Anthropic Economic Index release. The early data is striking: agency is rising faster than access, but the gap between who has AI and who doesn&rsquo;t is not closing.</p>
+  </div>
+
+  <div class="vc-cards">
+    <a href="https://aimatrixlive.com" target="_blank" class="vc-card">
+      <div class="vc-card-tag">
+        <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--gold);margin-right:6px;vertical-align:middle;animation:pulse 2s infinite;"></span>
+        Live dashboard
+      </div>
+      <div class="vc-card-title">Global AI adoption: access vs agency across 115 countries</div>
+      <div class="vc-card-desc">Interactive scatter plot updated with each Anthropic Economic Index release. Press play to watch countries shift between releases.</div>
+      <div class="vc-card-link">Open dashboard &rarr;</div>
+    </a>
+    <a href="https://aimatrixlive.com/framework" target="_blank" class="vc-card">
+      <div class="vc-card-tag">Framework</div>
+      <div class="vc-card-title">What access and agency mean — and why the distinction matters</div>
+      <div class="vc-card-desc">The four quadrants of the AI Matrix, what adoption headlines miss, and how the scores are computed.</div>
+      <div class="vc-card-link">Read the framework &rarr;</div>
+    </a>
+  </div>
 </section>
 
 <!-- GREY SWAN -->
