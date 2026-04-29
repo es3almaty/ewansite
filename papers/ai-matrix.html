@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>The AI Matrix: Empowerment or Dependency? — Ewan Simpson</title>
+  <meta name="description" content="A conceptual framework mapping disparities in AI access and human agency across four quadrants, and the transitions between them. Ewan Simpson, March 2025."/>
+
+  <meta property="og:type" content="article"/>
+  <meta property="og:title" content="The AI Matrix: Empowerment or Dependency?"/>
+  <meta property="og:description" content="A conceptual framework mapping disparities in AI access and human agency across four quadrants."/>
+  <meta property="og:url" content="https://ewansimpson.org/papers/ai-matrix"/>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    :root {
+      --ink:#1A1A1A; --mid:#4A4A4A; --soft:#7A7A7A;
+      --rule:#E0E0E0; --bg:#FAFAF8; --accent:#1A3A5C; --gold:#C4922A;
+      --serif:'Lora',Georgia,serif; --sans:'Inter',system-ui,sans-serif;
+    }
+    html { scroll-behavior:smooth; }
+    body { background:var(--bg); color:var(--ink); font-family:var(--sans); font-size:16px; line-height:1.7; }
+
+    /* NAV — identical to homepage */
+    nav {
+      position:sticky; top:0; z-index:50;
+      background:rgba(250,250,248,0.96); backdrop-filter:blur(8px);
+      border-bottom:1px solid var(--rule);
+      padding:0 40px; display:flex; align-items:center; justify-content:space-between; height:60px;
+    }
+    .nav-name { font-family:var(--serif); font-size:17px; font-weight:600; color:var(--accent); text-decoration:none; }
+    .nav-links { display:flex; gap:28px; }
+    .nav-links a { font-size:13px; font-weight:500; letter-spacing:0.06em; text-transform:uppercase; color:var(--mid); text-decoration:none; transition:color 0.2s; }
+    .nav-links a:hover { color:var(--accent); }
+
+    /* ARTICLE WRAPPER */
+    article { max-width:760px; margin:0 auto; padding:0 40px; }
+
+    /* HEADER */
+    .paper-header { padding:60px 0 50px; border-bottom:1px solid var(--rule); }
+    .back-link {
+      display:inline-block; font-size:11px; font-weight:600; letter-spacing:0.10em; text-transform:uppercase;
+      color:var(--soft); text-decoration:none; margin-bottom:32px; transition:color 0.2s;
+    }
+    .back-link:hover { color:var(--accent); }
+    .paper-eyebrow {
+      font-size:11px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase;
+      color:var(--gold); margin-bottom:18px;
+    }
+    h1 {
+      font-family:var(--serif); font-size:clamp(30px,4vw,42px); font-weight:600; line-height:1.18;
+      color:var(--accent); margin-bottom:12px;
+    }
+    .paper-subtitle {
+      font-family:var(--serif); font-size:clamp(18px,2.4vw,22px); font-weight:400; font-style:italic;
+      color:var(--mid); margin-bottom:28px; line-height:1.4;
+    }
+    .paper-byline {
+      font-size:13px; color:var(--mid); margin-bottom:28px;
+      padding-bottom:0;
+    }
+    .paper-byline strong { color:var(--ink); font-weight:600; }
+    .paper-byline span.sep { color:var(--soft); margin:0 10px; }
+
+    .paper-actions { display:flex; gap:12px; flex-wrap:wrap; margin-top:8px; }
+    .action-btn {
+      display:inline-flex; align-items:center; gap:8px;
+      font-size:12px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase;
+      text-decoration:none; padding:10px 16px; border-radius:3px;
+      transition:background 0.2s, border-color 0.2s, color 0.2s;
+    }
+    .action-btn.primary {
+      background:var(--accent); color:white; border:1px solid var(--accent);
+    }
+    .action-btn.primary:hover { background:#13304d; border-color:#13304d; }
+    .action-btn.secondary {
+      background:white; color:var(--accent); border:1px solid var(--rule);
+    }
+    .action-btn.secondary:hover { border-color:var(--accent); }
+
+    /* ABSTRACT */
+    .abstract-block {
+      margin:50px 0; padding:32px; background:white;
+      border:1px solid var(--rule); border-left:3px solid var(--gold); border-radius:3px;
+    }
+    .abstract-label {
+      font-size:10px; font-weight:700; letter-spacing:0.16em; text-transform:uppercase;
+      color:var(--gold); margin-bottom:14px;
+    }
+    .abstract-block p {
+      font-size:16px; line-height:1.78; color:var(--mid);
+      font-family:var(--sans);
+    }
+    .abstract-block .keywords {
+      font-size:13px; color:var(--soft); margin-top:18px;
+      padding-top:18px; border-top:1px solid var(--rule);
+    }
+    .abstract-block .keywords strong { color:var(--ink); font-weight:600; }
+
+    /* BODY */
+    .paper-body { padding:20px 0 60px; }
+    .paper-body h2 {
+      font-family:var(--serif); font-size:24px; font-weight:600; color:var(--accent);
+      margin-top:48px; margin-bottom:18px; line-height:1.3;
+    }
+    .paper-body h2:first-child { margin-top:0; }
+    .paper-body h3 {
+      font-family:var(--serif); font-size:18px; font-weight:600; color:var(--ink);
+      margin-top:32px; margin-bottom:14px; line-height:1.4;
+    }
+    .paper-body h4 {
+      font-family:var(--sans); font-size:13px; font-weight:600; letter-spacing:0.05em;
+      text-transform:uppercase; color:var(--accent);
+      margin-top:24px; margin-bottom:10px;
+    }
+    .paper-body p {
+      font-size:17px; line-height:1.78; color:var(--mid);
+      margin-bottom:18px;
+    }
+    .paper-body p strong { color:var(--ink); font-weight:600; }
+    .paper-body em { font-style:italic; }
+    .paper-body a {
+      color:var(--accent); text-decoration:none;
+      border-bottom:1px solid var(--rule); transition:color 0.2s, border-color 0.2s;
+    }
+    .paper-body a:hover { color:var(--gold); border-color:var(--gold); }
+
+    /* FIGURE — generic */
+    figure {
+      margin:36px 0; padding:24px; background:white;
+      border:1px solid var(--rule); border-radius:3px;
+    }
+    figcaption {
+      font-size:12px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase;
+      color:var(--soft); margin-bottom:18px;
+    }
+    figcaption strong { color:var(--accent); font-weight:600; }
+
+    /* FIGURE 1 — AI Matrix 2x2 */
+    .matrix-2x2 {
+      display:grid; grid-template-columns:auto 1fr 1fr; grid-template-rows:auto 1fr 1fr auto;
+      gap:8px; margin:0 auto; max-width:560px;
+      font-family:var(--sans);
+    }
+    .matrix-axis-y {
+      grid-row:2/4; grid-column:1;
+      display:flex; align-items:center; justify-content:center;
+      writing-mode:vertical-rl; transform:rotate(180deg);
+      font-size:11px; font-weight:600; letter-spacing:0.10em; text-transform:uppercase;
+      color:var(--soft);
+    }
+    .matrix-axis-x {
+      grid-row:4; grid-column:2/4;
+      text-align:center; padding-top:10px;
+      font-size:11px; font-weight:600; letter-spacing:0.10em; text-transform:uppercase;
+      color:var(--soft);
+    }
+    .matrix-cell {
+      padding:18px; border-radius:3px; min-height:130px;
+      display:flex; flex-direction:column; justify-content:flex-start;
+    }
+    .matrix-cell .q-num {
+      font-size:11px; font-weight:700; letter-spacing:0.10em; text-transform:uppercase;
+      margin-bottom:6px; opacity:0.75;
+    }
+    .matrix-cell .q-name {
+      font-family:var(--serif); font-size:15px; font-weight:600; line-height:1.3; margin-bottom:6px;
+    }
+    .matrix-cell .q-cond {
+      font-size:12px; line-height:1.5; opacity:0.85;
+    }
+    .q1 { background:#1B5E3A; color:white; grid-row:2; grid-column:3; }
+    .q2 { background:#C4922A; color:#1A1A1A; grid-row:2; grid-column:2; }
+    .q3 { background:#D4731A; color:white; grid-row:3; grid-column:3; }
+    .q4 { background:#A33824; color:white; grid-row:3; grid-column:2; }
+
+    /* TABLES */
+    .data-table {
+      width:100%; border-collapse:collapse; font-size:14px; margin-top:8px;
+    }
+    .data-table th {
+      text-align:left; padding:10px 12px; background:#F5F2EC;
+      font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;
+      color:var(--accent); border-bottom:1px solid var(--rule);
+    }
+    .data-table td {
+      padding:12px; border-bottom:1px solid var(--rule);
+      color:var(--mid); line-height:1.55; vertical-align:top;
+    }
+    .data-table tr:last-child td { border-bottom:none; }
+
+    /* REFERENCES */
+    .references {
+      margin-top:60px; padding-top:32px; border-top:1px solid var(--rule);
+    }
+    .references h2 {
+      font-family:var(--serif); font-size:20px; font-weight:600; color:var(--accent);
+      margin-bottom:20px;
+    }
+    .references ol { list-style:none; counter-reset:none; padding:0; }
+    .references li {
+      font-size:14px; line-height:1.65; color:var(--mid);
+      padding:12px 0; border-bottom:1px solid var(--rule);
+      text-indent:-1.4em; padding-left:1.4em;
+    }
+    .references li:last-child { border-bottom:none; }
+
+    /* DECLARATION */
+    .declaration {
+      margin-top:40px; padding:20px 24px; background:#F5F2EC; border-radius:3px;
+      font-size:13px; color:var(--mid); line-height:1.7;
+    }
+    .declaration strong { color:var(--ink); font-weight:600; }
+
+    /* PAPER FOOTER (in-article) */
+    .paper-footer {
+      margin-top:60px; padding:36px 0; border-top:1px solid var(--rule);
+      display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap;
+    }
+    .paper-footer .left { font-size:13px; color:var(--soft); }
+    .paper-footer .left strong { color:var(--ink); font-weight:600; }
+
+    /* SITE FOOTER */
+    footer.site-footer {
+      border-top:1px solid var(--rule); padding:32px 40px; text-align:center;
+      font-size:12px; color:var(--soft); letter-spacing:0.04em; margin-top:0;
+    }
+    footer.site-footer a { color:var(--soft); text-decoration:none; }
+    footer.site-footer a:hover { color:var(--accent); }
+
+    /* RESPONSIVE */
+    @media (max-width:680px) {
+      nav { padding:0 20px; }
+      .nav-links { gap:14px; }
+      .nav-links a { font-size:11px; }
+      article { padding:0 20px; }
+      .paper-header { padding:40px 0 36px; }
+      .abstract-block { padding:22px; }
+      .paper-body p { font-size:16px; }
+      .paper-body h2 { font-size:21px; margin-top:36px; }
+      .paper-body h3 { font-size:17px; }
+      .matrix-2x2 { max-width:100%; grid-template-columns:auto 1fr 1fr; }
+      .matrix-cell { padding:14px; min-height:110px; }
+      .matrix-cell .q-name { font-size:14px; }
+      .matrix-cell .q-cond { font-size:11px; }
+      .data-table { font-size:12px; }
+      .data-table td, .data-table th { padding:8px; }
+      footer.site-footer { padding:24px 20px; }
+    }
+  </style>
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GQCDZ9YGX7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-GQCDZ9YGX7');
+  </script>
+</head>
+<body>
+
+<nav>
+  <a class="nav-name" href="/">Ewan Simpson</a>
+  <div class="nav-links">
+    <a href="/#research">Research</a>
+    <a href="/about">About</a>
+    <a href="/#ai-matrix-live">AI Matrix Live</a>
+    <a href="/#grey-swan">Grey Swan</a>
+    <a href="/#virtuous-city">The Virtuous City</a>
+    <a href="/#contact">Contact</a>
+  </div>
+</nav>
+
+<article>
+
+  <!-- HEADER -->
+  <header class="paper-header">
+    <a href="/#research" class="back-link">&larr; Back to research</a>
+    <div class="paper-eyebrow">2025 &nbsp;·&nbsp; Foundational Framework &nbsp;·&nbsp; Working Paper</div>
+    <h1>The AI Matrix: Empowerment or Dependency?</h1>
+    <p class="paper-subtitle">A Conceptual Framework</p>
+    <div class="paper-byline">
+      <strong>Ewan Simpson, PhD</strong>
+      <span class="sep">·</span>
+      Narxoz Business School
+      <span class="sep">·</span>
+      March 10, 2025
+    </div>
+    <div class="paper-actions">
+      <a class="action-btn primary" href="/papers/ai-matrix.pdf" download>Download PDF</a>
+      <a class="action-btn secondary" href="https://doi.org/10.5281/zenodo.15279462" target="_blank" rel="noopener">View on Zenodo &rarr;</a>
+    </div>
+  </header>
+
+  <!-- ABSTRACT -->
+  <section class="abstract-block">
+    <div class="abstract-label">Abstract</div>
+    <p>Artificial intelligence (AI) is rapidly transforming economies, societies, and governance structures, yet its benefits remain unevenly distributed and current and future impacts poorly understood. This paper introduces the AI Matrix, a conceptual framework that can help map disparities in AI access and human agency across four distinct quadrants. By moving beyond static AI readiness indices, the AI Matrix provides a dynamic framework to help inform how nations, institutions, and individuals can transition from dependency to empowerment. Grounded in established theoretical perspectives, this framework highlights the critical role of education, governance, and equitable AI integration in fostering inclusive technological progress. It presents insights for policymakers, educators, and industry leaders seeking to use AI for sustainable development and overcome inequities. Offering a potential bridge between theory and application, this conceptual framework aims to support empirical testing to help navigate the challenges of AI adoption in an period of rapid technological transformation.</p>
+    <p class="keywords"><strong>Keywords:</strong> AI Matrix, artificial intelligence, governance, empowerment, digital inequality, dependency.</p>
+  </section>
+
+  <!-- BODY -->
+  <section class="paper-body">
+
+    <h2>1.1 Understanding the Accelerated Rise of Artificial Intelligence</h2>
+
+    <p>As debates over AI governance intensify, from concerns over AI-driven labor displacement to ethical dilemmas in algorithmic decision-making, there is an urgent need for conceptual tools that bridge theory with policy insights. The AI Matrix provides a global perspective on these challenges, aiming to equip policymakers, educators, and industry leaders with a structured approach to addressing AI's societal impact.</p>
+
+    <p>Artificial intelligence (AI) has emerged as a transformative, general-purpose technology with the potential to reshape economies and societies. From healthcare diagnostics to personalized education, AI applications are rapidly diversifying and expanding (McKinsey and Company, 2023). Breakthroughs in generative AI tools, such as GPT-3 (Brown et al., 2020) and GPT-4 (OpenAI, 2023) and Deep Seek in 2025, driven by innovations like transformer-based architectures (Vaswani et al., 2017), the development of hardware that advances processing speeds and the availability of massive datasets for training demonstrate AI's unprecedented capacity for creativity and decision support. However, these advancements also raise critical societal concerns, including workforce displacement, widening inequality, and the concentration of technological innovation in select regions, organizations and individuals (Brynjolfsson and McAfee, 2014; Eloundou et al., 2023).</p>
+
+    <p>Projections from the International Monetary Fund (IMF, 2024), the World Economic Forum (WEF, 2025) and at the AI Action Summit 2025 in Paris suggest that labor markets will face significant disruptions, with millions of jobs, particularly those held by middle- and low-income workers, vulnerable to automation by 2030. Compounding this uncertainty is the lack of clarity about what new occupations, if any, will emerge to replace displaced roles. Moreover, the unequal global distribution of AI resources and expertise risks widening existing disparities. Marginalized communities, including in wealthy economies, face exclusion due to limited access to AI technologies and insufficient AI literacy, the ability to understand and effectively use AI tools (Ahmed and Wahed, 2020; Zuboff, 2019). These divides are starkest between advanced and developing economies, where gaps in infrastructure and technical expertise hinder equitable AI adoption.</p>
+
+    <h2>1.2 Review of Existing Research</h2>
+
+    <p>Despite the proliferation of AI readiness indices and integration frameworks, existing models tend not to address the interplay between access to AI resources and the human capacity to use them effectively. While these frameworks provide valuable insights, they leave significant gaps.</p>
+
+    <p>For example, the Stanford AI Index (Stanford HAI, 2023) offers a comprehensive analysis of global AI trends, focusing on metrics such as research output, investment levels, and sectoral adoption. Its emphasis on aggregate performance tends to reflect the dominance of advanced economies, offering little guidance for less-developed nations or underserved regions to overcome structural barriers to AI integration. By focusing on diagnostics rather than pathways to improvement, the index provides limited value for stakeholders seeking to transition from dependency to empowerment.</p>
+
+    <p>Similarly, the Oxford Insights AI Readiness Index (Oxford Insights, 2023) evaluates countries based on infrastructural preparedness and governance frameworks, assigning scores for factors like government strategy and regulatory maturity. While useful, this approach favors nations with established AI ecosystems, offering limited guidance for those with emerging capabilities to bridge gaps in resources or expertise. Furthermore, its assessments fail to account for the capacity-building processes required in regions with significant disparities in education and digital access.</p>
+
+    <p>The Global AI Index (Tortoise Media, 2023) offers depth by ranking nations based on innovation, investment, and talent pools. While it captures important dimensions of AI leadership, its focus on competitive metrics overshadows collaborative approaches and grassroots capacity-building initiatives. The index highlights where nations currently stand but does not explore how they might transition to higher levels of readiness, particularly in contexts marked by socio-economic inequities and digital divides. Across these frameworks, a recurring limitation is their reliance on providing snapshots of readiness rather than routes to progression. Additionally, they often overlook the critical dimension of human agency: how education, skills, and participatory governance can enable individuals and organizations to utilize AI in meaningful, context-sensitive ways. As a result, these indices provide limited guidance on how to address the systemic inequities that perpetuate digital divides and reinforce technological dependency.</p>
+
+    <p>The AI Matrix introduced in this paper integrates access to AI resources with the capacity for agency-building, offering a comprehensive framework to address disparities. Since it can be used for both static assessments ("where are we now") and to help map dynamic pathways for change ("where do we want to go"), it provides stakeholders with a tool to identify vulnerabilities, design targeted interventions, and increase the potential for equitable AI adoption at national, organizational, and individual levels. The matrix provides a framework to help capture the interplay between technological infrastructure, education systems, and governance mechanisms, making it scalable, usable across sectors and adaptable to diverse contexts.</p>
+
+    <h2>2.1 Introducing the AI Matrix</h2>
+
+    <p>To simplify the complexity of AI-driven social and economic change, this paper presents a 2x2 AI Matrix (Figure 1). The matrix illustrates four quadrants, each representing a distinct scenario based on levels of access to AI resources and human agency. Four scenarios are summarized in Figure 1, ranging from the best case scenario (Full Empowerment) to the worst case scenario (Full Dependency). The scenarios are shown in reverse clockwise order in Figure 1 and outlined below.</p>
+
+    <figure>
+      <figcaption><strong>Figure 1.</strong> The AI Matrix</figcaption>
+      <div class="matrix-2x2">
+        <div class="matrix-axis-y">Human Agency &nbsp;&rarr;</div>
+        <div class="matrix-cell q2">
+          <div class="q-num">Q2</div>
+          <div class="q-name">Elite Empowerment</div>
+          <div class="q-cond">High Agency<br>Unequal Access</div>
+        </div>
+        <div class="matrix-cell q1">
+          <div class="q-num">Q1</div>
+          <div class="q-name">Full Empowerment</div>
+          <div class="q-cond">High Agency<br>Equitable Access</div>
+        </div>
+        <div class="matrix-cell q4">
+          <div class="q-num">Q4</div>
+          <div class="q-name">Full Dependency</div>
+          <div class="q-cond">Low Agency<br>Unequal Access</div>
+        </div>
+        <div class="matrix-cell q3">
+          <div class="q-num">Q3</div>
+          <div class="q-name">Passive Dependency</div>
+          <div class="q-cond">Low Agency<br>Equitable Access</div>
+        </div>
+        <div class="matrix-axis-x">Access to AI Resources &nbsp;&rarr;</div>
+      </div>
+    </figure>
+
+    <h3>Quadrant 1: Full Empowerment (High Agency and Equitable Access)</h3>
+    <p>Everyone potentially has access to AI resources and the skills to use them critically and creatively. This fosters innovation, inclusion, and sustainable growth, empowering individuals and communities to harness AI's potential.</p>
+
+    <h3>Quadrant 2: Elite Empowerment (High Agency and Unequal Access)</h3>
+    <p>A privileged group dominates AI use due to exclusive access to resources, tools, and education. While this fosters innovation, it deepens inequality, as marginalized populations lack the skills or infrastructure to participate in AI-driven opportunities.</p>
+
+    <h3>Quadrant 3: Passive Dependency (Low Agency and Equitable Access)</h3>
+    <p>AI resources are widely available, but individuals lack the critical skills or autonomy to use them effectively. This creates reliance on automated systems, reducing human creativity and decision-making while fostering complacency in addressing societal challenges.</p>
+
+    <h3>Quadrant 4: Full Dependency (Low Agency and Unequal Access)</h3>
+    <p>Marginalized groups lack both access to AI resources and the skills to engage critically. This leads to exclusion, reliance on external systems, and a widening gap between those who control AI technologies and those dependent on them.</p>
+
+    <p>The AI Matrix can be used to categorize countries, institutions, and individuals based on their AI access and agency. However, these positions are not static, and transitions between quadrants are possible depending on structural reforms, education, and governance. The AI Matrix not only categorizes AI adoption but also provides a framework for understanding transitions across these quadrants. Governance plays a crucial role in shaping these trajectories, influencing whether societies move toward full empowerment or become entrenched in dependency. As recent policy efforts, such as the EU AI Act (2024), OECD AI Principles (OECD, 2025) and national AI strategies, illustrate, equitable governance is a key determinant of AI's societal impact. By analyzing these systemic forces, we can identify patterns illustrating how to move between quadrants, offering insights into the dynamics of empowerment and dependency in AI ecosystems. This is discussed further below.</p>
+
+    <h2>2.2 Applying the AI Matrix to Understand Transitions</h2>
+
+    <p>To effectively use the AI Matrix, stakeholders, including governments, organizations, education providers, and individuals, must develop targeted, context-specific strategies that address their distinct challenges while fostering movement toward greater AI empowerment. The AI Matrix does not present a static classification but rather emphasizes the fluidity of transitions between quadrants, as illustrated in Figure 2. These transitions are shaped by governance mechanisms, educational initiatives, AI policy decisions, and broader technological and economic forces. Some transitions result in greater agency and AI integration, moving toward Full Empowerment, while others risk reinforcing inequality, passivity, or exclusion, leading to entrenchment in dependency quadrants. Governments, as primary architects of national AI ecosystems, play a crucial role in influencing these transitions. By implementing national AI readiness indices, modeled after those discussed earlier but tailored to align with the AI Matrix, policymakers can systematically measure AI literacy, digital access, and institutional capacity. These indices could serve as a diagnostic tool, helping identify where gaps exist and how targeted interventions could improve AI adoption. As Figure 2 demonstrates, nations or institutions currently in Passive Dependency can move toward Full Empowerment through deliberate investments in education, AI literacy programs, and regulatory frameworks that support inclusive AI development.</p>
+
+    <p>Policy measures such as subsidizing AI infrastructure in underserved regions, providing incentives for AI adoption in SMEs, and integrating mandatory AI ethics and critical AI literacy into national curricula can further enhance both access and agency. These interventions ensure that the benefits of AI are equitably distributed rather than concentrated among a privileged few. Similarly, progressive governance strategies, such as establishing public-private partnerships in AI research, regulating AI for transparency, and funding open-access AI education platforms, can accelerate positive transitions and reduce the risk of stagnation in dependency quadrants. Moreover, organizations, particularly universities and research institutions, can use the AI Matrix to design curricula, certification programs, and capacity-building initiatives that support AI integration in business, government, and civil society.</p>
+
+    <p>As Figure 2 highlights, institutions that lack structured AI policies or investment in workforce development may find themselves in Passive Dependency, but strategic educational interventions, such as AI reskilling programs, interdisciplinary AI-humanities courses, and industry collaborations, can move them toward Full Empowerment. At an individual level, AI users and professionals can leverage the framework to self-assess their position within the AI Matrix and seek out educational and professional opportunities that enhance their AI competency. Encouraging a culture of AI literacy and continuous learning is essential in ensuring long-term, sustainable empowerment rather than reliance on AI-driven automation without critical engagement. Ultimately, as Figure 2 illustrates, transitions between quadrants are neither automatic nor inevitable; they require intentional, sustained efforts across multiple dimensions. Whether through policy reforms, educational investments, or industry-wide AI governance frameworks, the AI Matrix provides a dynamic roadmap for navigating AI adoption toward empowerment rather than dependency.</p>
+
+    <figure>
+      <figcaption><strong>Figure 2.</strong> Possible Matrix Transitions</figcaption>
+      <div style="overflow-x:auto;">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Starting Quadrant</th>
+            <th>Transition Direction</th>
+            <th>Possible Policy Interventions</th>
+            <th>Expected Outcomes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Full Dependency (Q4)</td><td>&rarr; Passive Dependency (Q3)</td><td>Limited AI access without education</td><td>Societies become AI-reliant without full agency</td></tr>
+          <tr><td>Full Dependency (Q4)</td><td>&rarr; Elite Empowerment (Q2)</td><td>Concentrated AI benefits among elite groups</td><td>AI-driven inequality persists, with access controlled by a select group</td></tr>
+          <tr><td>Full Dependency (Q4)</td><td>&rarr; Full Empowerment (Q1)</td><td>Investment in AI education and access</td><td>Increased human agency, reduced digital divide</td></tr>
+          <tr><td>Full Dependency (Q4)</td><td>&rarr; Remains in Q4</td><td>Lack of AI policies or governance</td><td>Continued AI exclusion and technological stagnation</td></tr>
+          <tr><td>Passive Dependency (Q3)</td><td>&rarr; Full Empowerment (Q1)</td><td>AI literacy and critical thinking programs</td><td>Stronger workforce adaptability, reduced AI reliance</td></tr>
+          <tr><td>Passive Dependency (Q3)</td><td>&rarr; Elite Empowerment (Q2)</td><td>Expanding access to AI for previously restricted groups</td><td>Expanded AI participation across social groups</td></tr>
+          <tr><td>Passive Dependency (Q3)</td><td>&rarr; Full Dependency (Q4)</td><td>Lack of AI education and digital inclusion policies</td><td>Further decline in human agency and AI participation</td></tr>
+          <tr><td>Passive Dependency (Q3)</td><td>&rarr; Remains in Q3</td><td>Lack of reform efforts to improve AI literacy</td><td>Continued reliance on AI without critical engagement</td></tr>
+          <tr><td>Elite Empowerment (Q2)</td><td>&rarr; Full Empowerment (Q1)</td><td>AI democratization and open access</td><td>Equal access to AI opportunities, greater innovation</td></tr>
+          <tr><td>Elite Empowerment (Q2)</td><td>&rarr; Passive Dependency (Q3)</td><td>Restricted AI policies, widening inequality</td><td>Greater reliance on automation without critical AI literacy</td></tr>
+          <tr><td>Elite Empowerment (Q2)</td><td>&rarr; Full Dependency (Q4)</td><td>Systemic failure to provide equitable AI access</td><td>Widening inequality, technological concentration</td></tr>
+          <tr><td>Elite Empowerment (Q2)</td><td>&rarr; Remains in Q2</td><td>No policy action to broaden AI participation</td><td>Elites retain disproportionate AI control</td></tr>
+          <tr><td>Full Empowerment (Q1)</td><td>&rarr; Remains in Q1</td><td>Sustained AI literacy, governance reforms, and equitable access</td><td>Sustained AI-led innovation and inclusion</td></tr>
+          <tr><td>Full Empowerment (Q1)</td><td>&rarr; Elite Empowerment (Q2)</td><td>Increasing inequality in AI access, limiting democratic participation</td><td>Growing power imbalance in AI access and governance</td></tr>
+          <tr><td>Full Empowerment (Q1)</td><td>&rarr; Passive Dependency (Q3)</td><td>Erosion of AI literacy, shift towards passive consumption</td><td>Reduced engagement in AI, increasing reliance on automated systems</td></tr>
+        </tbody>
+      </table>
+      </div>
+    </figure>
+
+    <p>Universities, as centers of innovation and learning, can play a critical role in fostering AI literacy and ethical awareness. By embedding AI-related topics across disciplines, universities can promote interdisciplinary collaboration and develop novel AI solutions that address real-world challenges. Furthermore, universities can act as talent incubators, bridging the gap between research and practical applications through partnerships with industries and governments. These collaborations would not only enhance the relevance of academic research but also ensure that emerging technologies are grounded in ethical and societal considerations.</p>
+
+    <p>Private organizations, too, have a significant role to play in advancing AI readiness. By conducting capability audits to evaluate employee AI literacy and readiness, business can identify gaps and design targeted upskilling programs. Collaboration with educational institutions and technology providers can further enhance these efforts, ensuring that employees are equipped with the skills needed to navigate an AI-driven landscape. For individuals, accessible education platforms and micro-credentialing systems can promote AI literacy while ensuring inclusivity, particularly for marginalized populations who may otherwise be excluded from the benefits of AI.</p>
+
+    <p>Cross-sectoral partnerships involving governments, businesses, universities, and NGOs are essential for scaling these efforts. Such collaborations can facilitate the funding of infrastructure projects, the sharing of best practices, and the co-creation of tools that democratize access to AI technologies. By working together, stakeholders can address systemic barriers and create an ecosystem that supports equitable AI adoption.</p>
+
+    <p>Iterative adaptation is a critical component of the AI Matrix framework. Stakeholders must regularly reassess access, agency, and readiness to ensure that the matrix evolves alongside technological advancements. This dynamic approach enables continuous improvement and ensures that strategies remain relevant in a rapidly changing landscape. Together, these strategies can chart a course for meaningful transitions from dependency to empowerment.</p>
+
+    <h2>3. Theoretical Foundations of the AI Matrix</h2>
+
+    <p>The AI Matrix builds upon existing theories of governance, socio-economic resilience, and path dependency to explain AI-driven transitions. By incorporating these theoretical insights, the framework helps map out specific conditions that facilitate movement toward empowerment and mitigate risks of dependency. While an in-depth exploration of these theories is beyond the scope of this paper, it is essential to situate the arguments within their appropriate theoretical context before a detailed discussion of the AI Matrix is undertaken.</p>
+
+    <p>This section reviews a number of theoretical frameworks, path dependency, socio-economic resilience, and governance theories, to provide a foundation for understanding the empowerment and dependency scenarios. These frameworks offer useful insights into how historical choices, systemic adaptability, and institutional arrangements are and will shape the trajectory of AI adoption. This discussion is essential since these theories are the conceptual underpinning of the AI Matrix, giving a sense of the large body of knowledge already in place that can be used to help chart both the current situation and the future options.</p>
+
+    <h3>3.1 Path Dependency and Technological Trajectories</h3>
+
+    <p>Path dependency theory underscores the idea that historical choices and institutional structures significantly influence current and future trajectories. As David (1985) and Arthur (1989) argue, once a system locks into a particular technological or institutional path, reversing or diversifying that path becomes increasingly difficult. This concept is directly applicable to the development and deployment of artificial intelligence (AI).</p>
+
+    <p>The relevance of path dependency to the AI Matrix lies in understanding how early investments in AI infrastructure and policy decisions shape whether entities are positioned in the empowerment or dependency quadrants. In the empowerment scenario, early investments in inclusive education systems, equitable AI governance, and human-centric innovation can create a virtuous cycle. For example, educational policies that integrate AI literacy and critical thinking as foundational skills can prepare future generations to engage critically with AI technologies. Conversely, in the dependency scenario, a lack of proactive governance and uneven resource allocation entrenches existing inequalities, creating a self-reinforcing cycle where marginalized populations remain excluded (Brynjolfsson and McAfee, 2014).</p>
+
+    <p>The theory of increasing returns further explains how dominant AI technologies and companies gain an outsized influence over global markets. As large corporations and high-income countries lead in AI research and development, their dominance can create barriers for latecomers to enter the field, consolidating dependency in underserved regions (Arthur, 1989; Acemoglu and Restrepo, 2019). This dynamic is critical in determining transitions within the AI Matrix, particularly from quadrants with varying levels of dependency aim to move toward empowerment.</p>
+
+    <h3>3.2 Socio-Economic Resilience</h3>
+
+    <p>Socio-economic resilience theory examines how systems adapt to shocks or disruptions, focusing on their capacity to recover, reorganize, and innovate. Originally developed in environmental science (Holling, 1973), this framework has since been extended to economic and social systems (Folke et al., 2010). Resilience is a critical factor in mitigating dependency and fostering empowerment, as it enables systems to withstand and adapt to the transformative impacts of artificial intelligence (AI).</p>
+
+    <p>For instance, nations with diversified economies and adaptive education systems, such as Singapore, demonstrate a greater capacity to transition toward the Full Empowerment quadrant of the AI Matrix. This highlights how resilience supports movement within the matrix, particularly from quadrants characterized by low agency.</p>
+
+    <p>In the empowerment scenario, resilience is fostered through robust social safety nets and investments in sectors less susceptible to automation, such as healthcare and the creative industries (Rodrik, 2011; McKinsey Global Institute, 2023). These measures ensure that societies can adapt to technological disruptions while preserving human agency and equitable opportunities.</p>
+
+    <p>In contrast, the dependency scenario reflects a failure to build resilience. Economies overly reliant on technology-based systems risk systemic vulnerabilities, such as heightened inequality and diminished human agency (Kahneman, 2021). Over-automation in decision-making processes can lead to critical failures or exacerbate biases, particularly in systems lacking human oversight (Rahwan, 2018). These failures may correlate with stagnation in the Full Dependency quadrant of the matrix, where marginalized groups remain excluded from the benefits of AI-driven advancements.</p>
+
+    <h3>3.3 Governance Theories and AI Regulation</h3>
+
+    <p>Governance theories provide insights into how institutional arrangements and policy frameworks influence societal outcomes. Stoker's (1998) multi-level governance framework and Ostrom's (2009) work on polycentric governance are particularly relevant to understanding the empowerment and dependency scenarios in the context of AI development.</p>
+
+    <p>For example, the European Union's Artificial Intelligence Act (2024) illustrates how multi-level governance can align with the Full Empowerment quadrant by emphasizing ethical AI adoption, trust, accountability, and adaptability. Such policies demonstrate how governance frameworks can promote equitable and responsible AI deployment.</p>
+
+    <p>In the empowerment scenario, polycentric governance systems, characterized by multiple, overlapping centers of decision-making, can enable localized and context-sensitive approaches to AI adoption. Decentralized AI ethics councils or regional AI regulatory bodies could ensure that governance mechanisms address local needs while adhering to global standards (Floridi and Cowls, 2019). This approach fosters inclusivity and adaptability, two key components of empowerment.</p>
+
+    <p>In contrast, the absence of effective governance frameworks will exacerbate the concentration of power among a few AI corporations and nations. Jessop's (2002) critique of neoliberal governance highlights how market-driven approaches prioritize efficiency over equity, creating systemic risks. These governance choices would push entities toward dependency quadrants within the AI Matrix, where marginalized groups face exclusion and inequality. Conversely, proactive and inclusive governance would support transitions to empowerment, ensuring that AI adoption benefits a wider proportion of society.</p>
+
+    <h3>3.4 The Role of Critical Theory</h3>
+
+    <p>Critical theory provides a powerful lens for understanding the socio-political implications of artificial intelligence (AI), emphasizing the need to challenge power imbalances and question the narrative of technological determinism (Feenberg, 1991). From this perspective, the empowerment scenario requires deliberate efforts to democratize AI development, ensuring that marginalized voices are included in shaping its trajectory.</p>
+
+    <p>By integrating participatory technology assessments and inclusive design workshops (Winner, 1986), critical theory can directly inform strategies for empowering individuals and organizations. These approaches could help transition entities from the Passive Dependency quadrant to the Full Empowerment quadrant of the AI Matrix, supporting equitable and inclusive AI adoption.</p>
+
+    <p>In contrast, the dependency scenario highlights how AI systems can perpetuate existing inequalities, serving as tools of surveillance, control, and exploitation (Eubanks, 2018). These concerns underscore the importance of frameworks like the AI Matrix in identifying and addressing systemic imbalances, ensuring that AI adoption does not reinforce existing power structures.</p>
+
+    <h3>3.5 Scenario Comparison</h3>
+
+    <p>The empowerment and dependency scenarios represent opposite ends of a spectrum shaped by the interaction of path dependency, socio-economic resilience, governance theories, and critical theory. The AI Matrix operationalizes these theoretical insights, offering a structured approach to map disparities and design targeted interventions for transitioning toward empowerment. Before delving into a detailed discussion of the AI Matrix, it is useful to outline the defining characteristics of the empowerment and dependency scenarios using the theoretical lenses discussed above. Figure 3 summarizes these scenarios, highlighting the key theoretical elements that underpin each.</p>
+
+    <figure>
+      <figcaption><strong>Figure 3.</strong> AI Empowerment and Dependency: Key Theoretical Elements</figcaption>
+      <div style="overflow-x:auto;">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Theoretical Lens</th>
+            <th>Empowerment Scenario</th>
+            <th>Dependency Scenario</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Path Dependency</td><td>Inclusive early investments create virtuous cycles of equity and innovation.</td><td>Historical inequities and monopolistic dominance reinforce systemic dependency.</td></tr>
+          <tr><td>Socio-Economic Resilience</td><td>Diversified economies and adaptive policies enable transitions for displaced workers.</td><td>Over-reliance on AI systems creates vulnerabilities and deepens socio-economic divides.</td></tr>
+          <tr><td>Governance Theories</td><td>Polycentric governance ensures accountability and human-centric AI development.</td><td>Lack of regulation consolidates power among a few corporations and nations.</td></tr>
+          <tr><td>Critical Theory</td><td>Inclusive design and participatory governance challenge power imbalances.</td><td>AI systems perpetuate surveillance, control, and inequality.</td></tr>
+        </tbody>
+      </table>
+      </div>
+    </figure>
+
+    <h2>4. Developing Full Empowerment and Full Dependency Scenarios</h2>
+
+    <p>The dual potential of artificial intelligence (AI) to either empower individuals and societies or create dependency is central to its characterization as a transformative, general-purpose technology. These contrasting scenarios highlight the critical choices societies face as they integrate AI into social and economic systems. This section explores the defining characteristics and implications of each scenario.</p>
+
+    <p>Importantly, these scenarios are illustrative composites, designed to reflect two extremes of possible futures. They are definitively not predictive models, nor are they mutually exclusive. Instead, they serve as conceptual frameworks that synthesize ideas about how technology can impact social and economic dynamics. Their primary aim is to highlight risks and opportunities at the macro level in the near future, providing a foundation for informed decision-making and policy development.</p>
+
+    <h3>4.1 The Full Empowerment Scenario</h3>
+
+    <p>The empowerment scenario envisions a future where artificial intelligence (AI) enhances human capabilities, fostering creativity, innovation, and autonomy. In this scenario, AI serves as a tool to augment decision-making, improve access to education and healthcare, and widen opportunities. For example, AI tools, such as ChatGPT, DeepSeek and Imagen 3, have the potential to significantly enhance creativity and productivity across various fields. By automating repetitive tasks, these technologies enable professionals and artists to amplify their creative output, allowing them to focus on more complex and innovative work (OpenAI, 2023). Similarly, AI-driven educational platforms hold promise for improving access to resources by providing personalized learning experiences. These systems can adapt to individual learning needs, helping to bridge gaps in education systems worldwide and offering opportunities for underserved populations to gain knowledge and skills (Ng, 2018).</p>
+
+    <p>From an economic perspective, generative AI tools are likely to drive substantial growth and innovation. Research by McKinsey Global Institute (2023) estimates that the integration of generative AI technologies could contribute up to $4.4 trillion annually to the global economy. This impact is largely attributed to increased productivity, cost efficiencies, and the creation of entirely new markets. Furthermore, AI has the potential to promote equity and inclusion in the workforce. By automating routine and repetitive tasks, it may "liberate" human labor for strategic and creative roles. This shift not only enhances productivity but also provides opportunities for underrepresented groups to contribute meaningfully in areas where human insight and creativity are critical (World Economic Forum, 2023).</p>
+
+    <p>Achieving this scenario requires significant efforts, including equitable access to AI tools, robust education reforms, large-scale reskilling initiatives, and ethical governance frameworks. Without these measures, the empowerment scenario is unattainable.</p>
+
+    <h3>4.2 The Full Dependency Scenario</h3>
+
+    <p>In contrast to the empowerment scenario, the dependency scenario represents a future where societies become reliant on AI systems, leading to diminished human agency and widening inequalities. Dependency emerges when AI systems dominate decision-making and resource allocation, often serving the interests of a small elite.</p>
+
+    <p>Automation driven by artificial intelligence has the potential to displace significant portions of the workforce, particularly in routine and low-skill roles, and including both middle income and low income work. This shift could leave millions of workers facing unemployment or being forced into precarious 'gig' work, with many becoming increasingly dependent on social safety nets for survival. The International Labour Organization (ILO, 2024) warns that these impacts will likely exacerbate existing vulnerabilities in the labor market, further widening socioeconomic disparities.</p>
+
+    <p>Moreover, AI's growing role in decision-making across critical sectors, such as finance, healthcare, and governance, presents another concern: the erosion of human autonomy. As AI systems take on tasks traditionally managed by humans, there is a risk that human oversight will be marginalized, reducing opportunities for critical thinking, creativity, and accountability. This reliance on automated systems may in future diminish the ability of individuals and organizations to make nuanced, ethical, and context-sensitive decisions (Saar and Busuioc, 2023; Castelnovo, 2024).</p>
+
+    <p>The consolidation of power within the AI industry poses additional challenges. Currently, a small number of corporations, universities, and nations dominate the development and deployment of AI technologies (Ahmed and Wahed, 2020). This concentration of control risks exacerbating global inequalities, as those with access to advanced AI systems and their development hold disproportionate economic and strategic advantages. This dynamic creates systemic and locked-in dependencies, where less powerful entities rely heavily on a few dominant players.</p>
+
+    <p>Perhaps most critically, the economic benefits of AI are projected to be unevenly distributed. The International Monetary Fund (IMF, 2024) emphasizes that high-income countries are poised to reap the majority of AI-driven productivity gains, while developing nations may become increasingly reliant on external technologies and expertise. This imbalance threatens to deepen global inequities, leaving lower-income countries at a further persistent disadvantage in an AI-driven world. Even within higher-income countries, the distribution of benefits will remain highly uneven.</p>
+
+    <p>This scenario aligns with historical patterns observed during previous technological revolutions, where benefits accrued disproportionately to those already in positions of power. The risk of systemic dependency underscores the need for urgent interventions to ensure equitable AI deployment. However, the primary differences with AI in comparison with past technologically driven disruption, however, are the rapid pace of change in adoption and impact and the wide scale and depth of impact across economies, making these challenges more immediate and pressing.</p>
+
+    <h3>4.3 Comparing the Scenarios</h3>
+
+    <p>The empowerment and dependency scenarios are not mutually exclusive. Elements of both, a variety of intermediate outcomes, are likely to manifest. However, their relative dominance depends on policy choices, technological governance, and societal adaptation. Figure 4 summarizes the main characteristics of the scenarios.</p>
+
+    <figure>
+      <figcaption><strong>Figure 4.</strong> Comparing Full Empowerment and Full Dependency Scenarios</figcaption>
+      <div style="overflow-x:auto;">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Scenario</th>
+            <th>Characteristics</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Full Empowerment</td><td>AI enhances creativity, productivity, and decision-making; personalized education; equitable opportunities.</td></tr>
+          <tr><td>Full Dependency</td><td>AI entrenches inequality; over-reliance diminishes human agency; concentrated benefits to elites.</td></tr>
+        </tbody>
+      </table>
+      </div>
+    </figure>
+
+    <p>In relation to the empowerment scenario, targeted national policies play a pivotal role in preparing individuals to engage with emerging technologies. Integrating AI literacy into education systems can enhance competitiveness in an AI-driven global economy by equipping individuals with the skills to innovate and adapt. Research highlights the transformative potential of AI, with significant contributions to productivity, cost efficiencies, and the emergence of new markets across various industries (as an example, see McKinsey Global Institute, 2023). Policies that democratize AI knowledge and ensure accessibility can foster participation and innovation across diverse populations, bridging gaps in technology use and opportunity. Effective applications of AI in critical sectors such as healthcare, legal services, and education also demonstrate its ability to address infrastructural challenges, improve access, and enhance service delivery without compromising ethical standards.</p>
+
+    <p>In contrast, the dependency scenario underscores the risks of over-reliance on AI systems. Job displacement driven by AI disproportionately affects workers in routine and low-skill occupations, creating challenges for labor policy and emphasizing the urgent need for reskilling initiatives. There are also concerns that as AI develops, all but the highest skill, human factor-oriented occupations run the risk of AI redundancy (ILO, 2024). Additionally, concerns about data commodification and privacy erosion illustrate how unregulated AI use can undermine individual autonomy and consolidate power in the hands of corporations or states (Zuboff, 2019). Uncritical reliance on AI systems has also been associated with biased decision-making (Saar and Busuioc, 2023) raising ethical concerns about surveillance and perpetuating inequalities (Creemers, 2020). Limited access to AI infrastructure in certain regions further exacerbates global disparities, reinforcing existing inequalities and reducing opportunities for economic and social progress.</p>
+
+    <p>The future trajectory of AI's social and economic impact depends on the balance between empowerment and dependency. While empowerment presents opportunities to enhance human well-being and innovation, dependency risks exacerbating inequality and eroding autonomy under current trends. A shift toward a more empowered AI future requires urgent, coordinated action to address systemic challenges, including gaps in education, governance, and equitable access to technology.</p>
+
+    <p>Understanding these dynamics demands a simplified structured framework to map disparities in AI access and agency, identify vulnerabilities, and support the development of strategies which offer pathways toward empowerment. The AI Matrix, presented here, serves as one tool for stakeholders to assess their current position and strategize effective transitions toward empowerment.</p>
+
+    <h2>5. Discussion</h2>
+
+    <p>The rapid advancement of artificial intelligence (AI) presents both unprecedented opportunities and profound challenges for societies worldwide. This paper has introduced the AI Matrix as a novel framework for understanding and navigating the dual potential of AI to either empower individuals and communities or entrench dependency. By integrating the dimensions of access to AI resources and capacity for human agency, the AI Matrix provides a dynamic tool for assessing disparities, identifying vulnerabilities, and designing targeted interventions to foster equitable AI adoption. This conceptual framework represents a significant departure from existing models, such as the Stanford AI Index and the Oxford Insights AI Readiness Index, which often rely on static assessments and have limited focus on the interplay between access and agency. Unlike these frameworks, the AI Matrix shows the potential for dynamic transitions, offering pathways for stakeholders to move from dependency to empowerment. Its scalability and adaptability make it applicable across diverse contexts, from low-income nations building foundational AI infrastructure to advanced economies navigating the ethical and governance challenges of AI use.</p>
+
+    <p>The AI Matrix has important implications for policymakers, educators, technologists, and civil society. For policymakers, the matrix provides a structured approach to designing AI strategies that prioritize equitable access and capacity-building. For example, governments can use the matrix to identify regions or populations in the Passive Dependency quadrant and implement targeted interventions, such as subsidizing AI infrastructure or launching AI literacy programs. Similarly, educational institutions can use the matrix to integrate AI-focused content and ethical training into curricula, ensuring that learners are equipped to engage critically with AI technologies. Organizations, too, can use the matrix to conduct capability audits and design upskilling programs that prepare workers for an AI-driven economy. By encouraging cross-sectoral collaboration, stakeholders can create a system that supports equitable AI adoption and ensures that its benefits are widely shared.</p>
+
+    <p>To strengthen the practical utility of the AI Matrix, it is essential to establish mechanisms for monitoring the effectiveness of AI literacy programs, governance interventions, and digital equity policies. Progress in AI literacy can be measured through pre- and post-intervention assessments that track shifts in critical engagement and technological fluency. Governance reforms can be evaluated using AI policy audits, examining regulatory effectiveness and institutional adoption of ethical AI frameworks. Similarly, digital equity policies can be assessed through inclusion indices and longitudinal studies that measure improvements in AI accessibility and agency across different populations. Embedding these monitoring tools within AI strategies will provide stakeholders with tangible indicators of progress, ensuring that interventions lead to meaningful empowerment rather than reinforcing dependency.</p>
+
+    <p>While the AI Matrix offers a theoretical framework, its practical utility needs to be empirically validated through future research. One promising avenue is the application of the matrix in case studies across different national and organizational contexts. For instance, researchers could use the matrix to assess the impact of AI adoption in sectors such as healthcare, education, and agriculture, identifying best practices for transitioning from dependency to empowerment. Additionally, longitudinal studies could track the effectiveness of specific interventions, such as reskilling programs or governance reforms, in shifting entities toward the Full Empowerment quadrant. Another critical area for future research is the development of metrics to operationalize the AI Matrix. While the matrix provides a conceptual framework, its practical application requires measurable indicators of access and agency. Future studies could explore the use of composite indices or survey-based tools to assess these dimensions, enabling stakeholders to benchmark progress and evaluate the impact of their interventions. Empirical methodologies could include comparative case studies across different governance models, longitudinal research assessing AI adoption over time, and mixed-methods approaches combining qualitative insights from policymakers with quantitative analyses of AI literacy and access data.</p>
+
+    <p>A key consideration in framing empirical validation is recognizing that the field of AI is evolving rapidly, and large-scale empirical research in this area remains scarce. While existing studies focus on AI adoption, governance, and infrastructure, few have systematically examined the intersection of AI access and learner agency in a structured, comparative manner. The AI Matrix provides a foundational model that invites future empirical research rather than presenting itself as an empirically tested framework. Rather than preemptively restricting its scope to current data availability, this model aims to guide future research by providing a structured lens through which AI adoption patterns can be examined over time. Consequently, the most valuable next step is not necessarily immediate empirical validation but rather fostering academic and policy engagement that can lead to future studies testing and refining the AI Matrix through real-world applications.</p>
+
+    <p>This approach aligns with other areas of technology research, such as AI ethics and regulatory AI adoption, where conceptual frameworks are developed ahead of large-scale empirical validation due to the rapidly shifting technological and policy landscape (Mittelstadt et al., 2016; Floridi, 2019). Similarly, foundational models such as the Brynjolfsson, Rock, and Syverson (2018) framework on economic impact of artificial intelligence technology were initially conceptual and later empirically validated, demonstrating how theoretical models can shape discourse and policy before widespread empirical testing becomes feasible.</p>
+
+    <p>The AI Matrix is not without limitations. While the AI Matrix is designed for broad applicability, its effectiveness may be constrained by variations in data availability, policy priorities, and technological readiness across different regions. However, these limitations also present opportunities for refinement. For example, participatory approaches could be used to co-design the matrix with local stakeholders, ensuring that it reflects the unique needs and priorities of different communities. Similarly, iterative refinement mechanisms could be incorporated to ensure that the matrix evolves alongside technological advancements and societal changes. By addressing these challenges, the AI Matrix can remain a relevant and effective tool for guiding AI adoption in a rapidly changing landscape.</p>
+
+    <p>While the focus of this paper has been on how the AI Matrix may be used to help map strategies aimed at improving the potential for full empowerment, this is only one application. The framework could equally be used to map how a location or organization might transition to a more negative quadrant of the AI Matrix. For example, the development of as yet unknown technology such as autonomous general intelligence (AGI) which operates independently of humans could have the effect of pushing previously empowered entities towards dependency. The AI Matrix could then support the development of alternative strategies to manage this. This further illustrates the adaptability of the framework.</p>
+
+    <p>Future research should focus on developing empirical methodologies to assess transition mechanisms within the AI Matrix. Case studies on policy effectiveness, digital infrastructure expansion, and AI education reforms could provide concrete evidence of successful movements across quadrants. Developing quantitative measures for AI access and agency will enhance the framework's applicability. Additionally, comparative analyses using AI readiness indices and economic data can offer insights into which interventions are most effective. Examining the role of education systems, digital infrastructure, and AI policy mechanisms will also offer a deeper understanding of how structural factors shape AI adoption and governance outcomes.</p>
+
+    <p>Given the pace of change of AI development, there is a need for action. Without immediate and coordinated efforts, the dependency scenario is likely to dominate, shaping a future where autonomy, creativity, and opportunity are concentrated among a small minority. The AI Matrix offers one practical tool for navigating these challenges, but its success depends on the collective efforts of stakeholders across governments, organizations, universities, and civil society.</p>
+
+    <p>By seeking to simplify complexity, the AI Matrix represents a critical step toward realizing the transformative potential of AI while mitigating its risks. As AI continues to reshape societies and economies, frameworks like the AI Matrix could play an essential role in research, policy development, and action to ensure that these transformations are equitable, inclusive, and empowering for all. The challenge ahead is immense, but with the right tools and collective will, AI can be harnessed as a force for empowerment, not dependency, in shaping the near future.</p>
+
+    <div class="declaration">
+      <strong>Declaration of generative AI and AI-assisted technologies in the writing process.</strong> During the preparation of this work the author used ChatGPT 4.0, Deepseek and Grok 3 in order to refine grammar, carry out formatting consistency checks, and to enhance readability. After using these tools, the author reviewed and edited the content as needed and takes full responsibility for the content of the publication.
+    </div>
+
+    <div class="references">
+      <h2>References</h2>
+      <ol>
+        <li>Acemoglu, D. and Restrepo, P. (2019). Automation and new tasks: How technology displaces and reinstates labor. <em>Journal of Economic Perspectives</em>, 33(2), pp.3&ndash;30.</li>
+        <li>Ahmed, N. and Wahed, M. (2020). The de-democratization of AI: Deep learning and the compute divide in artificial intelligence research. <em>arXiv</em>. <a href="https://arxiv.org/abs/2010.15581" target="_blank" rel="noopener">https://arxiv.org/abs/2010.15581</a></li>
+        <li>AI Action Summit (2025). AI for the Future: Global Governance and Technological Sovereignty. &Eacute;lys&eacute;e &mdash; The French Presidency. <a href="https://www.elysee.fr/en/sommet-pour-l-action-sur-l-ia" target="_blank" rel="noopener">https://www.elysee.fr/en/sommet-pour-l-action-sur-l-ia</a></li>
+        <li>Arthur, W.B. (1989). Competing technologies, increasing returns, and lock-in by historical events. <em>The Economic Journal</em>, 99(394), pp.116&ndash;131.</li>
+        <li>Brynjolfsson, E. and McAfee, A. (2014). <em>The second machine age: Work, progress, and prosperity in a time of brilliant technologies</em>. New York: W.W. Norton and Company.</li>
+        <li>Brynjolfsson, E., Rock, D., Syverson, C. (2018). Artificial Intelligence and the Modern Productivity Paradox: A Clash of Expectations and Statistics. NBER Chapters, in: <em>The Economics of Artificial Intelligence: An Agenda</em>, pages 23&ndash;57, National Bureau of Economic Research, Inc.</li>
+        <li>Castelnovo, A. (2024). Towards responsible AI in banking: Addressing bias for fair decision-making. <em>arXiv</em>. <a href="https://arxiv.org/abs/2401.08691" target="_blank" rel="noopener">https://arxiv.org/abs/2401.08691</a></li>
+        <li>Creemers, R.J.E.H. (2020). China's conception of cyber sovereignty: rhetoric and realization. In: Broeders D. and Berg B. van den (Eds.) <em>Governing Cyberspace: Behavior, Power, and Diplomacy</em>. Lanham: Rowman and Littlefield, 107&ndash;142. <a href="http://dx.doi.org/10.2139/ssrn.3532421" target="_blank" rel="noopener">http://dx.doi.org/10.2139/ssrn.3532421</a></li>
+        <li>David, P.A. (1985). Clio and the economics of QWERTY. <em>American Economic Review</em>, 75(2), pp.332&ndash;337.</li>
+        <li>DeepSeek (2025). DeepSeek AI: China's AI Startup Challenging U.S. Models. <em>The Wall Street Journal</em>. <a href="https://www.wsj.com/tech/ai/deepseek-ai-how-it-works-725cb464" target="_blank" rel="noopener">https://www.wsj.com/tech/ai/deepseek-ai-how-it-works-725cb464</a></li>
+        <li>Eloundou, T., Manning, S., Mishkin, P. and Rock, D. (2023). GPTs are GPTs: An early look at the labor market impact potential of large language models. <em>arXiv</em>. <a href="https://arxiv.org/abs/2303.10130" target="_blank" rel="noopener">https://arxiv.org/abs/2303.10130</a></li>
+        <li>Eubanks, V. (2018). <em>Automating inequality: How high-tech tools profile, police, and punish the poor</em>. New York: St. Martin's Press.</li>
+        <li>European Commission (2024). The EU AI Act: A Comprehensive Framework for Artificial Intelligence. European Commission DG CNECT. <a href="https://digital-strategy.ec.europa.eu/en/policies/european-approach-artificial-intelligence" target="_blank" rel="noopener">https://digital-strategy.ec.europa.eu/en/policies/european-approach-artificial-intelligence</a></li>
+        <li>Feenberg, A. (1991). <em>Critical theory of technology</em>. Oxford: Oxford University Press.</li>
+        <li>Floridi, L. and Cowls, J. (2019). A unified framework of five principles for AI in society. <em>Harvard Data Science Review</em>, 1(1). <a href="https://hdsr.mitpress.mit.edu/pub/ph1o75no/release/" target="_blank" rel="noopener">https://hdsr.mitpress.mit.edu/pub/ph1o75no/release/</a></li>
+        <li>Folke, C., Carpenter, S.R., Walker, B., Scheffer, M., Chapin, T., and Rockstr&ouml;m, J. (2010). Resilience thinking: Integrating resilience, adaptability and transformability. <em>Ecology and Society</em>, 15(4), p.20.</li>
+        <li>Holling, C.S. (1973). Resilience and stability of ecological systems. <em>Annual Review of Ecology and Systematics</em>, 4, pp.1&ndash;23.</li>
+        <li>International Labour Organization (ILO) (2024). <em>The Future of Work: Automation and Labor Markets</em>. Geneva: ILO Publications.</li>
+        <li>International Monetary Fund (IMF) (2024). <em>Gen-AI: Artificial Intelligence and the Future of Work</em>. Washington, DC: IMF Publications.</li>
+        <li>Jessop, B. (2002). Liberalism, neo-liberalism, and urban governance: A state-theoretical perspective. <em>Antipode</em>, 34(3), pp.452&ndash;472.</li>
+        <li>Kahneman, D. (2021). 'Clearly AI is going to win. How people are going to adjust is a fascinating problem.' <em>The Guardian</em>.</li>
+        <li>McKinsey Global Institute (2023). <em>The Economic Potential of Generative AI: Pioneering Transformation across Industries</em>. New York: McKinsey and Company.</li>
+        <li>Ng, A. (2018). <em>Machine Learning Yearning</em>. DeepLearning.AI.</li>
+        <li>NITI Aayog (2021). <em>National Strategy for Artificial Intelligence: #AIforAll</em>. New Delhi: Government of India.</li>
+        <li>OECD (2025). <em>Recommendation of the Council on Artificial Intelligence</em>. <a href="https://legalinstruments.oecd.org/en/instruments/OECD-LEGAL-0449" target="_blank" rel="noopener">https://legalinstruments.oecd.org/en/instruments/OECD-LEGAL-0449</a></li>
+        <li>Ostrom, E. (2009). <em>A Polycentric Approach for Coping with Climate Change</em>. World Bank Policy Research Working Paper 5095.</li>
+        <li>Oxford Insights (2023). <em>Government AI Readiness Index 2023</em>. Oxford: Oxford Insights.</li>
+        <li>Oxford Insights (2024). <em>Government AI Readiness Index 2024</em>. Oxford: Oxford Insights.</li>
+        <li>Rahwan, I. (2018). Society-in-the-loop: Programming the algorithmic social contract. <em>Ethics of Information Technology</em>, 20(5), pp.5&ndash;14.</li>
+        <li>Rodrik, D. (2011). The future of economic convergence. <em>NBER Working Paper No. 17400</em>.</li>
+        <li>Saar, A.B. and Busuioc, M. (2023). Human&ndash;AI interactions in public sector decision making: Automation bias and selective adherence to algorithmic advice. <em>Journal of Public Administration Research and Theory</em>, 33(1), pp.153&ndash;169.</li>
+        <li>Smart Nation Singapore (2023). <em>Transforming Singapore through AI and Digital Innovation</em>.</li>
+        <li>Stanford Institute for Human-Centered Artificial Intelligence (HAI) (2023). <em>AI Index Report 2023</em>. Stanford University.</li>
+        <li>Stanford Institute for Human-Centered Artificial Intelligence (HAI) (2024). <em>AI Index Report 2024</em>. Stanford University.</li>
+        <li>Stoker, G. (1998). Governance as theory: Five propositions. <em>International Social Science Journal</em>, 50, pp.17&ndash;28.</li>
+        <li>Tortoise Media (2023). <em>The Global AI Index 2023</em>. London: Tortoise Media.</li>
+        <li>Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A.N., Kaiser, &Lstrok;. and Polosukhin, I. (2017). Attention is all you need. <em>arXiv</em>. <a href="https://arxiv.org/abs/1706.03739" target="_blank" rel="noopener">https://arxiv.org/abs/1706.03739</a></li>
+        <li>Winner, L. (1986). <em>The Whale and the Reactor: A Search for Limits in an Age of High Technology</em>. Chicago: University of Chicago Press.</li>
+        <li>World Economic Forum (2023, 2024, 2025). <em>Future of Jobs Reports</em>. Geneva: WEF Publications.</li>
+        <li>Zuboff, S. (2019). <em>The Age of Surveillance Capitalism: The Fight for a Human Future at the New Frontier of Power</em>. New York: Public Affairs.</li>
+      </ol>
+    </div>
+
+    <!-- IN-ARTICLE FOOTER -->
+    <div class="paper-footer">
+      <div class="left">
+        <strong>Cite as:</strong> Simpson, E. (2025). The AI Matrix: Empowerment or Dependency? A Conceptual Framework. <em>Zenodo</em>. <a href="https://doi.org/10.5281/zenodo.15279462" target="_blank" rel="noopener">https://doi.org/10.5281/zenodo.15279462</a>
+      </div>
+      <div class="paper-actions" style="margin-top:0;">
+        <a class="action-btn primary" href="/papers/ai-matrix.pdf" download>Download PDF</a>
+        <a class="action-btn secondary" href="https://doi.org/10.5281/zenodo.15279462" target="_blank" rel="noopener">Zenodo &rarr;</a>
+      </div>
+    </div>
+
+  </section>
+
+</article>
+
+<footer class="site-footer">
+  <p>&copy; 2026 Ewan Simpson &nbsp;&middot;&nbsp; <a href="/">ewansimpson.org</a></p>
+</footer>
+
+</body>
+</html>
