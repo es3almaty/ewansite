@@ -137,6 +137,22 @@
 
     @media (max-width:600px) { .vc-cards { grid-template-columns:1fr; } }
 
+    /* ARC: 5 cards in 3+2 centered grid */
+    .arc-cards { grid-template-columns:repeat(6,1fr); max-width:100%; }
+    .arc-cards > a { grid-column:span 2; }
+    .arc-cards > a:nth-child(4) { grid-column:2 / span 2; }
+    .arc-cards > a:nth-child(5) { grid-column:4 / span 2; }
+    @media (max-width:760px) {
+      .arc-cards { grid-template-columns:repeat(2,1fr); }
+      .arc-cards > a { grid-column:span 1; }
+      .arc-cards > a:nth-child(4) { grid-column:1; }
+      .arc-cards > a:nth-child(5) { grid-column:2; }
+    }
+    @media (max-width:520px) {
+      .arc-cards { grid-template-columns:1fr; }
+      .arc-cards > a, .arc-cards > a:nth-child(4), .arc-cards > a:nth-child(5) { grid-column:1; }
+    }
+
     @media (max-width:680px) {
       #home { grid-template-columns:1fr; padding:50px 20px 40px; gap:32px; }
       .hero-photo { position:static; max-width:180px; }
@@ -166,6 +182,7 @@
     <a href='/about'>About</a>
     <a href="#ai-matrix-live">AI Matrix Live</a>
     <a href="#grey-swan">Grey Swan</a>
+    <a href="#arc">ARC</a>
     <a href="#virtuous-city">The Virtuous City</a>
     <a href="#contact">Contact</a>
   </div>
@@ -245,12 +262,11 @@
       </div>
     </div>
 
-  <div class="paper">
+    <div class="paper">
       <div class="paper-meta">2026 &nbsp;·&nbsp; Governance</div>
       <h3>Managing AI Like It Matters: The Artificial Intelligence Operating System (AI-OS)</h3>
-      <p>AI-OS is a governance-centered architecture treating AI adoption as an operating model question rather than a tool rollout. Works at the task level, assigning each task a permitted mode of use based on stakes, ambiguity, reversibility, and sensitivity, making the human-AI boundary visible, auditable, and adjustable by evidence.</p>
+      <p>AI-OS is a governance-centered architecture treating AI adoption as an operating model question rather than a tool rollout. Works at the task level — assigning each task a permitted mode of use based on stakes, ambiguity, reversibility, and sensitivity — making the human-AI boundary visible, auditable, and adjustable by evidence.</p>
       <div class="paper-links">
-        <a class="paper-link" href="/papers/ai-os">Read paper &rarr;</a>
         <a class="paper-link" href="https://doi.org/10.5281/zenodo.18184826" target="_blank">Zenodo &rarr;</a>
       </div>
     </div>
@@ -260,7 +276,6 @@
       <h3>Beyond Detection: FARABI and the Assessment Credibility Shock in Higher Education</h3>
       <p>FARABI (Framework for AI-Resilient Assessment and Balanced Integrity) reframes assessment integrity as an evidence design problem. The primary problem is not misconduct but validity: if AI can satisfy an assessment without the student demonstrating the targeted reasoning, the assessment was already weak evidence. FARABI provides a portfolio-level triage method for restoring defensible inference.</p>
       <div class="paper-links">
-        <a class="paper-link" href="/papers/farabi">Read paper &rarr;</a>
         <a class="paper-link" href="https://doi.org/10.5281/zenodo.18185052" target="_blank">Zenodo &rarr;</a>
       </div>
     </div>
@@ -523,6 +538,50 @@
       <div class="vc-card-title">The framework: methodology and first-run results</div>
       <div class="vc-card-desc">Full documentation of the Grey Swan / Archimedes foresight model &mdash; the evidence tier architecture, the six Archimedes Levers, the two scenarios, the four outcomes, and the governance rules that keep the model honest. Published open access on Zenodo.</div>
       <div class="vc-card-link">Zenodo &rarr;</div>
+    </a>
+  </div>
+</section>
+
+<!-- ARC -->
+<hr class="rule"/>
+
+<section id="arc">
+  <div class="vc-eyebrow">ARC &nbsp;&middot;&nbsp; AI Readiness and Capability</div>
+
+  <div class="vc-intro">
+    <p>ARC is the advisory practice built on these frameworks. Five service lines covering mapping, implementation, augmentation, education, and foresight. The consulting layer that turns the published research into engagements with governments, universities, and organizations. AI Matrix Live and Grey Swan above are the public proof points. ARC is what gets commissioned.</p>
+  </div>
+
+  <div class="vc-cards arc-cards">
+    <a href="/arc/ai-matrix" class="vc-card">
+      <div class="vc-card-tag">Mapping</div>
+      <div class="vc-card-title">AI Matrix</div>
+      <div class="vc-card-desc">A diagnostic that shows where your organization, sector, or country actually stands on AI.</div>
+      <div class="vc-card-link">Learn more &rarr;</div>
+    </a>
+    <a href="/arc/ai-os" class="vc-card">
+      <div class="vc-card-tag">Implementation</div>
+      <div class="vc-card-title">AI-OS</div>
+      <div class="vc-card-desc">A management system for AI, so your organization can adopt it without losing control of risk, accountability, or direction.</div>
+      <div class="vc-card-link">Learn more &rarr;</div>
+    </a>
+    <a href="/arc/oi" class="vc-card">
+      <div class="vc-card-tag">Augmentation</div>
+      <div class="vc-card-title">OI</div>
+      <div class="vc-card-desc">A practical method for getting real productivity gains out of AI by training people to design structured workflows with it.</div>
+      <div class="vc-card-link">Learn more &rarr;</div>
+    </a>
+    <a href="/arc/farabi" class="vc-card">
+      <div class="vc-card-tag">Education</div>
+      <div class="vc-card-title">FARABI</div>
+      <div class="vc-card-desc">A risk-based framework for higher education to rebuild the credibility of assessment under AI conditions.</div>
+      <div class="vc-card-link">Learn more &rarr;</div>
+    </a>
+    <a href="/arc/grey-swan" class="vc-card">
+      <div class="vc-card-tag">Foresight</div>
+      <div class="vc-card-title">Grey Swan</div>
+      <div class="vc-card-desc">An advisory engagement using the Grey Swan framework above for sector-specific or country-specific foresight, on commission.</div>
+      <div class="vc-card-link">Learn more &rarr;</div>
     </a>
   </div>
 </section>
