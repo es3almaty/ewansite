@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ARC &mdash; AI Readiness and Capability &mdash; Ewan Simpson</title>
+  <meta name="description" content="ARC is the advisory practice built on the AI Matrix, AI-OS, OI, FARABI, and Grey Swan frameworks. Five service lines for governments, universities, and organizations."/>
+
+  <meta property="og:type" content="website"/>
+  <meta property="og:title" content="ARC &mdash; AI Readiness and Capability"/>
+  <meta property="og:description" content="The advisory practice built on the AI Matrix, AI-OS, OI, FARABI, and Grey Swan frameworks. Five service lines for governments, universities, and organizations."/>
+  <meta property="og:url" content="https://ewansimpson.org/arc/"/>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    :root {
+      --ink:#1A1A1A; --mid:#4A4A4A; --soft:#7A7A7A;
+      --rule:#E0E0E0; --bg:#FAFAF8; --accent:#1A3A5C; --gold:#C4922A;
+      --serif:'Lora',Georgia,serif; --sans:'Inter',system-ui,sans-serif;
+    }
+    html { scroll-behavior:smooth; }
+    body { background:var(--bg); color:var(--ink); font-family:var(--sans); font-size:16px; line-height:1.7; }
+
+    /* NAV */
+    nav {
+      position:sticky; top:0; z-index:50;
+      background:rgba(250,250,248,0.96); backdrop-filter:blur(8px);
+      border-bottom:1px solid var(--rule);
+      padding:0 40px; display:flex; align-items:center; justify-content:space-between; height:60px;
+    }
+    .nav-name { font-family:var(--serif); font-size:17px; font-weight:600; color:var(--accent); text-decoration:none; }
+    .nav-links { display:flex; gap:28px; }
+    .nav-links a { font-size:13px; font-weight:500; letter-spacing:0.06em; text-transform:uppercase; color:var(--mid); text-decoration:none; transition:color 0.2s; }
+    .nav-links a:hover { color:var(--accent); }
+    .nav-links a.active { color:var(--accent); }
+
+    /* HEADER */
+    .arc-page { max-width:860px; margin:0 auto; padding:0 40px; }
+    .arc-header { padding:60px 0 50px; border-bottom:1px solid var(--rule); }
+    .back-link {
+      display:inline-block; font-size:11px; font-weight:600; letter-spacing:0.10em; text-transform:uppercase;
+      color:var(--soft); text-decoration:none; margin-bottom:32px; transition:color 0.2s;
+    }
+    .back-link:hover { color:var(--accent); }
+    .page-eyebrow {
+      font-size:11px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase;
+      color:var(--gold); margin-bottom:18px;
+    }
+    h1 {
+      font-family:var(--serif); font-size:clamp(32px,4.2vw,44px); font-weight:600; line-height:1.18;
+      color:var(--accent); margin-bottom:24px;
+    }
+    .arc-lead {
+      font-size:17px; line-height:1.78; color:var(--mid); max-width:640px;
+    }
+    .arc-lead p + p { margin-top:14px; }
+
+    /* SECTION HEADINGS */
+    section.arc-block { padding:50px 0; border-bottom:1px solid var(--rule); }
+    section.arc-block:last-of-type { border-bottom:none; }
+    .theme-label {
+      font-size:10px; font-weight:700; letter-spacing:0.16em; text-transform:uppercase;
+      color:var(--gold); margin-bottom:24px;
+      display:flex; align-items:center; gap:12px;
+    }
+    .theme-label::after { content:''; flex:1; height:1px; background:var(--rule); }
+    h2 { font-family:var(--serif); font-size:24px; font-weight:600; color:var(--accent); margin-bottom:14px; line-height:1.25; }
+    .arc-block p { font-size:15px; color:var(--mid); line-height:1.78; margin-bottom:14px; max-width:640px; }
+    .arc-block p:last-child { margin-bottom:0; }
+
+    /* PRODUCT GRID - 3+2 centered to mirror homepage layout */
+    .arc-grid {
+      display:grid; grid-template-columns:repeat(6,1fr); gap:16px;
+    }
+    .arc-grid-item {
+      grid-column:span 2;
+      display:block; text-decoration:none; color:inherit;
+      background:white; padding:26px 24px;
+      border:1px solid var(--rule); border-radius:4px;
+      transition:border-color 0.2s, transform 0.2s;
+    }
+    .arc-grid-item:nth-child(4) { grid-column:2 / span 2; }
+    .arc-grid-item:nth-child(5) { grid-column:4 / span 2; }
+    .arc-grid-item:hover { border-color:var(--gold); transform:translateY(-2px); }
+    .arc-grid-item .item-tag {
+      font-size:10px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase;
+      color:var(--gold); margin-bottom:10px;
+    }
+    .arc-grid-item h3 {
+      font-family:var(--serif); font-size:19px; font-weight:600; color:var(--accent);
+      margin-bottom:10px; line-height:1.3;
+    }
+    .arc-grid-item p {
+      font-size:13.5px; color:var(--mid); line-height:1.65; margin-bottom:14px; max-width:none;
+    }
+    .arc-grid-item .item-link {
+      font-size:11px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase;
+      color:var(--accent);
+    }
+    .arc-grid-item:hover .item-link { color:var(--gold); }
+
+    /* CONTACT */
+    .contact-block { background:white; border:1px solid var(--rule); border-radius:4px; padding:36px; margin-top:8px; }
+    .contact-block p { font-size:16px; color:var(--mid); margin-bottom:24px; max-width:540px; line-height:1.7; }
+    .contact-block a.email { font-size:16px; font-weight:500; color:var(--accent); text-decoration:none; border-bottom:2px solid var(--gold); padding-bottom:2px; }
+    .contact-block a.email:hover { color:var(--gold); }
+
+    /* SITE FOOTER */
+    footer.site-footer {
+      border-top:1px solid var(--rule); padding:32px 40px; text-align:center;
+      font-size:12px; color:var(--soft); letter-spacing:0.04em; margin-top:60px;
+    }
+    footer.site-footer a { color:var(--soft); text-decoration:none; }
+    footer.site-footer a:hover { color:var(--accent); }
+
+    @media (max-width:680px) {
+      nav { padding:0 20px; }
+      .nav-links { gap:14px; }
+      .nav-links a { font-size:11px; }
+      .arc-page { padding:0 20px; }
+      .arc-header { padding:40px 0 36px; }
+      section.arc-block { padding:36px 0; }
+      .arc-grid { grid-template-columns:1fr; }
+      .arc-grid-item, .arc-grid-item:nth-child(4), .arc-grid-item:nth-child(5) { grid-column:1; }
+      .contact-block { padding:24px; }
+      footer.site-footer { padding:24px 20px; }
+    }
+    @media (min-width:681px) and (max-width:860px) {
+      .arc-grid { grid-template-columns:repeat(2,1fr); }
+      .arc-grid-item, .arc-grid-item:nth-child(4), .arc-grid-item:nth-child(5) { grid-column:auto; }
+    }
+  </style>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GQCDZ9YGX7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-GQCDZ9YGX7');
+  </script>
+</head>
+<body>
+
+<nav>
+  <a class="nav-name" href="/">Ewan Simpson</a>
+  <div class="nav-links">
+    <a href="/#research">Research</a>
+    <a href="/about">About</a>
+    <a href="/#ai-matrix-live">AI Matrix Live</a>
+    <a href="/#grey-swan">Grey Swan</a>
+    <a href="/#arc" class="active">ARC</a>
+    <a href="/#virtuous-city">The Virtuous City</a>
+    <a href="/#contact">Contact</a>
+  </div>
+</nav>
+
+<div class="arc-page">
+
+  <header class="arc-header">
+    <a href="/" class="back-link">&larr; Back to home</a>
+    <div class="page-eyebrow">ARC &nbsp;&middot;&nbsp; AI Readiness and Capability</div>
+    <h1>An advisory practice for AI readiness and capability.</h1>
+    <div class="arc-lead">
+      <p>ARC is the consulting layer built on the published research. Five service lines that take governments, universities, and organizations from where they currently stand on AI to where they need to be: clear-eyed about adoption, equipped to manage it, and capable of using it well.</p>
+      <p>The frameworks are public. The advisory work applies them to your context, with the depth and judgment that a generic consulting framework cannot provide.</p>
+    </div>
+  </header>
+
+  <section class="arc-block">
+    <div class="theme-label">Five service lines</div>
+    <div class="arc-grid">
+
+      <a href="/arc/ai-matrix" class="arc-grid-item">
+        <div class="item-tag">Mapping</div>
+        <h3>AI Matrix</h3>
+        <p>A diagnostic that shows where your organization, sector, or country actually stands on AI. Built on the live AI Matrix Live framework that tracks 115 countries.</p>
+        <div class="item-link">Service detail &rarr;</div>
+      </a>
+
+      <a href="/arc/ai-os" class="arc-grid-item">
+        <div class="item-tag">Implementation</div>
+        <h3>AI-OS</h3>
+        <p>A management system for AI, so your organization can adopt it without losing control of risk, accountability, or direction.</p>
+        <div class="item-link">Service detail &rarr;</div>
+      </a>
+
+      <a href="/arc/oi" class="arc-grid-item">
+        <div class="item-tag">Augmentation</div>
+        <h3>OI</h3>
+        <p>A practical method for getting real productivity gains out of AI, by training people to design structured workflows with it.</p>
+        <div class="item-link">Service detail &rarr;</div>
+      </a>
+
+      <a href="/arc/farabi" class="arc-grid-item">
+        <div class="item-tag">Education</div>
+        <h3>FARABI</h3>
+        <p>A risk-based framework for higher education to rebuild the credibility of assessment under AI conditions. Live audit tool included.</p>
+        <div class="item-link">Service detail &rarr;</div>
+      </a>
+
+      <a href="/arc/grey-swan" class="arc-grid-item">
+        <div class="item-tag">Foresight</div>
+        <h3>Grey Swan</h3>
+        <p>Sector-specific or country-specific foresight engagements using the live Grey Swan framework, on commission. Retainer access available.</p>
+        <div class="item-link">Service detail &rarr;</div>
+      </a>
+
+    </div>
+  </section>
+
+  <section class="arc-block">
+    <div class="theme-label">How it fits together</div>
+    <h2>The natural arc of an AI engagement.</h2>
+    <p>The five lines map to the natural sequence of a serious AI engagement. Mapping comes first: a clear view of where you stand on access and agency, what is working, what is not, and where the real risks sit. Implementation puts a management system in place so AI can be adopted without losing control. Augmentation trains the people who actually do the work to use AI in structured ways that produce measurable gains. Education applies the same logic to assessment and curriculum where students and graduates are concerned. Foresight reads the medium-term signals so strategic decisions are grounded in evidence rather than instinct.</p>
+    <p>You do not have to commission all five. A typical engagement starts with one. The point of the architecture is that each line is built to stand alone, but they fit together into a coherent operating picture for clients who want it.</p>
+  </section>
+
+  <section class="arc-block">
+    <div class="theme-label">Who this is for</div>
+    <h2>Clients and contexts.</h2>
+    <p>Government ministries running national AI strategies. Universities and higher education institutions. Companies and corporate groups beginning serious AI adoption. Development organizations funding AI capacity work. Sovereign wealth funds and long-horizon investors. Any organization that needs to move on AI seriously and does not want to do it badly.</p>
+    <p>The work is grounded in published research, but it is delivered as practical advisory engagements with defined scopes and concrete outputs.</p>
+  </section>
+
+  <section class="arc-block">
+    <div class="theme-label">Get in touch</div>
+    <div class="contact-block">
+      <p>For commissioned work, partnerships, or speaking on any of the five service lines.</p>
+      <a class="email" href="mailto:ewan@ewansimpson.org">ewan@ewansimpson.org</a>
+    </div>
+  </section>
+
+</div>
+
+<footer class="site-footer">
+  <p>&copy; 2026 Ewan Simpson &nbsp;&middot;&nbsp; <a href="/">ewansimpson.org</a></p>
+</footer>
+
+</body>
+</html>
