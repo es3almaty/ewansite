@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI-OS Occupation Atlas · Ewan Simpson</title>
+  <meta name="description" content="Search an occupation, see the tasks inside it, and understand how AI may rebundle the work.">
+  <style>
+    :root {
+      --bg: #f7f3ec;
+      --panel: #fffdf8;
+      --ink: #1c1a17;
+      --muted: #6b6258;
+      --line: #ded4c6;
+      --accent: #8f1d1d;
+      --accent-dark: #641212;
+      --soft: #efe5d8;
+      --green: #22745b;
+      --amber: #a06000;
+      --red: #9b2f2f;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.55;
+    }
+    a { color: inherit; }
+    .site {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 56px;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      padding: 12px 0 28px;
+      border-bottom: 1px solid var(--line);
+    }
+    .brand { font-weight: 800; letter-spacing: .01em; text-decoration: none; }
+    nav { display: flex; flex-wrap: wrap; gap: 14px; font-size: .94rem; color: var(--muted); }
+    nav a { text-decoration: none; }
+    nav a:hover { color: var(--accent); }
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(280px, .9fr);
+      gap: 28px;
+      padding: 46px 0 34px;
+      align-items: stretch;
+    }
+    h1, h2, h3, h4 { line-height: 1.1; margin: 0 0 12px; }
+    h1 { font-size: clamp(2.2rem, 5vw, 4.8rem); letter-spacing: -.055em; }
+    h2 { font-size: clamp(1.7rem, 3vw, 2.5rem); letter-spacing: -.035em; }
+    h3 { margin-top: 30px; font-size: 1.25rem; }
+    h4 { font-size: 1rem; }
+    p { margin: 0 0 14px; }
+    .lead { font-size: clamp(1.08rem, 2vw, 1.28rem); color: #3b352f; max-width: 64ch; }
+    .eyebrow { color: var(--accent); text-transform: uppercase; font-size: .75rem; font-weight: 800; letter-spacing: .12em; margin-bottom: 10px; }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 18px 50px rgba(55, 37, 18, .08);
+    }
+    .search-panel { position: sticky; top: 18px; align-self: start; }
+    label { display: block; font-weight: 800; margin-bottom: 8px; }
+    input, textarea, select {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 13px 14px;
+      background: #fff;
+      font: inherit;
+      color: var(--ink);
+    }
+    input:focus, textarea:focus, select:focus { outline: 2px solid rgba(143, 29, 29, .18); border-color: var(--accent); }
+    .muted, .source-note { color: var(--muted); font-size: .94rem; }
+    .source-note { border-left: 3px solid var(--line); padding-left: 12px; margin-top: 14px; }
+    .result-list { display: grid; gap: 10px; margin-top: 16px; max-height: 56vh; overflow: auto; padding-right: 4px; }
+    .result-card {
+      display: block;
+      width: 100%;
+      text-align: left;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fff;
+      padding: 14px;
+      cursor: pointer;
+      color: var(--ink);
+    }
+    .result-card:hover { border-color: var(--accent); }
+    .result-card strong { display: block; margin-bottom: 4px; }
+    .result-card span { color: var(--muted); font-size: .92rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .layout { display: grid; grid-template-columns: 340px minmax(0, 1fr); gap: 24px; align-items: start; }
+    .task-list { padding-left: 0; counter-reset: tasks; display: grid; gap: 10px; }
+    .task-list li {
+      list-style: none;
+      counter-increment: tasks;
+      display: grid;
+      grid-template-columns: 34px minmax(0, 1fr);
+      gap: 12px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 12px;
+      background: #fff;
+    }
+    .task-list li::before {
+      content: counter(tasks);
+      width: 28px;
+      height: 28px;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--soft);
+      font-weight: 800;
+      color: var(--accent-dark);
+    }
+    .task-list li em { grid-column: 2; color: var(--muted); font-size: .88rem; font-style: normal; }
+    .bundle-grid, .ratings-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .bundle-card, .ratings-grid > div {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 15px;
+      background: #fff;
+    }
+    .bundle-card p { color: var(--muted); font-size: .92rem; }
+    .bundle-card strong { color: var(--accent-dark); }
+    .ratings-grid span { display: block; color: var(--muted); font-size: .9rem; margin-bottom: 8px; }
+    .rating {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 6px 10px;
+      background: var(--soft);
+      color: var(--accent-dark);
+      font-size: .9rem;
+    }
+    .rating.low { color: var(--green); background: rgba(34, 116, 91, .11); }
+    .rating.moderate { color: var(--amber); background: rgba(160, 96, 0, .12); }
+    .rating.high, .rating.very-high { color: var(--red); background: rgba(155, 47, 47, .12); }
+    table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 16px; overflow: hidden; border: 1px solid var(--line); }
+    th, td { text-align: left; padding: 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { background: var(--soft); font-size: .88rem; text-transform: uppercase; letter-spacing: .06em; }
+    tr:last-child td { border-bottom: 0; }
+    .button-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+    button, .button {
+      border: 0;
+      border-radius: 999px;
+      padding: 12px 16px;
+      font-weight: 800;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .primary { background: var(--accent); color: white; }
+    .primary:hover { background: var(--accent-dark); }
+    .secondary { background: var(--soft); color: var(--accent-dark); }
+    .callout { margin-top: 34px; display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: center; }
+    footer { margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); color: var(--muted); font-size: .92rem; }
+    @media (max-width: 860px) {
+      .hero, .layout, .callout { grid-template-columns: 1fr; }
+      .search-panel { position: static; }
+      .bundle-grid, .ratings-grid { grid-template-columns: 1fr; }
+      header { align-items: flex-start; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="site">
+    <header>
+      <a class="brand" href="index.html">Ewan Simpson</a>
+      <nav aria-label="Primary navigation">
+        <a href="index.html#research">Research</a>
+        <a href="occupation-atlas.html">Occupation Atlas</a>
+        <a href="work-rebundler.html">Work Rebundler</a>
+        <a href="aios-workbench.html">AI-OS Workbench</a>
+        <a href="arc/">ARC</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div>
+          <p class="eyebrow">AI-OS Occupation Atlas</p>
+          <h1>Search a job. See the tasks inside it.</h1>
+          <p class="lead">AI does not transform jobs evenly. It compresses some tasks, assists others, raises proof burdens, and leaves some human judgment more important than before. Start with the task layer.</p>
+          <div class="button-row">
+            <a class="button primary" href="#atlas">Search the atlas</a>
+            <a class="button secondary" href="work-rebundler.html">Paste a job description</a>
+          </div>
+        </div>
+        <aside class="panel">
+          <p class="eyebrow">What this gives you</p>
+          <p><strong>Task breakdown:</strong> the work underneath the job title.</p>
+          <p><strong>Task bundles:</strong> where work clusters into data, reporting, coordination, judgment, relationships, proof, and exceptions.</p>
+          <p><strong>AI-era rating:</strong> compression potential, human residual strength, proof burden, augmentation potential, and rebundling urgency.</p>
+        </aside>
+      </section>
+
+      <section id="atlas" class="layout">
+        <aside class="panel search-panel">
+          <label for="occupation-search">Search occupation or keyword</label>
+          <input id="occupation-search" type="search" placeholder="e.g. accountant, loan officer, academic coordinator">
+          <p class="muted" style="margin-top: 12px;">This prototype uses a small seed set. The next build should import attributed O*NET occupation and task data.</p>
+          <div id="occupation-results" class="result-list"></div>
+        </aside>
+        <div id="occupation-profile"></div>
+      </section>
+
+      <section class="panel callout">
+        <div>
+          <p class="eyebrow">Need a role-specific version?</p>
+          <h2>Paste a real job description and generate a custom task map.</h2>
+          <p>Use the Work Rebundler for Stage 2 analysis. It turns a local job description into a task register, bundle map, and first-pass AI-OS profile.</p>
+        </div>
+        <a class="button primary" href="work-rebundler.html">Open Work Rebundler</a>
+      </section>
+    </main>
+
+    <footer>
+      © 2026 Ewan Simpson · AI-OS Occupation Atlas prototype · <a href="index.html">Back to main site</a>
+    </footer>
+  </div>
+
+  <script src="data/occupation-data.js"></script>
+  <script src="occupation-atlas.js"></script>
+</body>
+</html>

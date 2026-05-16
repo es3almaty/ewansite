@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI-OS Work Rebundler · Ewan Simpson</title>
+  <meta name="description" content="Paste a job description and generate a task map, task bundles, and AI-era role direction.">
+  <style>
+    :root { --bg:#f7f3ec; --panel:#fffdf8; --ink:#1c1a17; --muted:#6b6258; --line:#ded4c6; --accent:#8f1d1d; --accent-dark:#641212; --soft:#efe5d8; }
+    *{box-sizing:border-box} body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink);line-height:1.55} a{color:inherit}.site{width:min(1080px,calc(100% - 32px));margin:0 auto;padding:28px 0 56px} header{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:12px 0 28px;border-bottom:1px solid var(--line)}.brand{font-weight:800;text-decoration:none}nav{display:flex;flex-wrap:wrap;gap:14px;font-size:.94rem;color:var(--muted)}nav a{text-decoration:none}nav a:hover{color:var(--accent)}h1,h2,h3,h4{line-height:1.1;margin:0 0 12px}h1{font-size:clamp(2rem,5vw,4.4rem);letter-spacing:-.055em}h2{font-size:clamp(1.6rem,3vw,2.4rem);letter-spacing:-.035em}h3{margin-top:28px;font-size:1.25rem}.hero{padding:44px 0 28px}.lead{font-size:clamp(1.08rem,2vw,1.26rem);color:#3b352f;max-width:66ch}.eyebrow{color:var(--accent);text-transform:uppercase;font-size:.75rem;font-weight:800;letter-spacing:.12em;margin:0 0 10px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:24px;padding:24px;box-shadow:0 18px 50px rgba(55,37,18,.08)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start}label{display:block;font-weight:800;margin:14px 0 8px}input,textarea{width:100%;border:1px solid var(--line);border-radius:14px;padding:13px 14px;background:#fff;font:inherit;color:var(--ink)}textarea{min-height:240px;resize:vertical}input:focus,textarea:focus{outline:2px solid rgba(143,29,29,.18);border-color:var(--accent)}button,.button{border:0;border-radius:999px;padding:12px 16px;font-weight:800;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}.primary{background:var(--accent);color:#fff}.primary:hover{background:var(--accent-dark)}.secondary{background:var(--soft);color:var(--accent-dark)}.button-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.muted{color:var(--muted);font-size:.94rem}.error{background:#fff0ee;border:1px solid #e1b5ad;color:#712016;border-radius:14px;padding:12px;margin-top:14px;display:none}.loading{display:none;margin-top:14px;color:var(--muted)}.result{display:none}.task-list{display:grid;gap:10px;margin:0;padding:0}.task-list li{list-style:none;border:1px solid var(--line);border-radius:16px;padding:12px;background:#fff}.task-list strong{display:block}.task-list span{color:var(--muted);font-size:.9rem}.bundle-grid,.rating-grid,.direction-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.card{border:1px solid var(--line);border-radius:18px;padding:15px;background:#fff}.card h4{margin-bottom:6px}.card p{color:var(--muted);font-size:.92rem;margin:0}.rating{display:inline-block;border-radius:999px;padding:6px 10px;background:var(--soft);color:var(--accent-dark);font-weight:800;font-size:.9rem}.source-note{border-left:3px solid var(--line);padding-left:12px;color:var(--muted);font-size:.92rem;margin-top:16px}footer{margin-top:44px;padding-top:22px;border-top:1px solid var(--line);color:var(--muted);font-size:.92rem}@media(max-width:860px){header,.grid{grid-template-columns:1fr;flex-direction:column;align-items:flex-start}.bundle-grid,.rating-grid,.direction-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="site">
+    <header>
+      <a class="brand" href="index.html">Ewan Simpson</a>
+      <nav>
+        <a href="index.html#research">Research</a>
+        <a href="occupation-atlas.html">Occupation Atlas</a>
+        <a href="work-rebundler.html">Work Rebundler</a>
+        <a href="aios-workbench.html">AI-OS Workbench</a>
+        <a href="arc/">ARC</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <p class="eyebrow">Custom role analysis</p>
+        <h1>Paste a job description. Rebuild it as tasks.</h1>
+        <p class="lead">This tool turns a role description into a structured task map, task bundles, high-level AI-OS ratings, and a future role direction. It is a first-pass diagnostic, not a final HR decision.</p>
+      </section>
+
+      <section class="grid">
+        <form id="rebundler-form" class="panel">
+          <h2>Role input</h2>
+          <label for="role-title">Job title</label>
+          <input id="role-title" name="roleTitle" placeholder="e.g. Finance Officer" required>
+
+          <label for="organization-context">Optional context</label>
+          <input id="organization-context" name="organizationContext" placeholder="e.g. university, bank, NGO, public agency">
+
+          <label for="role-description">Job description or responsibilities</label>
+          <textarea id="role-description" name="roleDescription" placeholder="Paste the job description or bullet list of responsibilities here." required></textarea>
+
+          <div class="button-row">
+            <button class="primary" type="submit">Generate task map</button>
+            <button class="secondary" type="button" id="load-example">Load example</button>
+          </div>
+          <p class="loading" id="loading">Analysing the role…</p>
+          <p class="error" id="error"></p>
+          <p class="source-note">The server function uses the existing ANTHROPIC_API_KEY environment variable already used by the site’s FARABI function.</p>
+        </form>
+
+        <aside class="panel">
+          <h2>Output logic</h2>
+          <p>The tool should produce a task register, group tasks into work bundles, rate the role at a high level, and suggest how the role may rebundle under AI conditions.</p>
+          <p class="muted">The next layer, the AI-OS Workbench, adds detailed AI modes, residual effort, Decision Compass scores, proof burden, and capacity calculations.</p>
+          <div class="button-row">
+            <a class="button secondary" href="occupation-atlas.html">Back to atlas</a>
+            <a class="button secondary" href="aios-workbench.html">Open workbench</a>
+          </div>
+        </aside>
+      </section>
+
+      <section id="result" class="panel result" aria-live="polite"></section>
+    </main>
+
+    <footer>© 2026 Ewan Simpson · AI-OS Work Rebundler prototype</footer>
+  </div>
+
+  <script>
+    const form = document.getElementById('rebundler-form');
+    const resultEl = document.getElementById('result');
+    const errorEl = document.getElementById('error');
+    const loadingEl = document.getElementById('loading');
+
+    function escapeHtml(value) {
+      return String(value || '').replace(/[&<>'"]/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', "'":'&#39;', '"':'&quot;' }[char]));
+    }
+
+    function fallbackAnalysis(roleTitle, roleDescription, organizationContext) {
+      const lines = roleDescription.split(/\n|\.|;/).map(x => x.trim()).filter(x => x.length > 18).slice(0, 12);
+      const tasks = lines.length ? lines : [
+        `Clarify outputs and responsibilities for the ${roleTitle} role.`,
+        `Identify recurring information, communication, reporting, coordination, and judgment tasks.`,
+        `Separate routine work from exception handling and accountable decisions.`
+      ];
+      const bundles = [
+        { name: 'Data and document handling', rationale: 'Likely routine information work, records, documents, and evidence handling.' },
+        { name: 'Coordination and workflow control', rationale: 'Most roles include cross-person routing, follow-up, scheduling, and process maintenance.' },
+        { name: 'Judgment and interpretation', rationale: 'The role description indicates decisions or interpretation that should not be treated as pure automation.' },
+        { name: 'Governance, proof, and accountability', rationale: 'The role likely creates records, approvals, or defensible outputs that need traceability.' }
+      ];
+      return {
+        roleTitle,
+        organizationContext,
+        summary: 'Fallback local analysis generated because the AI function was unavailable. Treat this as a draft map only.',
+        tasks: tasks.map((task, i) => ({ id: `T${i + 1}`, task, bundle: bundles[i % bundles.length].name, aiPotential: 'Assistable', proofBurden: i % 3 === 0 ? 'High' : 'Medium' })),
+        bundles,
+        ratings: { compression: 'Moderate', humanResidual: 'High', proofBurden: 'Medium', rebundlingUrgency: 'Moderate', augmentation: 'High' },
+        futureDirections: [
+          { current: 'Role-holder as producer of outputs', future: 'Role-holder as validator, orchestrator, and accountable user of AI-supported workflows' },
+          { current: 'Routine task execution', future: 'Exception handling, evidence quality, and stakeholder judgment' }
+        ]
+      };
+    }
+
+    function render(data) {
+      resultEl.style.display = 'block';
+      resultEl.innerHTML = `
+        <p class="eyebrow">Generated profile</p>
+        <h2>${escapeHtml(data.roleTitle || 'Role')}</h2>
+        <p>${escapeHtml(data.summary || '')}</p>
+
+        <h3>Task register</h3>
+        <ol class="task-list">
+          ${(data.tasks || []).map(t => `<li><strong>${escapeHtml(t.task)}</strong><span>${escapeHtml(t.bundle || '')} · ${escapeHtml(t.aiPotential || '')} · Proof burden: ${escapeHtml(t.proofBurden || '')}</span></li>`).join('')}
+        </ol>
+
+        <h3>Task bundles</h3>
+        <div class="bundle-grid">
+          ${(data.bundles || []).map(b => `<article class="card"><h4>${escapeHtml(b.name)}</h4><p>${escapeHtml(b.rationale || b.signal || '')}</p></article>`).join('')}
+        </div>
+
+        <h3>High-level AI-OS rating</h3>
+        <div class="rating-grid">
+          ${Object.entries({
+            'AI compression potential': data.ratings?.compression,
+            'Human residual strength': data.ratings?.humanResidual,
+            'Proof/governance burden': data.ratings?.proofBurden,
+            'Rebundling urgency': data.ratings?.rebundlingUrgency,
+            'Augmentation potential': data.ratings?.augmentation
+          }).map(([label, value]) => `<article class="card"><p>${escapeHtml(label)}</p><span class="rating">${escapeHtml(value || 'Not rated')}</span></article>`).join('')}
+        </div>
+
+        <h3>Future role direction</h3>
+        <div class="direction-grid">
+          ${(data.futureDirections || []).map(d => `<article class="card"><h4>${escapeHtml(d.current)}</h4><p>${escapeHtml(d.future)}</p></article>`).join('')}
+        </div>
+
+        <div class="button-row">
+          <button class="primary" id="open-workbench" type="button">Open in AI-OS Workbench</button>
+          <button class="secondary" id="copy-json" type="button">Copy JSON</button>
+        </div>
+      `;
+      document.getElementById('open-workbench').addEventListener('click', () => {
+        localStorage.setItem('aiosWorkbenchTasks', JSON.stringify({ title: data.roleTitle, summary: data.summary, tasks: data.tasks }));
+        window.location.href = 'aios-workbench.html';
+      });
+      document.getElementById('copy-json').addEventListener('click', async () => {
+        await navigator.clipboard.writeText(JSON.stringify(data, null, 2));
+        alert('JSON copied.');
+      });
+      resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      errorEl.style.display = 'none';
+      loadingEl.style.display = 'block';
+      const roleTitle = document.getElementById('role-title').value.trim();
+      const organizationContext = document.getElementById('organization-context').value.trim();
+      const roleDescription = document.getElementById('role-description').value.trim();
+      try {
+        const response = await fetch('/.netlify/functions/analyze-role', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ roleTitle, organizationContext, roleDescription })
+        });
+        const payload = await response.json();
+        if (!response.ok) throw new Error(payload.error || 'The analysis function failed.');
+        render(payload.result);
+      } catch (error) {
+        errorEl.textContent = `${error.message} A local fallback draft has been generated below.`;
+        errorEl.style.display = 'block';
+        render(fallbackAnalysis(roleTitle, roleDescription, organizationContext));
+      } finally {
+        loadingEl.style.display = 'none';
+      }
+    });
+
+    document.getElementById('load-example').addEventListener('click', () => {
+      document.getElementById('role-title').value = 'Academic Program Coordinator';
+      document.getElementById('organization-context').value = 'Business school';
+      document.getElementById('role-description').value = `Maintain programme schedules, course lists, timetables, and academic calendars.\nCoordinate communication between students, faculty, programme leadership, and administration.\nCollect syllabi, assessment information, attendance data, and programme documentation.\nTrack student progression, registration issues, assessment deadlines, and administrative exceptions.\nPrepare reports, meeting notes, and quality assurance documentation for programme review.\nRespond to routine student and faculty queries about programme rules and processes.\nEscalate sensitive student cases, complaints, academic integrity issues, or policy exceptions.\nMaintain evidence files for accreditation, audit, and internal quality processes.`;
+    });
+  </script>
+</body>
+</html>

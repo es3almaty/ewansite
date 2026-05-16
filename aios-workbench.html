@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI-OS Workbench · Ewan Simpson</title>
+  <meta name="description" content="Detailed AI-OS task scoring workbench: AI modes, residual effort, Decision Compass, proof burden, and capacity released.">
+  <style>
+    :root{--bg:#f7f3ec;--panel:#fffdf8;--ink:#1c1a17;--muted:#6b6258;--line:#ded4c6;--accent:#8f1d1d;--accent-dark:#641212;--soft:#efe5d8;--green:#22745b;--amber:#a06000;--red:#9b2f2f}*{box-sizing:border-box}body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}a{color:inherit}.site{width:min(1280px,calc(100% - 28px));margin:0 auto;padding:28px 0 56px}header{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:12px 0 28px;border-bottom:1px solid var(--line)}.brand{font-weight:800;text-decoration:none}nav{display:flex;flex-wrap:wrap;gap:14px;font-size:.94rem;color:var(--muted)}nav a{text-decoration:none}nav a:hover{color:var(--accent)}h1,h2,h3{line-height:1.1;margin:0 0 12px}h1{font-size:clamp(2rem,5vw,4.2rem);letter-spacing:-.055em}.hero{padding:44px 0 24px}.lead{font-size:clamp(1.05rem,2vw,1.24rem);color:#3b352f;max-width:72ch}.eyebrow{color:var(--accent);text-transform:uppercase;font-size:.75rem;font-weight:800;letter-spacing:.12em;margin:0 0 10px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:24px;padding:22px;box-shadow:0 18px 50px rgba(55,37,18,.08);margin-bottom:22px}.controls{display:flex;flex-wrap:wrap;gap:10px}button,.button{border:0;border-radius:999px;padding:11px 15px;font-weight:800;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}.primary{background:var(--accent);color:white}.primary:hover{background:var(--accent-dark)}.secondary{background:var(--soft);color:var(--accent-dark)}.danger{background:#fff0ee;color:#712016}.muted{color:var(--muted);font-size:.94rem}.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.stat{background:#fff;border:1px solid var(--line);border-radius:18px;padding:15px}.stat span{display:block;color:var(--muted);font-size:.88rem}.stat strong{font-size:1.6rem;line-height:1.1}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:18px;background:#fff}table{width:100%;border-collapse:collapse;min-width:1240px}th,td{text-align:left;vertical-align:top;border-bottom:1px solid var(--line);padding:10px}th{background:var(--soft);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}tr:last-child td{border-bottom:0}input,select,textarea{width:100%;border:1px solid var(--line);border-radius:10px;padding:8px;background:#fff;font:inherit;color:var(--ink)}textarea{min-height:70px;resize:vertical}.narrow{width:84px}.score{font-weight:800}.posture{display:inline-block;border-radius:999px;padding:5px 8px;font-weight:800;font-size:.78rem;background:var(--soft);color:var(--accent-dark);white-space:nowrap}.posture.auto{background:rgba(34,116,91,.11);color:var(--green)}.posture.interface{background:rgba(160,96,0,.12);color:var(--amber)}.posture.assist{background:rgba(155,47,47,.10);color:var(--red)}.posture.human{background:rgba(155,47,47,.18);color:var(--red)}footer{margin-top:44px;padding-top:22px;border-top:1px solid var(--line);color:var(--muted);font-size:.92rem}@media(max-width:860px){header{flex-direction:column;align-items:flex-start}.stats{grid-template-columns:1fr 1fr}}
+  </style>
+</head>
+<body>
+  <div class="site">
+    <header>
+      <a class="brand" href="index.html">Ewan Simpson</a>
+      <nav>
+        <a href="index.html#research">Research</a>
+        <a href="occupation-atlas.html">Occupation Atlas</a>
+        <a href="work-rebundler.html">Work Rebundler</a>
+        <a href="aios-workbench.html">AI-OS Workbench</a>
+        <a href="arc/">ARC</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <p class="eyebrow">Stage 3 prototype</p>
+        <h1>AI-OS Workbench</h1>
+        <p class="lead">This is the deeper task-layer worksheet: AI mode, residual effort, Decision Compass risk, proof burden, future effort, and capacity released. It is deliberately transparent. No mystical doom percentage nonsense.</p>
+      </section>
+
+      <section class="panel">
+        <div class="controls">
+          <button class="primary" id="import-tasks">Import latest tasks</button>
+          <button class="secondary" id="add-row">Add blank task</button>
+          <button class="secondary" id="load-demo">Load demo</button>
+          <button class="secondary" id="export-csv">Export CSV</button>
+          <button class="danger" id="clear-table">Clear</button>
+        </div>
+        <p class="muted" style="margin-top:12px">Residual assumptions: Automate = 20%, Assist = 50%, Advise = 70%, Human-only = 100%.</p>
+      </section>
+
+      <section class="stats" id="stats"></section>
+
+      <section class="panel">
+        <h2>Task register and scoring</h2>
+        <p class="muted">Score Decision Compass dimensions from 0 to 3. The total suggests the permitted AI posture: 0–5 Autopilot, 6–9 AI–Human Interface, 10–12 Assist, 13–15 Human-only.</p>
+        <div class="table-wrap">
+          <table id="task-table">
+            <thead>
+              <tr>
+                <th>Task</th>
+                <th>Bundle</th>
+                <th>AI mode</th>
+                <th>Proof</th>
+                <th>Current hrs/mo</th>
+                <th>Stakes</th>
+                <th>Ambiguity</th>
+                <th>Reversibility</th>
+                <th>Data sensitivity</th>
+                <th>Reputation</th>
+                <th>DC total</th>
+                <th>Permitted posture</th>
+                <th>Future hrs</th>
+                <th>Released</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <footer>© 2026 Ewan Simpson · AI-OS Workbench prototype</footer>
+  </div>
+
+  <script>
+    const tbody = document.getElementById('tbody');
+    const residual = { 'Automate': 0.2, 'Assist': 0.5, 'Advise': 0.7, 'Human-only': 1 };
+    const proofOptions = ['Low', 'Medium', 'High', 'Critical'];
+    const bundleOptions = ['Data and document handling', 'Routine analysis and reporting', 'Coordination and workflow control', 'Judgment and interpretation', 'Relationship and trust work', 'Governance, proof, and accountability', 'Exception handling'];
+    const aiModes = Object.keys(residual);
+
+    function escapeHtml(value){return String(value ?? '').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
+    function optionList(options, selected){return options.map(o => `<option ${o===selected?'selected':''}>${escapeHtml(o)}</option>`).join('');}
+    function num(value){const n=parseFloat(value);return Number.isFinite(n)?n:0;}
+    function posture(total){if(total<=5)return ['Autopilot','auto']; if(total<=9)return ['AI-Human Interface','interface']; if(total<=12)return ['Assist','assist']; return ['Human Only','human'];}
+
+    function addRow(task = {}) {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td><textarea class="task">${escapeHtml(task.task || '')}</textarea></td>
+        <td><select class="bundle">${optionList(bundleOptions, task.bundle || bundleOptions[0])}</select></td>
+        <td><select class="mode">${optionList(aiModes, task.aiMode || task.aiPotential || 'Assist')}</select></td>
+        <td><select class="proof">${optionList(proofOptions, task.proofBurden || 'Medium')}</select></td>
+        <td><input class="hours narrow" type="number" min="0" step="0.5" value="${escapeHtml(task.currentHours || 4)}"></td>
+        ${['stakes','ambiguity','reversibility','dataSensitivity','reputation'].map(k => `<td><input class="${k} narrow dc" type="number" min="0" max="3" step="1" value="${escapeHtml(task[k] ?? 1)}"></td>`).join('')}
+        <td class="score dc-total">0</td>
+        <td class="permitted"></td>
+        <td class="future">0</td>
+        <td class="released">0</td>
+        <td><button class="danger remove" type="button">Remove</button></td>
+      `;
+      tbody.appendChild(row);
+      row.querySelectorAll('input, select, textarea').forEach(el => el.addEventListener('input', recalc));
+      row.querySelector('.remove').addEventListener('click', () => { row.remove(); recalc(); });
+      recalc();
+    }
+
+    function recalc() {
+      let currentTotal = 0, futureTotal = 0, releasedTotal = 0;
+      [...tbody.querySelectorAll('tr')].forEach(row => {
+        const mode = row.querySelector('.mode').value;
+        const hours = num(row.querySelector('.hours').value);
+        const dc = ['stakes','ambiguity','reversibility','dataSensitivity','reputation'].reduce((sum,k)=>sum+num(row.querySelector('.'+k).value),0);
+        const future = hours * (residual[mode] ?? 1);
+        const released = hours - future;
+        const [label, cls] = posture(dc);
+        row.querySelector('.dc-total').textContent = dc.toFixed(0);
+        row.querySelector('.permitted').innerHTML = `<span class="posture ${cls}">${label}</span>`;
+        row.querySelector('.future').textContent = future.toFixed(1);
+        row.querySelector('.released').textContent = released.toFixed(1);
+        currentTotal += hours; futureTotal += future; releasedTotal += released;
+      });
+      const rows = tbody.querySelectorAll('tr').length;
+      document.getElementById('stats').innerHTML = `
+        <article class="stat"><span>Tasks</span><strong>${rows}</strong></article>
+        <article class="stat"><span>Current hours/month</span><strong>${currentTotal.toFixed(1)}</strong></article>
+        <article class="stat"><span>Future hours/month</span><strong>${futureTotal.toFixed(1)}</strong></article>
+        <article class="stat"><span>Capacity released</span><strong>${releasedTotal.toFixed(1)}</strong></article>
+      `;
+    }
+
+    function importTasks() {
+      const raw = localStorage.getItem('aiosWorkbenchTasks');
+      if (!raw) { alert('No saved task map found. Generate one from the Occupation Atlas or Work Rebundler first.'); return; }
+      const data = JSON.parse(raw);
+      tbody.innerHTML = '';
+      (data.tasks || []).forEach(t => addRow({
+        task: t.task,
+        bundle: t.bundle || 'Routine analysis and reporting',
+        aiMode: modeFromBundle(t.bundle),
+        proofBurden: proofFromBundle(t.bundle),
+        currentHours: 4,
+        stakes: proofFromBundle(t.bundle) === 'High' ? 2 : 1,
+        ambiguity: t.bundle && t.bundle.includes('Judgment') ? 2 : 1,
+        reversibility: 1,
+        dataSensitivity: proofFromBundle(t.bundle) === 'High' ? 2 : 1,
+        reputation: t.bundle && t.bundle.includes('Relationship') ? 2 : 1
+      }));
+    }
+
+    function modeFromBundle(bundle = '') {
+      if (bundle.includes('Data') || bundle.includes('Routine')) return 'Assist';
+      if (bundle.includes('Judgment') || bundle.includes('Exception')) return 'Advise';
+      if (bundle.includes('Governance') || bundle.includes('Relationship')) return 'Assist';
+      return 'Assist';
+    }
+    function proofFromBundle(bundle = '') {
+      if (bundle.includes('Governance') || bundle.includes('Exception')) return 'High';
+      if (bundle.includes('Relationship') || bundle.includes('Judgment')) return 'Medium';
+      return 'Medium';
+    }
+
+    function loadDemo(){
+      tbody.innerHTML='';
+      [
+        {task:'Receive and log supplier invoice',bundle:'Data and document handling',aiMode:'Automate',proofBurden:'Medium',currentHours:8,stakes:1,ambiguity:0,reversibility:1,dataSensitivity:2,reputation:1},
+        {task:'Match invoice to contract or purchase order',bundle:'Governance, proof, and accountability',aiMode:'Assist',proofBurden:'High',currentHours:14,stakes:2,ambiguity:1,reversibility:1,dataSensitivity:2,reputation:2},
+        {task:'Resolve disputed or unusual invoice cases',bundle:'Exception handling',aiMode:'Advise',proofBurden:'High',currentHours:10,stakes:2,ambiguity:2,reversibility:1,dataSensitivity:2,reputation:2},
+        {task:'Approve sensitive or high-value payment',bundle:'Judgment and interpretation',aiMode:'Human-only',proofBurden:'Critical',currentHours:4,stakes:3,ambiguity:2,reversibility:2,dataSensitivity:2,reputation:3}
+      ].forEach(addRow);
+    }
+
+    function exportCSV(){
+      const header = ['Task','Bundle','AI mode','Proof','Current hours','Stakes','Ambiguity','Reversibility','Data sensitivity','Reputation','DC total','Permitted posture','Future hours','Released'];
+      const rows = [...tbody.querySelectorAll('tr')].map(row => {
+        const dc = row.querySelector('.dc-total').textContent;
+        return [
+          row.querySelector('.task').value,
+          row.querySelector('.bundle').value,
+          row.querySelector('.mode').value,
+          row.querySelector('.proof').value,
+          row.querySelector('.hours').value,
+          row.querySelector('.stakes').value,
+          row.querySelector('.ambiguity').value,
+          row.querySelector('.reversibility').value,
+          row.querySelector('.dataSensitivity').value,
+          row.querySelector('.reputation').value,
+          dc,
+          row.querySelector('.permitted').innerText,
+          row.querySelector('.future').textContent,
+          row.querySelector('.released').textContent
+        ];
+      });
+      const csv = [header, ...rows].map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+      const blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'aios-workbench.csv'; a.click(); URL.revokeObjectURL(url);
+    }
+
+    document.getElementById('import-tasks').addEventListener('click', importTasks);
+    document.getElementById('add-row').addEventListener('click', () => addRow());
+    document.getElementById('load-demo').addEventListener('click', loadDemo);
+    document.getElementById('export-csv').addEventListener('click', exportCSV);
+    document.getElementById('clear-table').addEventListener('click', () => { tbody.innerHTML=''; recalc(); });
+    addRow({ task:'Describe a task here', bundle:'Routine analysis and reporting', aiMode:'Assist', proofBurden:'Medium', currentHours:4 });
+  </script>
+</body>
+</html>
