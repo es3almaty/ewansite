@@ -345,154 +345,225 @@
       .slice(0, 80);
   }
 
-  function loadHtml2Pdf() {
+  function loadJsPdf() {
     return new Promise((resolve, reject) => {
-      if (window.html2pdf) {
-        resolve(window.html2pdf);
+      if (window.jspdf && window.jspdf.jsPDF) {
+        resolve(window.jspdf.jsPDF);
         return;
       }
 
-      const existing = document.querySelector("script[data-html2pdf]");
+      const existing = document.querySelector("script[data-jspdf]");
       if (existing) {
-        existing.addEventListener("load", () => resolve(window.html2pdf));
+        existing.addEventListener("load", () => resolve(window.jspdf.jsPDF));
         existing.addEventListener("error", reject);
         return;
       }
 
       const script = document.createElement("script");
-      script.src =
-        "https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js";
+      script.src = "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
       script.async = true;
-      script.setAttribute("data-html2pdf", "true");
-      script.onload = () => resolve(window.html2pdf);
+      script.setAttribute("data-jspdf", "true");
+      script.onload = () => resolve(window.jspdf.jsPDF);
       script.onerror = reject;
       document.head.appendChild(script);
     });
   }
 
+  function cleanPdfText(value) {
+    return String(value || "")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
   function downloadArcPdf(profile) {
-    const fileName = `ARC-AIOS-${safeFileName(profile.occupation.title)}.pdf`;
+    loadJsPdf()
+      .then(jsPDF => {
+        const doc = new jsPDF({
+          unit: "pt",
+          format: "a4",
+          orientation: "portrait"
+        });
 
-    const report = document.createElement("div");
-    report.style.width = "760px";
-    report.style.padding = "34px";
-    report.style.background = "#fffaf2";
-    report.style.color = "#1f1b16";
-    report.style.fontFamily = "Georgia, 'Times New Roman', serif";
-    report.style.lineHeight = "1.45";
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const pageHeight = doc.internal.pageSize.getHeight();
+        const margin = 48;
+        const usableWidth = pageWidth - margin * 2;
+        let y = 48;
 
-    report.innerHTML = `
-      <div style="border-bottom: 4px solid #7b1f24; padding-bottom: 14px; margin-bottom: 22px;">
-        <div style="font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #7b1f24; font-weight: bold;">
-          ARC · AI-OS Occupation Atlas
-        </div>
-        <h1 style="font-size: 30px; margin: 8px 0 6px;">
-          ${escapeHtml(profile.occupation.title)}
-        </h1>
-        <p style="font-size: 15px; color: #6f665c; margin: 0;">
-          Public occupation profile · Representative task-level analysis
-        </p>
-      </div>
+        const red = [123, 31, 36];
+        const dark = [31, 27, 22];
+        const muted = [111, 102, 92];
+        const line = [222, 212, 198];
 
-      <h2 style="font-size: 20px; color: #7b1f24;">Role summary</h2>
-      <p>${escapeHtml(profile.occupation.summary)}</p>
+        function ensureSpace(spaceNeeded) {
+          if (y + spaceNeeded > pageHeight - 60) {
+            doc.addPage();
+            y = 48;
+          }
+        }
 
-      <div style="background: #efe6d8; padding: 14px; border-radius: 12px; margin: 18px 0;">
-        <strong>Public profile depth:</strong>
-        This profile shows eight representative tasks and a high-level AI-OS interpretation.
-        A full AI-OS analysis goes deeper into validated task registers, permitted AI modes,
-        Decision Compass governance scoring, proof burden, residual effort, and role rebundling.
-      </div>
+        function addWrapped(text, size = 11, color = dark, style = "normal", gap = 14) {
+          doc.setFont("times", style);
+          doc.setFontSize(size);
+          doc.setTextColor(color[0], color[1], color[2]);
 
-      <h2 style="font-size: 20px; color: #7b1f24;">Core task breakdown</h2>
-      <ol>
-        ${profile.tasks
-          .map(
-            t => `
-              <li style="margin-bottom: 8px;">
-                ${escapeHtml(t.task)}
-                <br>
-                <span style="color: #7b1f24; font-size: 13px;">
-                  ${escapeHtml(t.bundleName)}
-                </span>
-              </li>
-            `
-          )
-          .join("")}
-      </ol>
+          const lines = doc.splitTextToSize(cleanPdfText(text), usableWidth);
+          ensureSpace(lines.length * (size + 4) + gap);
 
-      <h2 style="font-size: 20px; color: #7b1f24;">High-level AI-OS ratings</h2>
-      <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
-        <tbody>
-          <tr>
-            <td style="border: 1px solid #ded4c6; padding: 9px;">AI compression potential</td>
-            <td style="border: 1px solid #ded4c6; padding: 9px;"><strong>${escapeHtml(profile.ratings.compression)}</strong></td>
-          </tr>
-          <tr>
-            <td style="border: 1px solid #ded4c6; padding: 9px;">Human residual strength</td>
-            <td style="border: 1px solid #ded4c6; padding: 9px;"><strong>${escapeHtml(profile.ratings.humanResidual)}</strong></td>
-          </tr>
-          <tr>
-            <td style="border: 1px solid #ded4c6; padding: 9px;">Proof/governance burden</td>
-            <td style="border: 1px solid #ded4c6; padding: 9px;"><strong>${escapeHtml(profile.ratings.proofBurden)}</strong></td>
-          </tr>
-          <tr>
-            <td style="border: 1px solid #ded4c6; padding: 9px;">Rebundling urgency</td>
-            <td style="border: 1px solid #ded4c6; padding: 9px;"><strong>${escapeHtml(profile.ratings.rebundlingUrgency)}</strong></td>
-          </tr>
-          <tr>
-            <td style="border: 1px solid #ded4c6; padding: 9px;">Augmentation potential</td>
-            <td style="border: 1px solid #ded4c6; padding: 9px;"><strong>${escapeHtml(profile.ratings.augmentation)}</strong></td>
-          </tr>
-        </tbody>
-      </table>
+          doc.text(lines, margin, y);
+          y += lines.length * (size + 4) + gap;
+        }
 
-      <h2 style="font-size: 20px; color: #7b1f24;">Future role direction</h2>
-      <table style="width: 100%; border-collapse: collapse;">
-        <thead>
-          <tr>
-            <th style="border: 1px solid #ded4c6; padding: 9px; background: #efe6d8;">Current emphasis</th>
-            <th style="border: 1px solid #ded4c6; padding: 9px; background: #efe6d8;">Likely AI-era direction</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${profile.futureDirections
-            .map(
-              row => `
-                <tr>
-                  <td style="border: 1px solid #ded4c6; padding: 9px;">${escapeHtml(row[0])}</td>
-                  <td style="border: 1px solid #ded4c6; padding: 9px;">${escapeHtml(row[1])}</td>
-                </tr>
-              `
-            )
-            .join("")}
-        </tbody>
-      </table>
+        function addSection(title) {
+          ensureSpace(34);
+          doc.setFont("times", "bold");
+          doc.setFontSize(16);
+          doc.setTextColor(red[0], red[1], red[2]);
+          doc.text(cleanPdfText(title), margin, y);
+          y += 24;
+        }
 
-      <div style="margin-top: 26px; padding-top: 12px; border-top: 1px solid #ded4c6; color: #6f665c; font-size: 12px;">
-        © 2026 Ewan Simpson · ARC / AI-OS public demonstrator · ewansimpson.org
-      </div>
-    `;
+        function addRule() {
+          doc.setDrawColor(line[0], line[1], line[2]);
+          doc.line(margin, y, pageWidth - margin, y);
+          y += 18;
+        }
 
-    document.body.appendChild(report);
+        function addRating(label, value) {
+          ensureSpace(26);
 
-    loadHtml2Pdf()
-      .then(html2pdf => {
-        const options = {
-          margin: [10, 10, 10, 10],
-          filename: fileName,
-          image: { type: "jpeg", quality: 0.98 },
-          html2canvas: { scale: 2 },
-          jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
-        };
+          doc.setFont("times", "normal");
+          doc.setFontSize(11);
+          doc.setTextColor(dark[0], dark[1], dark[2]);
+          doc.text(cleanPdfText(label), margin, y);
 
-        return html2pdf().set(options).from(report).save();
-      })
-      .then(() => {
-        report.remove();
+          doc.setFont("times", "bold");
+          doc.setTextColor(red[0], red[1], red[2]);
+          doc.text(cleanPdfText(value), margin + 260, y);
+
+          y += 22;
+        }
+
+        function addFooter() {
+          const pageCount = doc.internal.getNumberOfPages();
+
+          for (let i = 1; i <= pageCount; i += 1) {
+            doc.setPage(i);
+            doc.setFont("times", "normal");
+            doc.setFontSize(9);
+            doc.setTextColor(muted[0], muted[1], muted[2]);
+            doc.text(
+              `© 2026 Ewan Simpson · ARC / AI-OS public demonstrator · ewansimpson.org · Page ${i} of ${pageCount}`,
+              margin,
+              pageHeight - 28
+            );
+          }
+        }
+
+        doc.setFont("times", "bold");
+        doc.setFontSize(10);
+        doc.setTextColor(red[0], red[1], red[2]);
+        doc.text("ARC · AI-OS OCCUPATION ATLAS", margin, y);
+        y += 26;
+
+        doc.setFont("times", "bold");
+        doc.setFontSize(26);
+        doc.setTextColor(dark[0], dark[1], dark[2]);
+
+        const titleLines = doc.splitTextToSize(
+          cleanPdfText(profile.occupation.title),
+          usableWidth
+        );
+
+        doc.text(titleLines, margin, y);
+        y += titleLines.length * 30;
+
+        doc.setFont("times", "normal");
+        doc.setFontSize(11);
+        doc.setTextColor(muted[0], muted[1], muted[2]);
+        doc.text(
+          "Public occupation profile · Representative task-level analysis",
+          margin,
+          y
+        );
+        y += 18;
+
+        addRule();
+
+        addSection("Role summary");
+        addWrapped(profile.occupation.summary, 11, dark, "normal", 16);
+
+        addSection("Public profile depth");
+        addWrapped(
+          "This profile shows eight representative tasks and a high-level AI-OS interpretation. A full AI-OS analysis goes deeper into validated task registers, permitted AI modes, Decision Compass governance scoring, proof burden, residual effort, and role rebundling.",
+          11,
+          dark,
+          "normal",
+          16
+        );
+
+        addSection("Core task breakdown");
+
+        profile.tasks.forEach((task, index) => {
+          ensureSpace(42);
+
+          doc.setFont("times", "normal");
+          doc.setFontSize(11);
+          doc.setTextColor(dark[0], dark[1], dark[2]);
+
+          const taskLines = doc.splitTextToSize(
+            `${index + 1}. ${cleanPdfText(task.task)}`,
+            usableWidth
+          );
+
+          doc.text(taskLines, margin, y);
+          y += taskLines.length * 15;
+
+          doc.setFont("times", "bold");
+          doc.setFontSize(9.5);
+          doc.setTextColor(red[0], red[1], red[2]);
+          doc.text(cleanPdfText(task.bundleName), margin + 16, y);
+          y += 16;
+        });
+
+        y += 4;
+
+        addSection("High-level AI-OS ratings");
+        addRating("AI compression potential", profile.ratings.compression);
+        addRating("Human residual strength", profile.ratings.humanResidual);
+        addRating("Proof/governance burden", profile.ratings.proofBurden);
+        addRating("Rebundling urgency", profile.ratings.rebundlingUrgency);
+        addRating("Augmentation potential", profile.ratings.augmentation);
+
+        addSection("Future role direction");
+
+        profile.futureDirections.forEach(row => {
+          ensureSpace(48);
+
+          doc.setFont("times", "bold");
+          doc.setFontSize(11);
+          doc.setTextColor(dark[0], dark[1], dark[2]);
+          doc.text(`Current emphasis: ${cleanPdfText(row[0])}`, margin, y);
+          y += 15;
+
+          doc.setFont("times", "normal");
+          doc.setTextColor(red[0], red[1], red[2]);
+
+          const futureLines = doc.splitTextToSize(
+            `Likely AI-era direction: ${cleanPdfText(row[1])}`,
+            usableWidth
+          );
+
+          doc.text(futureLines, margin, y);
+          y += futureLines.length * 15 + 10;
+        });
+
+        addFooter();
+
+        const fileName = `ARC-AIOS-${safeFileName(profile.occupation.title)}.pdf`;
+        doc.save(fileName);
       })
       .catch(() => {
-        report.remove();
         alert("PDF download failed. Please refresh and try again.");
       });
   }
