@@ -1,188 +1,663 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AI-OS Work Rebundler · Ewan Simpson</title>
-  <meta name="description" content="Paste a job description and generate a task map, task bundles, and AI-era role direction.">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>AI-OS Work Rebundler | Ewan Simpson</title>
+  <meta
+    name="description"
+    content="Paste a job description and generate a first-pass AI-OS task map, task bundles, ratings, and future role direction."
+  />
+
   <style>
-    :root { --bg:#f7f3ec; --panel:#fffdf8; --ink:#1c1a17; --muted:#6b6258; --line:#ded4c6; --accent:#8f1d1d; --accent-dark:#641212; --soft:#efe5d8; }
-    *{box-sizing:border-box} body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink);line-height:1.55} a{color:inherit}.site{width:min(1080px,calc(100% - 32px));margin:0 auto;padding:28px 0 56px} header{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:12px 0 28px;border-bottom:1px solid var(--line)}.brand{font-weight:800;text-decoration:none}nav{display:flex;flex-wrap:wrap;gap:14px;font-size:.94rem;color:var(--muted)}nav a{text-decoration:none}nav a:hover{color:var(--accent)}h1,h2,h3,h4{line-height:1.1;margin:0 0 12px}h1{font-size:clamp(2rem,5vw,4.4rem);letter-spacing:-.055em}h2{font-size:clamp(1.6rem,3vw,2.4rem);letter-spacing:-.035em}h3{margin-top:28px;font-size:1.25rem}.hero{padding:44px 0 28px}.lead{font-size:clamp(1.08rem,2vw,1.26rem);color:#3b352f;max-width:66ch}.eyebrow{color:var(--accent);text-transform:uppercase;font-size:.75rem;font-weight:800;letter-spacing:.12em;margin:0 0 10px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:24px;padding:24px;box-shadow:0 18px 50px rgba(55,37,18,.08)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start}label{display:block;font-weight:800;margin:14px 0 8px}input,textarea{width:100%;border:1px solid var(--line);border-radius:14px;padding:13px 14px;background:#fff;font:inherit;color:var(--ink)}textarea{min-height:240px;resize:vertical}input:focus,textarea:focus{outline:2px solid rgba(143,29,29,.18);border-color:var(--accent)}button,.button{border:0;border-radius:999px;padding:12px 16px;font-weight:800;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}.primary{background:var(--accent);color:#fff}.primary:hover{background:var(--accent-dark)}.secondary{background:var(--soft);color:var(--accent-dark)}.button-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.muted{color:var(--muted);font-size:.94rem}.error{background:#fff0ee;border:1px solid #e1b5ad;color:#712016;border-radius:14px;padding:12px;margin-top:14px;display:none}.loading{display:none;margin-top:14px;color:var(--muted)}.result{display:none}.task-list{display:grid;gap:10px;margin:0;padding:0}.task-list li{list-style:none;border:1px solid var(--line);border-radius:16px;padding:12px;background:#fff}.task-list strong{display:block}.task-list span{color:var(--muted);font-size:.9rem}.bundle-grid,.rating-grid,.direction-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.card{border:1px solid var(--line);border-radius:18px;padding:15px;background:#fff}.card h4{margin-bottom:6px}.card p{color:var(--muted);font-size:.92rem;margin:0}.rating{display:inline-block;border-radius:999px;padding:6px 10px;background:var(--soft);color:var(--accent-dark);font-weight:800;font-size:.9rem}.source-note{border-left:3px solid var(--line);padding-left:12px;color:var(--muted);font-size:.92rem;margin-top:16px}footer{margin-top:44px;padding-top:22px;border-top:1px solid var(--line);color:var(--muted);font-size:.92rem}@media(max-width:860px){header,.grid{grid-template-columns:1fr;flex-direction:column;align-items:flex-start}.bundle-grid,.rating-grid,.direction-grid{grid-template-columns:1fr}}
+    :root {
+      --bg: #f7f3eb;
+      --paper: #fffaf2;
+      --ink: #1f1b16;
+      --muted: #6f665c;
+      --line: #ded4c6;
+      --accent: #7b1f24;
+      --accent-dark: #551317;
+      --soft: #efe6d8;
+      --shadow: 0 18px 40px rgba(31, 27, 22, 0.08);
+      --radius: 22px;
+      --max: 1180px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.55;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover { text-decoration: underline; }
+
+    nav {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .nav-name {
+      font-weight: 700;
+      color: var(--ink);
+      font-size: 1.05rem;
+      white-space: nowrap;
+    }
+
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      justify-content: flex-end;
+      font-size: 0.94rem;
+    }
+
+    .wrap {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 24px 56px;
+    }
+
+    .hero,
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      gap: 28px;
+      align-items: start;
+      margin-top: 24px;
+    }
+
+    .panel,
+    .hero-main {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 30px;
+    }
+
+    .hero-main {
+      grid-column: 1 / -1;
+      padding: 42px;
+    }
+
+    .eyebrow {
+      margin: 0 0 12px;
+      color: var(--accent);
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    h1, h2, h3 {
+      line-height: 1.12;
+      margin-top: 0;
+    }
+
+    h1 {
+      font-size: clamp(2.25rem, 5vw, 4.25rem);
+      margin-bottom: 20px;
+      letter-spacing: -0.045em;
+    }
+
+    h2 {
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      margin-bottom: 14px;
+      letter-spacing: -0.025em;
+    }
+
+    h3 {
+      margin-top: 28px;
+      margin-bottom: 12px;
+      font-size: 1.2rem;
+    }
+
+    p { margin-top: 0; }
+
+    .lead {
+      color: var(--muted);
+      font-size: 1.14rem;
+      max-width: 780px;
+    }
+
+    label {
+      display: block;
+      font-weight: 700;
+      margin: 16px 0 8px;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px 16px;
+      font-size: 1rem;
+      background: white;
+      color: var(--ink);
+      font-family: inherit;
+    }
+
+    textarea {
+      min-height: 280px;
+      resize: vertical;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    button,
+    .primary,
+    .secondary {
+      font-family: inherit;
+      border-radius: 999px;
+      padding: 12px 18px;
+      border: 1px solid var(--accent);
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.95rem;
+      display: inline-block;
+    }
+
+    .primary {
+      background: var(--accent);
+      color: white;
+    }
+
+    .secondary {
+      background: transparent;
+      color: var(--accent);
+    }
+
+    button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .status {
+      margin-top: 18px;
+      color: var(--muted);
+      display: none;
+    }
+
+    .status.visible {
+      display: block;
+    }
+
+    .error {
+      color: #9b1c1c;
+      background: #fff0f0;
+      border: 1px solid #efcaca;
+      border-radius: 16px;
+      padding: 14px;
+      margin-top: 18px;
+      display: none;
+    }
+
+    .error.visible {
+      display: block;
+    }
+
+    .source-note {
+      background: var(--soft);
+      border-radius: 16px;
+      padding: 14px;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .task-list {
+      padding-left: 22px;
+    }
+
+    .task-list li {
+      margin-bottom: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .task-list span {
+      display: block;
+    }
+
+    .task-list em {
+      display: inline-block;
+      margin-top: 5px;
+      color: var(--accent);
+      font-size: 0.88rem;
+      font-style: normal;
+      font-weight: 700;
+    }
+
+    .bundle-grid,
+    .ratings-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .bundle-card,
+    .ratings-grid > div {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px;
+    }
+
+    .ratings-grid span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+    }
+
+    .rating {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 6px 10px;
+      background: var(--soft);
+      color: var(--accent-dark);
+      font-size: 0.9rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    th,
+    td {
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid var(--line);
+      padding: 13px;
+    }
+
+    th {
+      background: var(--soft);
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    footer {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 24px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 900px) {
+      nav {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .nav-links {
+        justify-content: flex-start;
+      }
+
+      .hero,
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-main {
+        padding: 30px;
+      }
+
+      .bundle-grid,
+      .ratings-grid {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
-<body>
-  <div class="site">
-    <header>
-      <a class="brand" href="index.html">Ewan Simpson</a>
-      <nav>
-        <a href="index.html#research">Research</a>
-        <a href="occupation-atlas.html">Occupation Atlas</a>
-        <a href="work-rebundler.html">Work Rebundler</a>
-        <a href="aios-workbench.html">AI-OS Workbench</a>
-        <a href="arc/">ARC</a>
-      </nav>
-    </header>
 
-    <main>
-      <section class="hero">
+<body>
+  <nav>
+    <a class="nav-name" href="/">Ewan Simpson</a>
+
+    <div class="nav-links">
+      <a href="/#research">Research</a>
+      <a href="/about.html">About</a>
+      <a href="https://aimatrixlive.com">AI Matrix Live</a>
+      <a href="/grey-swan.html">Grey Swan</a>
+      <a href="/arc/">ARC</a>
+      <a href="/occupation-atlas.html">Work Rebundler</a>
+      <a href="/essay.html">The Virtuous City</a>
+      <a href="/#contact">Contact</a>
+    </div>
+  </nav>
+
+  <main class="wrap">
+    <section class="hero">
+      <div class="hero-main">
         <p class="eyebrow">Custom role analysis</p>
         <h1>Paste a job description. Rebuild it as tasks.</h1>
-        <p class="lead">This tool turns a role description into a structured task map, task bundles, high-level AI-OS ratings, and a future role direction. It is a first-pass diagnostic, not a final HR decision.</p>
+        <p class="lead">
+          This tool turns a role description into a structured task map, task bundles,
+          high-level AI-OS ratings, and a future role direction. It is a first-pass
+          diagnostic, not a final HR decision.
+        </p>
+        <div class="button-row">
+          <a class="primary" href="#role-input">Start analysis</a>
+          <a class="secondary" href="/occupation-atlas.html">Back to Occupation Atlas</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="layout" id="role-input">
+      <section class="panel">
+        <p class="eyebrow">Role input</p>
+        <h2>Describe the role</h2>
+
+        <label for="role-title">Job title</label>
+        <input id="role-title" type="text" placeholder="Example: Finance Officer" />
+
+        <label for="organization-context">Optional context</label>
+        <input
+          id="organization-context"
+          type="text"
+          placeholder="Example: university business school, bank operations, public agency"
+        />
+
+        <label for="role-description">Job description or responsibilities</label>
+        <textarea
+          id="role-description"
+          placeholder="Paste the job description, responsibilities, or role notes here..."
+        ></textarea>
+
+        <div class="button-row">
+          <button id="generate" class="primary" type="button">Generate task map</button>
+          <button id="load-example" class="secondary" type="button">Load example</button>
+        </div>
+
+        <p id="status" class="status">Analysing the role…</p>
+        <div id="error" class="error"></div>
       </section>
 
-      <section class="grid">
-        <form id="rebundler-form" class="panel">
-          <h2>Role input</h2>
-          <label for="role-title">Job title</label>
-          <input id="role-title" name="roleTitle" placeholder="e.g. Finance Officer" required>
-
-          <label for="organization-context">Optional context</label>
-          <input id="organization-context" name="organizationContext" placeholder="e.g. university, bank, NGO, public agency">
-
-          <label for="role-description">Job description or responsibilities</label>
-          <textarea id="role-description" name="roleDescription" placeholder="Paste the job description or bullet list of responsibilities here." required></textarea>
-
-          <div class="button-row">
-            <button class="primary" type="submit">Generate task map</button>
-            <button class="secondary" type="button" id="load-example">Load example</button>
-          </div>
-          <p class="loading" id="loading">Analysing the role…</p>
-          <p class="error" id="error"></p>
-          <p class="source-note">The server function uses the existing ANTHROPIC_API_KEY environment variable already used by the site’s FARABI function.</p>
-        </form>
-
-        <aside class="panel">
-          <h2>Output logic</h2>
-          <p>The tool should produce a task register, group tasks into work bundles, rate the role at a high level, and suggest how the role may rebundle under AI conditions.</p>
-          <p class="muted">The next layer, the AI-OS Workbench, adds detailed AI modes, residual effort, Decision Compass scores, proof burden, and capacity calculations.</p>
-          <div class="button-row">
-            <a class="button secondary" href="occupation-atlas.html">Back to atlas</a>
-            <a class="button secondary" href="aios-workbench.html">Open workbench</a>
-          </div>
-        </aside>
+      <section id="output" class="panel">
+        <p class="eyebrow">Output logic</p>
+        <h2>First-pass AI-OS role profile</h2>
+        <p>
+          The tool will produce a task register, group tasks into work bundles,
+          rate the role at a high level, and suggest how the role may rebundle
+          under AI conditions.
+        </p>
+        <p class="source-note">
+          The next layer, the AI-OS Workbench, adds detailed AI modes, residual
+          effort, Decision Compass scores, proof burden, and capacity calculations.
+        </p>
       </section>
+    </section>
 
-      <section id="result" class="panel result" aria-live="polite"></section>
-    </main>
+    <section class="panel">
+      <p class="eyebrow">Next step</p>
+      <h2>From public generator to deeper AI-OS work</h2>
+      <p>
+        This public generator is deliberately lightweight. A full AI-OS diagnostic
+        would validate the task register with local stakeholders, score permitted
+        AI use, identify governance and proof burdens, estimate residual effort,
+        and rebundle work into future roles.
+      </p>
 
-    <footer>© 2026 Ewan Simpson · AI-OS Work Rebundler prototype</footer>
-  </div>
+      <div class="button-row">
+        <a class="secondary" href="/occupation-atlas.html">Back to atlas</a>
+        <a class="primary" href="/aios-workbench.html">Open workbench</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    © 2026 Ewan Simpson · AI-OS Work Rebundler prototype
+  </footer>
 
   <script>
-    const form = document.getElementById('rebundler-form');
-    const resultEl = document.getElementById('result');
-    const errorEl = document.getElementById('error');
-    const loadingEl = document.getElementById('loading');
+    const EXAMPLE = {
+      roleTitle: "Finance Officer",
+      organizationContext: "University business school",
+      roleDescription:
+        "Responsible for processing supplier invoices, checking supporting documents, preparing payment files, maintaining budget records, responding to budget-holder queries, supporting monthly reporting, preparing evidence for audit, and escalating unusual or disputed transactions to the finance manager."
+    };
 
     function escapeHtml(value) {
-      return String(value || '').replace(/[&<>'"]/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', "'":'&#39;', '"':'&quot;' }[char]));
+      return String(value || "").replace(/[&<>'"]/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        "'": "&#39;",
+        '"': "&quot;"
+      }[char]));
     }
 
-    function fallbackAnalysis(roleTitle, roleDescription, organizationContext) {
-      const lines = roleDescription.split(/\n|\.|;/).map(x => x.trim()).filter(x => x.length > 18).slice(0, 12);
-      const tasks = lines.length ? lines : [
-        `Clarify outputs and responsibilities for the ${roleTitle} role.`,
-        `Identify recurring information, communication, reporting, coordination, and judgment tasks.`,
-        `Separate routine work from exception handling and accountable decisions.`
-      ];
-      const bundles = [
-        { name: 'Data and document handling', rationale: 'Likely routine information work, records, documents, and evidence handling.' },
-        { name: 'Coordination and workflow control', rationale: 'Most roles include cross-person routing, follow-up, scheduling, and process maintenance.' },
-        { name: 'Judgment and interpretation', rationale: 'The role description indicates decisions or interpretation that should not be treated as pure automation.' },
-        { name: 'Governance, proof, and accountability', rationale: 'The role likely creates records, approvals, or defensible outputs that need traceability.' }
-      ];
-      return {
-        roleTitle,
-        organizationContext,
-        summary: 'Fallback local analysis generated because the AI function was unavailable. Treat this as a draft map only.',
-        tasks: tasks.map((task, i) => ({ id: `T${i + 1}`, task, bundle: bundles[i % bundles.length].name, aiPotential: 'Assistable', proofBurden: i % 3 === 0 ? 'High' : 'Medium' })),
-        bundles,
-        ratings: { compression: 'Moderate', humanResidual: 'High', proofBurden: 'Medium', rebundlingUrgency: 'Moderate', augmentation: 'High' },
-        futureDirections: [
-          { current: 'Role-holder as producer of outputs', future: 'Role-holder as validator, orchestrator, and accountable user of AI-supported workflows' },
-          { current: 'Routine task execution', future: 'Exception handling, evidence quality, and stakeholder judgment' }
-        ]
-      };
+    function ratingClass(value) {
+      return "rating " + String(value || "").toLowerCase().replace(/\s+/g, "-");
     }
 
-    function render(data) {
-      resultEl.style.display = 'block';
-      resultEl.innerHTML = `
-        <p class="eyebrow">Generated profile</p>
-        <h2>${escapeHtml(data.roleTitle || 'Role')}</h2>
-        <p>${escapeHtml(data.summary || '')}</p>
+    function showStatus(show) {
+      document.getElementById("status").classList.toggle("visible", show);
+    }
 
-        <h3>Task register</h3>
+    function showError(message) {
+      const el = document.getElementById("error");
+      if (!message) {
+        el.textContent = "";
+        el.classList.remove("visible");
+        return;
+      }
+
+      el.textContent = message;
+      el.classList.add("visible");
+    }
+
+    function normalizeTasks(result) {
+      if (Array.isArray(result.tasks)) return result.tasks;
+      if (Array.isArray(result.representativeTasks)) return result.representativeTasks;
+      if (Array.isArray(result.taskRegister)) return result.taskRegister;
+      return [];
+    }
+
+    function renderResult(result) {
+      const output = document.getElementById("output");
+      const tasks = normalizeTasks(result);
+
+      output.innerHTML = `
+        <p class="eyebrow">AI-OS role profile</p>
+        <h2>${escapeHtml(result.roleTitle || "Role profile")}</h2>
+
+        <p>${escapeHtml(result.summary || "First-pass AI-OS task profile generated from the supplied role description.")}</p>
+
+        <p class="source-note">
+          Public generator output. This is a first-pass task-level interpretation, not a final HR, legal, or workforce decision.
+        </p>
+
+        <h3>Main outputs</h3>
+        <ul>
+          ${(result.outputs || [])
+            .map(output => `<li>${escapeHtml(typeof output === "string" ? output : output.output)}</li>`)
+            .join("") || "<li>No outputs identified.</li>"}
+        </ul>
+
+        <h3>Task breakdown</h3>
         <ol class="task-list">
-          ${(data.tasks || []).map(t => `<li><strong>${escapeHtml(t.task)}</strong><span>${escapeHtml(t.bundle || '')} · ${escapeHtml(t.aiPotential || '')} · Proof burden: ${escapeHtml(t.proofBurden || '')}</span></li>`).join('')}
+          ${tasks
+            .map(task => `
+              <li>
+                <span>${escapeHtml(task.task || task.statement || task.description || "")}</span>
+                <em>
+                  ${escapeHtml(task.bundle || task.taskBundle || "Unclassified")}
+                  ${task.aiPotential ? " · " + escapeHtml(task.aiPotential) : ""}
+                  ${task.proofBurden ? " · Proof: " + escapeHtml(task.proofBurden) : ""}
+                </em>
+              </li>
+            `)
+            .join("") || "<li>No tasks generated.</li>"}
         </ol>
 
         <h3>Task bundles</h3>
         <div class="bundle-grid">
-          ${(data.bundles || []).map(b => `<article class="card"><h4>${escapeHtml(b.name)}</h4><p>${escapeHtml(b.rationale || b.signal || '')}</p></article>`).join('')}
+          ${(result.bundles || result.taskBundles || [])
+            .map(bundle => `
+              <div class="bundle-card">
+                <strong>${escapeHtml(bundle.name || bundle.bundle || "Bundle")}</strong>
+                <p>${escapeHtml(bundle.rationale || bundle.interpretation || "")}</p>
+              </div>
+            `)
+            .join("") || "<p class='muted'>No task bundles generated.</p>"}
         </div>
 
-        <h3>High-level AI-OS rating</h3>
-        <div class="rating-grid">
+        <h3>High-level AI-OS ratings</h3>
+        <div class="ratings-grid">
           ${Object.entries({
-            'AI compression potential': data.ratings?.compression,
-            'Human residual strength': data.ratings?.humanResidual,
-            'Proof/governance burden': data.ratings?.proofBurden,
-            'Rebundling urgency': data.ratings?.rebundlingUrgency,
-            'Augmentation potential': data.ratings?.augmentation
-          }).map(([label, value]) => `<article class="card"><p>${escapeHtml(label)}</p><span class="rating">${escapeHtml(value || 'Not rated')}</span></article>`).join('')}
+            "AI compression potential": result.ratings?.compression,
+            "Human residual strength": result.ratings?.humanResidual,
+            "Proof/governance burden": result.ratings?.proofBurden,
+            "Rebundling urgency": result.ratings?.rebundlingUrgency,
+            "Augmentation potential": result.ratings?.augmentation
+          })
+            .map(([label, value]) => `
+              <div>
+                <span>${escapeHtml(label)}</span>
+                <strong class="${ratingClass(value || "Moderate")}">${escapeHtml(value || "Moderate")}</strong>
+              </div>
+            `)
+            .join("")}
         </div>
 
         <h3>Future role direction</h3>
-        <div class="direction-grid">
-          ${(data.futureDirections || []).map(d => `<article class="card"><h4>${escapeHtml(d.current)}</h4><p>${escapeHtml(d.future)}</p></article>`).join('')}
-        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Current emphasis</th>
+              <th>Likely AI-era direction</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${(result.futureDirections || [])
+              .map(row => `
+                <tr>
+                  <td>${escapeHtml(row.current || row.currentEmphasis || "")}</td>
+                  <td>${escapeHtml(row.future || row.futureRoleDirection || "")}</td>
+                </tr>
+              `)
+              .join("") || "<tr><td colspan='2'>No future role directions generated.</td></tr>"}
+          </tbody>
+        </table>
+
+        <h3>Cautions</h3>
+        <ul>
+          ${(result.cautions || result.publicCautions || [])
+            .map(caution => `<li>${escapeHtml(caution)}</li>`)
+            .join("") || "<li>This is a preliminary public profile and should be validated locally.</li>"}
+        </ul>
 
         <div class="button-row">
-          <button class="primary" id="open-workbench" type="button">Open in AI-OS Workbench</button>
-          <button class="secondary" id="copy-json" type="button">Copy JSON</button>
+          <button id="send-to-workbench" class="primary" type="button">Open in AI-OS Workbench</button>
+          <button id="clear-output" class="secondary" type="button">Clear output</button>
         </div>
       `;
-      document.getElementById('open-workbench').addEventListener('click', () => {
-        localStorage.setItem('aiosWorkbenchTasks', JSON.stringify({ title: data.roleTitle, summary: data.summary, tasks: data.tasks }));
-        window.location.href = 'aios-workbench.html';
+
+      document.getElementById("send-to-workbench")?.addEventListener("click", () => {
+        localStorage.setItem(
+          "aiosWorkbenchTasks",
+          JSON.stringify({
+            title: result.roleTitle || "Custom role",
+            summary: result.summary || "",
+            tasks: tasks.map(task => ({
+              task: task.task || task.statement || task.description || "",
+              bundle: task.bundle || task.taskBundle || "Unclassified"
+            }))
+          })
+        );
+
+        window.location.href = "/aios-workbench.html";
       });
-      document.getElementById('copy-json').addEventListener('click', async () => {
-        await navigator.clipboard.writeText(JSON.stringify(data, null, 2));
-        alert('JSON copied.');
+
+      document.getElementById("clear-output")?.addEventListener("click", () => {
+        window.location.reload();
       });
-      resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    form.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      errorEl.style.display = 'none';
-      loadingEl.style.display = 'block';
-      const roleTitle = document.getElementById('role-title').value.trim();
-      const organizationContext = document.getElementById('organization-context').value.trim();
-      const roleDescription = document.getElementById('role-description').value.trim();
-      try {
-        const response = await fetch('/.netlify/functions/analyze-role', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ roleTitle, organizationContext, roleDescription })
-        });
-        const payload = await response.json();
-        if (!response.ok) throw new Error(payload.error || 'The analysis function failed.');
-        render(payload.result);
-      } catch (error) {
-        errorEl.textContent = `${error.message} A local fallback draft has been generated below.`;
-        errorEl.style.display = 'block';
-        render(fallbackAnalysis(roleTitle, roleDescription, organizationContext));
-      } finally {
-        loadingEl.style.display = 'none';
-      }
-    });
+    async function generateRoleMap() {
+      const button = document.getElementById("generate");
+      const roleTitle = document.getElementById("role-title").value.trim();
+      const organizationContext = document.getElementById("organization-context").value.trim();
+      const roleDescription = document.getElementById("role-description").value.trim();
 
-    document.getElementById('load-example').addEventListener('click', () => {
-      document.getElementById('role-title').value = 'Academic Program Coordinator';
-      document.getElementById('organization-context').value = 'Business school';
-      document.getElementById('role-description').value = `Maintain programme schedules, course lists, timetables, and academic calendars.\nCoordinate communication between students, faculty, programme leadership, and administration.\nCollect syllabi, assessment information, attendance data, and programme documentation.\nTrack student progression, registration issues, assessment deadlines, and administrative exceptions.\nPrepare reports, meeting notes, and quality assurance documentation for programme review.\nRespond to routine student and faculty queries about programme rules and processes.\nEscalate sensitive student cases, complaints, academic integrity issues, or policy exceptions.\nMaintain evidence files for accreditation, audit, and internal quality processes.`;
+      showError("");
+
+      if (!roleTitle || !roleDescription) {
+        showError("Please add at least a job title and job description.");
+        return;
+      }
+
+      button.disabled = true;
+      showStatus(true);
+
+      try {
+        const response = await fetch("/.netlify/functions/analyze-role", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            roleTitle,
+            organizationContext,
+            roleDescription
+          })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+          throw new Error(data.error || "The role analysis failed.");
+        }
+
+        renderResult(data.result);
+      } catch (error) {
+        showError(error.message || "The role analysis failed. Please try again.");
+      } finally {
+        button.disabled = false;
+        showStatus(false);
+      }
+    }
+
+    document.getElementById("generate").addEventListener("click", generateRoleMap);
+
+    document.getElementById("load-example").addEventListener("click", () => {
+      document.getElementById("role-title").value = EXAMPLE.roleTitle;
+      document.getElementById("organization-context").value = EXAMPLE.organizationContext;
+      document.getElementById("role-description").value = EXAMPLE.roleDescription;
     });
   </script>
 </body>
