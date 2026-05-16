@@ -337,6 +337,166 @@
     return "rating " + String(value || "").toLowerCase().replace(/\s+/g, "-");
   }
 
+  function safeFileName(value) {
+    return String(value || "occupation-profile")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .slice(0, 80);
+  }
+
+  function loadHtml2Pdf() {
+    return new Promise((resolve, reject) => {
+      if (window.html2pdf) {
+        resolve(window.html2pdf);
+        return;
+      }
+
+      const existing = document.querySelector("script[data-html2pdf]");
+      if (existing) {
+        existing.addEventListener("load", () => resolve(window.html2pdf));
+        existing.addEventListener("error", reject);
+        return;
+      }
+
+      const script = document.createElement("script");
+      script.src =
+        "https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js";
+      script.async = true;
+      script.setAttribute("data-html2pdf", "true");
+      script.onload = () => resolve(window.html2pdf);
+      script.onerror = reject;
+      document.head.appendChild(script);
+    });
+  }
+
+  function downloadArcPdf(profile) {
+    const fileName = `ARC-AIOS-${safeFileName(profile.occupation.title)}.pdf`;
+
+    const report = document.createElement("div");
+    report.style.width = "760px";
+    report.style.padding = "34px";
+    report.style.background = "#fffaf2";
+    report.style.color = "#1f1b16";
+    report.style.fontFamily = "Georgia, 'Times New Roman', serif";
+    report.style.lineHeight = "1.45";
+
+    report.innerHTML = `
+      <div style="border-bottom: 4px solid #7b1f24; padding-bottom: 14px; margin-bottom: 22px;">
+        <div style="font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #7b1f24; font-weight: bold;">
+          ARC · AI-OS Occupation Atlas
+        </div>
+        <h1 style="font-size: 30px; margin: 8px 0 6px;">
+          ${escapeHtml(profile.occupation.title)}
+        </h1>
+        <p style="font-size: 15px; color: #6f665c; margin: 0;">
+          Public occupation profile · Representative task-level analysis
+        </p>
+      </div>
+
+      <h2 style="font-size: 20px; color: #7b1f24;">Role summary</h2>
+      <p>${escapeHtml(profile.occupation.summary)}</p>
+
+      <div style="background: #efe6d8; padding: 14px; border-radius: 12px; margin: 18px 0;">
+        <strong>Public profile depth:</strong>
+        This profile shows eight representative tasks and a high-level AI-OS interpretation.
+        A full AI-OS analysis goes deeper into validated task registers, permitted AI modes,
+        Decision Compass governance scoring, proof burden, residual effort, and role rebundling.
+      </div>
+
+      <h2 style="font-size: 20px; color: #7b1f24;">Core task breakdown</h2>
+      <ol>
+        ${profile.tasks
+          .map(
+            t => `
+              <li style="margin-bottom: 8px;">
+                ${escapeHtml(t.task)}
+                <br>
+                <span style="color: #7b1f24; font-size: 13px;">
+                  ${escapeHtml(t.bundleName)}
+                </span>
+              </li>
+            `
+          )
+          .join("")}
+      </ol>
+
+      <h2 style="font-size: 20px; color: #7b1f24;">High-level AI-OS ratings</h2>
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+        <tbody>
+          <tr>
+            <td style="border: 1px solid #ded4c6; padding: 9px;">AI compression potential</td>
+            <td style="border: 1px solid #ded4c6; padding: 9px;"><strong>${escapeHtml(profile.ratings.compression)}</strong></td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid #ded4c6; padding: 9px;">Human residual strength</td>
+            <td style="border: 1px solid #ded4c6; padding: 9px;"><strong>${escapeHtml(profile.ratings.humanResidual)}</strong></td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid #ded4c6; padding: 9px;">Proof/governance burden</td>
+            <td style="border: 1px solid #ded4c6; padding: 9px;"><strong>${escapeHtml(profile.ratings.proofBurden)}</strong></td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid #ded4c6; padding: 9px;">Rebundling urgency</td>
+            <td style="border: 1px solid #ded4c6; padding: 9px;"><strong>${escapeHtml(profile.ratings.rebundlingUrgency)}</strong></td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid #ded4c6; padding: 9px;">Augmentation potential</td>
+            <td style="border: 1px solid #ded4c6; padding: 9px;"><strong>${escapeHtml(profile.ratings.augmentation)}</strong></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 style="font-size: 20px; color: #7b1f24;">Future role direction</h2>
+      <table style="width: 100%; border-collapse: collapse;">
+        <thead>
+          <tr>
+            <th style="border: 1px solid #ded4c6; padding: 9px; background: #efe6d8;">Current emphasis</th>
+            <th style="border: 1px solid #ded4c6; padding: 9px; background: #efe6d8;">Likely AI-era direction</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${profile.futureDirections
+            .map(
+              row => `
+                <tr>
+                  <td style="border: 1px solid #ded4c6; padding: 9px;">${escapeHtml(row[0])}</td>
+                  <td style="border: 1px solid #ded4c6; padding: 9px;">${escapeHtml(row[1])}</td>
+                </tr>
+              `
+            )
+            .join("")}
+        </tbody>
+      </table>
+
+      <div style="margin-top: 26px; padding-top: 12px; border-top: 1px solid #ded4c6; color: #6f665c; font-size: 12px;">
+        © 2026 Ewan Simpson · ARC / AI-OS public demonstrator · ewansimpson.org
+      </div>
+    `;
+
+    document.body.appendChild(report);
+
+    loadHtml2Pdf()
+      .then(html2pdf => {
+        const options = {
+          margin: [10, 10, 10, 10],
+          filename: fileName,
+          image: { type: "jpeg", quality: 0.98 },
+          html2canvas: { scale: 2 },
+          jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
+        };
+
+        return html2pdf().set(options).from(report).save();
+      })
+      .then(() => {
+        report.remove();
+      })
+      .catch(() => {
+        report.remove();
+        alert("PDF download failed. Please refresh and try again.");
+      });
+  }
+
   function renderResultList(results) {
     const list = document.getElementById("occupation-results");
     if (!list) return;
@@ -468,8 +628,8 @@
           <button id="send-to-workbench" class="primary" type="button">
             Open in AI-OS Workbench
           </button>
-          <button id="copy-profile" class="secondary" type="button">
-            Copy profile JSON
+          <button id="download-arc-pdf" class="secondary" type="button">
+            Download ARC PDF
           </button>
         </div>
       </article>
@@ -492,29 +652,10 @@
       });
     }
 
-    const copyButton = document.getElementById("copy-profile");
-    if (copyButton) {
-      copyButton.addEventListener("click", async () => {
-        await navigator.clipboard.writeText(
-          JSON.stringify(
-            {
-              occupation: profile.occupation.title,
-              summary: profile.occupation.summary,
-              tasks: profile.tasks,
-              bundles: profile.bundles.map(bundle => ({
-                name: bundle.name,
-                signal: bundle.signal,
-                taskCount: bundle.tasks.length
-              })),
-              ratings: profile.ratings,
-              futureDirections: profile.futureDirections
-            },
-            null,
-            2
-          )
-        );
-
-        alert("Profile copied.");
+    const pdfButton = document.getElementById("download-arc-pdf");
+    if (pdfButton) {
+      pdfButton.addEventListener("click", () => {
+        downloadArcPdf(profile);
       });
     }
   }
