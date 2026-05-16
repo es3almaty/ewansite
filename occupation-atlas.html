@@ -1,248 +1,547 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AI-OS Occupation Atlas · Ewan Simpson</title>
-  <meta name="description" content="Search an occupation, see the tasks inside it, and understand how AI may rebundle the work.">
-  <style>
-    :root {
-      --bg: #f7f3ec;
-      --panel: #fffdf8;
-      --ink: #1c1a17;
-      --muted: #6b6258;
-      --line: #ded4c6;
-      --accent: #8f1d1d;
-      --accent-dark: #641212;
-      --soft: #efe5d8;
-      --green: #22745b;
-      --amber: #a06000;
-      --red: #9b2f2f;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: var(--bg);
-      color: var(--ink);
-      line-height: 1.55;
-    }
-    a { color: inherit; }
-    .site {
-      width: min(1120px, calc(100% - 32px));
-      margin: 0 auto;
-      padding: 28px 0 56px;
-    }
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 20px;
-      padding: 12px 0 28px;
-      border-bottom: 1px solid var(--line);
-    }
-    .brand { font-weight: 800; letter-spacing: .01em; text-decoration: none; }
-    nav { display: flex; flex-wrap: wrap; gap: 14px; font-size: .94rem; color: var(--muted); }
-    nav a { text-decoration: none; }
-    nav a:hover { color: var(--accent); }
-    .hero {
-      display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(280px, .9fr);
-      gap: 28px;
-      padding: 46px 0 34px;
-      align-items: stretch;
-    }
-    h1, h2, h3, h4 { line-height: 1.1; margin: 0 0 12px; }
-    h1 { font-size: clamp(2.2rem, 5vw, 4.8rem); letter-spacing: -.055em; }
-    h2 { font-size: clamp(1.7rem, 3vw, 2.5rem); letter-spacing: -.035em; }
-    h3 { margin-top: 30px; font-size: 1.25rem; }
-    h4 { font-size: 1rem; }
-    p { margin: 0 0 14px; }
-    .lead { font-size: clamp(1.08rem, 2vw, 1.28rem); color: #3b352f; max-width: 64ch; }
-    .eyebrow { color: var(--accent); text-transform: uppercase; font-size: .75rem; font-weight: 800; letter-spacing: .12em; margin-bottom: 10px; }
-    .panel {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 24px;
-      padding: 24px;
-      box-shadow: 0 18px 50px rgba(55, 37, 18, .08);
-    }
-    .search-panel { position: sticky; top: 18px; align-self: start; }
-    label { display: block; font-weight: 800; margin-bottom: 8px; }
-    input, textarea, select {
-      width: 100%;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 13px 14px;
-      background: #fff;
-      font: inherit;
-      color: var(--ink);
-    }
-    input:focus, textarea:focus, select:focus { outline: 2px solid rgba(143, 29, 29, .18); border-color: var(--accent); }
-    .muted, .source-note { color: var(--muted); font-size: .94rem; }
-    .source-note { border-left: 3px solid var(--line); padding-left: 12px; margin-top: 14px; }
-    .result-list { display: grid; gap: 10px; margin-top: 16px; max-height: 56vh; overflow: auto; padding-right: 4px; }
-    .result-card {
-      display: block;
-      width: 100%;
-      text-align: left;
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      background: #fff;
-      padding: 14px;
-      cursor: pointer;
-      color: var(--ink);
-    }
-    .result-card:hover { border-color: var(--accent); }
-    .result-card strong { display: block; margin-bottom: 4px; }
-    .result-card span { color: var(--muted); font-size: .92rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-    .layout { display: grid; grid-template-columns: 340px minmax(0, 1fr); gap: 24px; align-items: start; }
-    .task-list { padding-left: 0; counter-reset: tasks; display: grid; gap: 10px; }
-    .task-list li {
-      list-style: none;
-      counter-increment: tasks;
-      display: grid;
-      grid-template-columns: 34px minmax(0, 1fr);
-      gap: 12px;
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 12px;
-      background: #fff;
-    }
-    .task-list li::before {
-      content: counter(tasks);
-      width: 28px;
-      height: 28px;
-      display: inline-grid;
-      place-items: center;
-      border-radius: 50%;
-      background: var(--soft);
-      font-weight: 800;
-      color: var(--accent-dark);
-    }
-    .task-list li em { grid-column: 2; color: var(--muted); font-size: .88rem; font-style: normal; }
-    .bundle-grid, .ratings-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-    .bundle-card, .ratings-grid > div {
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      padding: 15px;
-      background: #fff;
-    }
-    .bundle-card p { color: var(--muted); font-size: .92rem; }
-    .bundle-card strong { color: var(--accent-dark); }
-    .ratings-grid span { display: block; color: var(--muted); font-size: .9rem; margin-bottom: 8px; }
-    .rating {
-      display: inline-block;
-      border-radius: 999px;
-      padding: 6px 10px;
-      background: var(--soft);
-      color: var(--accent-dark);
-      font-size: .9rem;
-    }
-    .rating.low { color: var(--green); background: rgba(34, 116, 91, .11); }
-    .rating.moderate { color: var(--amber); background: rgba(160, 96, 0, .12); }
-    .rating.high, .rating.very-high { color: var(--red); background: rgba(155, 47, 47, .12); }
-    table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 16px; overflow: hidden; border: 1px solid var(--line); }
-    th, td { text-align: left; padding: 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
-    th { background: var(--soft); font-size: .88rem; text-transform: uppercase; letter-spacing: .06em; }
-    tr:last-child td { border-bottom: 0; }
-    .button-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
-    button, .button {
-      border: 0;
-      border-radius: 999px;
-      padding: 12px 16px;
-      font-weight: 800;
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .primary { background: var(--accent); color: white; }
-    .primary:hover { background: var(--accent-dark); }
-    .secondary { background: var(--soft); color: var(--accent-dark); }
-    .callout { margin-top: 34px; display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: center; }
-    footer { margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); color: var(--muted); font-size: .92rem; }
-    @media (max-width: 860px) {
-      .hero, .layout, .callout { grid-template-columns: 1fr; }
-      .search-panel { position: static; }
-      .bundle-grid, .ratings-grid { grid-template-columns: 1fr; }
-      header { align-items: flex-start; flex-direction: column; }
-    }
-  </style>
-</head>
-<body>
-  <div class="site">
-    <header>
-      <a class="brand" href="index.html">Ewan Simpson</a>
-      <nav aria-label="Primary navigation">
-        <a href="index.html#research">Research</a>
-        <a href="occupation-atlas.html">Occupation Atlas</a>
-        <a href="work-rebundler.html">Work Rebundler</a>
-        <a href="aios-workbench.html">AI-OS Workbench</a>
-        <a href="arc/">ARC</a>
-        <a href="index.html#contact">Contact</a>
-      </nav>
-    </header>
+// occupation-atlas.js
+// AI-OS Occupation Atlas public renderer
 
-    <main>
-      <section class="hero">
-        <div>
-          <p class="eyebrow">AI-OS Occupation Atlas</p>
-          <h1>Search a job. See the tasks inside it.</h1>
-          <p class="lead">AI does not transform jobs evenly. It compresses some tasks, assists others, raises proof burdens, and leaves some human judgment more important than before. Start with the task layer.</p>
-          <div class="button-row">
-            <a class="button primary" href="#atlas">Search the atlas</a>
-            <a class="button secondary" href="work-rebundler.html">Paste a job description</a>
-          </div>
+(function () {
+  const BUNDLES = [
+    {
+      id: "data-document",
+      name: "Data and document handling",
+      signal:
+        "Routine information capture, checking, formatting, filing, extraction, record maintenance, and document preparation.",
+      keywords: [
+        "record",
+        "records",
+        "data",
+        "documentation",
+        "document",
+        "documents",
+        "file",
+        "files",
+        "extract",
+        "enter",
+        "maintain",
+        "invoice",
+        "receipts",
+        "evidence",
+        "schedule",
+        "statements"
+      ]
+    },
+    {
+      id: "routine-analysis",
+      name: "Routine analysis and reporting",
+      signal:
+        "Standard comparison, summarization, calculation, dashboarding, reporting, drafting, monitoring, and trend description.",
+      keywords: [
+        "report",
+        "reports",
+        "analyze",
+        "analyse",
+        "analysis",
+        "monitor",
+        "variance",
+        "forecast",
+        "budget",
+        "summar",
+        "compare",
+        "campaign data",
+        "conversion"
+      ]
+    },
+    {
+      id: "coordination",
+      name: "Coordination and workflow control",
+      signal:
+        "Chasing, routing, scheduling, collecting inputs, coordinating people or departments, and keeping processes moving.",
+      keywords: [
+        "coordinate",
+        "coordinat",
+        "schedule",
+        "workflow",
+        "liaise",
+        "communication",
+        "stakeholder",
+        "approval",
+        "meeting",
+        "agency",
+        "faculty",
+        "students",
+        "underwriters"
+      ]
+    },
+    {
+      id: "judgment",
+      name: "Judgment and interpretation",
+      signal:
+        "Meaning-making, prioritization, interpretation, advice, decision support, and handling uncertainty.",
+      keywords: [
+        "advise",
+        "interpret",
+        "decision",
+        "decisions",
+        "evaluate",
+        "assess",
+        "recommend",
+        "recommendations",
+        "scenario",
+        "planning",
+        "risk",
+        "implications",
+        "strategy"
+      ]
+    },
+    {
+      id: "relationship",
+      name: "Relationship and trust work",
+      signal:
+        "Human communication where trust, persuasion, reassurance, negotiation, or sensitive context matters.",
+      keywords: [
+        "client",
+        "clients",
+        "employee",
+        "employees",
+        "student",
+        "students",
+        "explain",
+        "complaint",
+        "complaints",
+        "dispute",
+        "persuade",
+        "negotiate",
+        "relations",
+        "outreach"
+      ]
+    },
+    {
+      id: "governance-proof",
+      name: "Governance, proof, and accountability",
+      signal:
+        "Approvals, audit trails, compliance, evidence, controls, sign-off, quality assurance, regulation, and defensibility.",
+      keywords: [
+        "compliance",
+        "audit",
+        "approval",
+        "approve",
+        "evidence",
+        "control",
+        "controls",
+        "regulatory",
+        "policy",
+        "policies",
+        "law",
+        "quality assurance",
+        "accreditation",
+        "disclosure",
+        "attestation"
+      ]
+    },
+    {
+      id: "exception",
+      name: "Exception handling",
+      signal:
+        "Unusual, ambiguous, disputed, high-risk, urgent, or failed cases that require escalation or special handling.",
+      keywords: [
+        "exception",
+        "exceptions",
+        "escalate",
+        "escalation",
+        "unusual",
+        "sensitive",
+        "high-risk",
+        "complaint",
+        "breach",
+        "incident",
+        "resolve",
+        "failure",
+        "urgent",
+        "discrepanc",
+        "missing"
+      ]
+    }
+  ];
+
+  function normalize(text) {
+    return String(text || "").toLowerCase();
+  }
+
+  function escapeHtml(value) {
+    return String(value || "").replace(/[&<>'"]/g, char => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      "'": "&#39;",
+      '"': "&quot;"
+    }[char]));
+  }
+
+  function classifyTask(task) {
+    const t = normalize(task);
+
+    const scores = BUNDLES.map(bundle => ({
+      ...bundle,
+      score: bundle.keywords.reduce(
+        (acc, word) => acc + (t.includes(word) ? 1 : 0),
+        0
+      )
+    })).sort((a, b) => b.score - a.score);
+
+    if (scores[0].score === 0) return BUNDLES[1];
+
+    return scores[0];
+  }
+
+  function level(score) {
+    if (score >= 0.55) return "Very high";
+    if (score >= 0.38) return "High";
+    if (score >= 0.22) return "Moderate";
+    return "Low";
+  }
+
+  function futureDirections(bundles) {
+    const present = new Set(bundles.map(b => b.id));
+    const directions = [];
+
+    if (present.has("data-document")) {
+      directions.push([
+        "Data/document producer",
+        "Workflow controller and data quality steward"
+      ]);
+    }
+
+    if (present.has("routine-analysis")) {
+      directions.push([
+        "Routine report producer",
+        "Insight validator and scenario briefer"
+      ]);
+    }
+
+    if (present.has("coordination")) {
+      directions.push([
+        "Process coordinator",
+        "Human-AI workflow orchestrator"
+      ]);
+    }
+
+    if (present.has("judgment")) {
+      directions.push([
+        "General decision support",
+        "Accountable judgment partner"
+      ]);
+    }
+
+    if (present.has("relationship")) {
+      directions.push([
+        "Service communicator",
+        "Trust and relationship lead"
+      ]);
+    }
+
+    if (present.has("governance-proof")) {
+      directions.push([
+        "Compliance/documentation administrator",
+        "Proof and controls steward"
+      ]);
+    }
+
+    if (present.has("exception")) {
+      directions.push([
+        "Issue resolver",
+        "Exception handler and escalation lead"
+      ]);
+    }
+
+    return directions.slice(0, 6);
+  }
+
+  function buildProfile(occupation) {
+    const sourceTasks = Array.isArray(occupation.tasks) ? occupation.tasks : [];
+
+    const tasks = sourceTasks.map((task, index) => {
+      const bundle = classifyTask(task);
+
+      return {
+        id: `${occupation.id}-task-${index + 1}`,
+        task,
+        bundleId: bundle.id,
+        bundleName: bundle.name
+      };
+    });
+
+    const bundles = BUNDLES.map(bundle => {
+      const bundleTasks = tasks.filter(t => t.bundleId === bundle.id);
+      return { ...bundle, tasks: bundleTasks };
+    }).filter(bundle => bundle.tasks.length > 0);
+
+    const total = tasks.length || 1;
+    const bundleCount = id => tasks.filter(t => t.bundleId === id).length;
+
+    const compressible =
+      bundleCount("data-document") +
+      bundleCount("routine-analysis") +
+      Math.round(bundleCount("coordination") * 0.5);
+
+    const humanResidual =
+      bundleCount("judgment") +
+      bundleCount("relationship") +
+      bundleCount("exception") +
+      Math.round(bundleCount("governance-proof") * 0.5);
+
+    const proof =
+      bundleCount("governance-proof") +
+      Math.round(bundleCount("exception") * 0.5);
+
+    const augmentation =
+      bundleCount("routine-analysis") +
+      bundleCount("judgment") +
+      bundleCount("coordination") +
+      bundleCount("relationship");
+
+    return {
+      occupation,
+      tasks,
+      bundles,
+      ratings: {
+        compression: level(compressible / total),
+        humanResidual: level(humanResidual / total),
+        proofBurden: level(proof / total),
+        rebundlingUrgency: level(
+          (compressible + proof + humanResidual) / (total * 1.6)
+        ),
+        augmentation: level(augmentation / total)
+      },
+      futureDirections: futureDirections(bundles)
+    };
+  }
+
+  function searchOccupations(query) {
+    const q = normalize(query);
+    const data = window.AIOS_OCCUPATIONS || [];
+
+    if (!q) return data;
+
+    return data.filter(o => {
+      const haystack = [
+        o.title,
+        o.summary,
+        ...(o.aliases || []),
+        ...(o.tasks || [])
+      ]
+        .join(" ")
+        .toLowerCase();
+
+      return haystack.includes(q);
+    });
+  }
+
+  function badgeClass(value) {
+    return "rating " + String(value || "").toLowerCase().replace(/\s+/g, "-");
+  }
+
+  function renderResultList(results) {
+    const list = document.getElementById("occupation-results");
+    if (!list) return;
+
+    if (!results.length) {
+      list.innerHTML = `
+        <p class="muted">
+          No matching public occupation found. Use the custom job-description tool for a role-specific analysis.
+        </p>
+      `;
+      return;
+    }
+
+    list.innerHTML = results
+      .map(
+        o => `
+          <button class="result-card" type="button" data-id="${escapeHtml(o.id)}">
+            <strong>${escapeHtml(o.title)}</strong>
+            <span>${escapeHtml(o.summary)}</span>
+          </button>
+        `
+      )
+      .join("");
+
+    list.querySelectorAll("button[data-id]").forEach(button => {
+      button.addEventListener("click", () => {
+        renderProfile(button.dataset.id);
+      });
+    });
+  }
+
+  function renderProfile(id) {
+    const occupation = (window.AIOS_OCCUPATIONS || []).find(o => o.id === id);
+    if (!occupation) return;
+
+    const profile = buildProfile(occupation);
+    const container = document.getElementById("occupation-profile");
+    if (!container) return;
+
+    container.innerHTML = `
+      <article class="panel">
+        <p class="eyebrow">Occupation profile</p>
+        <h2>${escapeHtml(profile.occupation.title)}</h2>
+        <p>${escapeHtml(profile.occupation.summary)}</p>
+
+        <p class="source-note">
+          Source: ${escapeHtml(
+            profile.occupation.source || "Curated public AI-OS profile"
+          )}.
+          Public profiles show representative tasks only. Full AI-OS analysis goes deeper.
+        </p>
+
+        <h3>Core task breakdown</h3>
+        <ol class="task-list">
+          ${profile.tasks
+            .map(
+              t => `
+                <li>
+                  <span>${escapeHtml(t.task)}</span>
+                  <em>${escapeHtml(t.bundleName)}</em>
+                </li>
+              `
+            )
+            .join("")}
+        </ol>
+
+        <h3>Task bundles</h3>
+        <div class="bundle-grid">
+          ${profile.bundles
+            .map(
+              bundle => `
+                <div class="bundle-card">
+                  <strong>${escapeHtml(bundle.name)}</strong>
+                  <p>${escapeHtml(bundle.signal)}</p>
+                  <p>${bundle.tasks.length} task${
+                bundle.tasks.length === 1 ? "" : "s"
+              }</p>
+                </div>
+              `
+            )
+            .join("")}
         </div>
-        <aside class="panel">
-          <p class="eyebrow">What this gives you</p>
-          <p><strong>Task breakdown:</strong> the work underneath the job title.</p>
-          <p><strong>Task bundles:</strong> where work clusters into data, reporting, coordination, judgment, relationships, proof, and exceptions.</p>
-          <p><strong>AI-era rating:</strong> compression potential, human residual strength, proof burden, augmentation potential, and rebundling urgency.</p>
-        </aside>
-      </section>
-    </aside>
 
-  </section>
-
-  <section class="panel" style="margin-bottom: 24px;">
-    <h2>Public profile depth</h2>
-    <p>
-      Public occupation profiles show eight representative tasks and a high-level AI-OS interpretation.
-      The full AI-OS analysis goes much deeper, including a validated task register, AI mode classification,
-      Decision Compass governance scoring, proof-burden assessment, residual effort modeling, and role rebundling.
-    </p>
-  </section>
-
-  <section id="atlas" class="layout">
-      <section id="atlas" class="layout">
-        <aside class="panel search-panel">
-          <label for="occupation-search">Search occupation or keyword</label>
-          <input id="occupation-search" type="search" placeholder="e.g. accountant, loan officer, academic coordinator">
-          <p class="muted" style="margin-top: 12px;">This prototype uses a small seed set. The next build should import attributed O*NET occupation and task data.</p>
-          <div id="occupation-results" class="result-list"></div>
-        </aside>
-        <div id="occupation-profile"></div>
-      </section>
-
-      <section class="panel callout">
-        <div>
-          <p class="eyebrow">Need a role-specific version?</p>
-          <h2>Paste a real job description and generate a custom task map.</h2>
-          <p>Use the Work Rebundler for Stage 2 analysis. It turns a local job description into a task register, bundle map, and first-pass AI-OS profile.</p>
+        <h3>High-level AI-OS rating</h3>
+        <div class="ratings-grid">
+          ${Object.entries({
+            "AI compression potential": profile.ratings.compression,
+            "Human residual strength": profile.ratings.humanResidual,
+            "Proof/governance burden": profile.ratings.proofBurden,
+            "Rebundling urgency": profile.ratings.rebundlingUrgency,
+            "Augmentation potential": profile.ratings.augmentation
+          })
+            .map(
+              ([label, value]) => `
+                <div>
+                  <span>${escapeHtml(label)}</span>
+                  <strong class="${badgeClass(value)}">${escapeHtml(
+                value
+              )}</strong>
+                </div>
+              `
+            )
+            .join("")}
         </div>
-        <a class="button primary" href="work-rebundler.html">Open Work Rebundler</a>
-      </section>
-    </main>
 
-    <footer>
-      © 2026 Ewan Simpson · AI-OS Occupation Atlas prototype · <a href="index.html">Back to main site</a>
-    </footer>
-  </div>
+        <h3>Future role direction</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Current emphasis</th>
+              <th>Likely AI-era direction</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${profile.futureDirections
+              .map(
+                row => `
+                  <tr>
+                    <td>${escapeHtml(row[0])}</td>
+                    <td>${escapeHtml(row[1])}</td>
+                  </tr>
+                `
+              )
+              .join("")}
+          </tbody>
+        </table>
 
-  <script src="data/occupation-data.js"></script>
-  <script src="occupation-atlas.js"></script>
-</body>
-</html>
+        <div class="button-row">
+          <button id="send-to-workbench" class="primary" type="button">
+            Open in AI-OS Workbench
+          </button>
+          <button id="copy-profile" class="secondary" type="button">
+            Copy profile JSON
+          </button>
+        </div>
+      </article>
+    `;
+
+    const payload = {
+      title: profile.occupation.title,
+      summary: profile.occupation.summary,
+      tasks: profile.tasks.map(t => ({
+        task: t.task,
+        bundle: t.bundleName
+      }))
+    };
+
+    const workbenchButton = document.getElementById("send-to-workbench");
+    if (workbenchButton) {
+      workbenchButton.addEventListener("click", () => {
+        localStorage.setItem("aiosWorkbenchTasks", JSON.stringify(payload));
+        window.location.href = "aios-workbench.html";
+      });
+    }
+
+    const copyButton = document.getElementById("copy-profile");
+    if (copyButton) {
+      copyButton.addEventListener("click", async () => {
+        await navigator.clipboard.writeText(
+          JSON.stringify(
+            {
+              occupation: profile.occupation.title,
+              summary: profile.occupation.summary,
+              tasks: profile.tasks,
+              bundles: profile.bundles.map(bundle => ({
+                name: bundle.name,
+                signal: bundle.signal,
+                taskCount: bundle.tasks.length
+              })),
+              ratings: profile.ratings,
+              futureDirections: profile.futureDirections
+            },
+            null,
+            2
+          )
+        );
+
+        alert("Profile copied.");
+      });
+    }
+  }
+
+  function init() {
+    const input = document.getElementById("occupation-search");
+    const results = searchOccupations("");
+
+    renderResultList(results);
+
+    if (results[0]) {
+      renderProfile(results[0].id);
+    }
+
+    if (input) {
+      input.addEventListener("input", () => {
+        renderResultList(searchOccupations(input.value));
+      });
+    }
+  }
+
+  window.AIOS = {
+    BUNDLES,
+    classifyTask,
+    buildProfile,
+    searchOccupations
+  };
+
+  document.addEventListener("DOMContentLoaded", init);
+})();
