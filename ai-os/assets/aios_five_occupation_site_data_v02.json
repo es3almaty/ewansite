@@ -1,0 +1,894 @@
+{
+  "examples": [
+    {
+      "slug": "chief-executives",
+      "title": "Chief Executive",
+      "occupationTitle": "Chief Executives",
+      "onetCode": "11-1011.00",
+      "description": "Determine and formulate policies and provide overall direction of companies or private and public sector organizations within guidelines set up by a board of directors or similar governing body. Plan, direct, or coordinate operational activities at the highest level of management with the help of subordinate executives and staff managers.",
+      "impactBand": "Low automation, high augmentation",
+      "controlBurden": "Very high",
+      "headline": "AI compresses preparation, not responsibility.",
+      "publicMessage": "Executive work changes less through replacement than through disciplined augmentation: better briefs, stronger challenge, clearer options, and more auditable decisions.",
+      "executiveSummary": "The Chief Executive role is not a credible candidate for whole-task automation. Its value lies in judgment under uncertainty, institutional accountability, strategic trade-offs, board relationships, legitimacy, and final responsibility. AI can still matter greatly by preparing evidence, developing options, testing assumptions, drafting communication, maintaining decision records, and monitoring implementation signals. The human leader remains responsible for direction, values, legitimacy, and final authority.",
+      "pdfHref": "/ai-os/downloads/aios_chief-executives_assessment_summary.pdf",
+      "metrics": {
+        "tasks": 31,
+        "baselineMonthlyHours": 120.0,
+        "futureMonthlyHours": 68.7,
+        "hoursSaved": 51.3,
+        "savingPct": 42.8,
+        "futureFte": 0.57,
+        "capacityReleasedFte": 0.43,
+        "avgDecisionCompass": 6.0,
+        "compressionBand": "Very high"
+      },
+      "modes": [
+        {
+          "mode": "Automate",
+          "count": 0,
+          "pct": 0.0,
+          "baselineHours": 0,
+          "futureHours": 0
+        },
+        {
+          "mode": "Assist",
+          "count": 17,
+          "pct": 54.8,
+          "baselineHours": 78.9,
+          "futureHours": 39.5
+        },
+        {
+          "mode": "Advise",
+          "count": 13,
+          "pct": 41.9,
+          "baselineHours": 39.6,
+          "futureHours": 27.7
+        },
+        {
+          "mode": "Human-only",
+          "count": 1,
+          "pct": 3.2,
+          "baselineHours": 1.5,
+          "futureHours": 1.5
+        }
+      ],
+      "clusters": [
+        {
+          "label": "Finance / Accounting / Budget",
+          "count": 9,
+          "baselineHours": 38.5,
+          "pct": 32.0
+        },
+        {
+          "label": "Compliance / Legal / Risk",
+          "count": 7,
+          "baselineHours": 23.0,
+          "pct": 19.2
+        },
+        {
+          "label": "People / HR / Training",
+          "count": 4,
+          "baselineHours": 16.0,
+          "pct": 13.3
+        },
+        {
+          "label": "Customer / Stakeholder Communication",
+          "count": 4,
+          "baselineHours": 15.8,
+          "pct": 13.1
+        },
+        {
+          "label": "Management / Strategy / Coordination",
+          "count": 4,
+          "baselineHours": 13.2,
+          "pct": 11.0
+        },
+        {
+          "label": "Data / Analysis / Reporting",
+          "count": 2,
+          "baselineHours": 9.1,
+          "pct": 7.6
+        },
+        {
+          "label": "General Administrative / Operational",
+          "count": 1,
+          "baselineHours": 4.5,
+          "pct": 3.8
+        }
+      ],
+      "priorityTasks": [
+        {
+          "task": "Direct, plan, or implement policies, objectives, or activities of organizations or businesses to ensure continuing operations, to maximize returns on investments, or to increase productivity.",
+          "mode": "Assist",
+          "baselineHours": 7.4,
+          "futureHours": 3.7,
+          "hoursSaved": 3.7,
+          "savingPct": 50.0,
+          "decisionCompass": 5,
+          "cluster": "Finance / Accounting / Budget",
+          "control": "Sample review, audit log, exception queue",
+          "oversight": "Exception review"
+        },
+        {
+          "task": "Review reports submitted by staff members to recommend approval or to suggest changes.",
+          "mode": "Assist",
+          "baselineHours": 7.4,
+          "futureHours": 3.7,
+          "hoursSaved": 3.7,
+          "savingPct": 50.0,
+          "decisionCompass": 7,
+          "cluster": "Data / Analysis / Reporting",
+          "control": "Human review before use, source check, version control",
+          "oversight": "Review before decision/use"
+        },
+        {
+          "task": "Analyze operations to evaluate performance of a company or its staff in meeting objectives or to determine areas of potential cost reduction, program improvement, or policy change.",
+          "mode": "Assist",
+          "baselineHours": 6.4,
+          "futureHours": 3.2,
+          "hoursSaved": 3.2,
+          "savingPct": 50.0,
+          "decisionCompass": 7,
+          "cluster": "Finance / Accounting / Budget",
+          "control": "Human review before use, source check, version control",
+          "oversight": "Review before decision/use"
+        },
+        {
+          "task": "Prepare or present reports concerning activities, expenses, budgets, government statutes or rulings, or other items affecting businesses or program services.",
+          "mode": "Assist",
+          "baselineHours": 6.3,
+          "futureHours": 3.1,
+          "hoursSaved": 3.1,
+          "savingPct": 50.0,
+          "decisionCompass": 6,
+          "cluster": "Finance / Accounting / Budget",
+          "control": "Human review before use, source check, version control",
+          "oversight": "Review before decision/use"
+        },
+        {
+          "task": "Confer with board members, organization officials, or staff members to discuss issues, coordinate activities, or resolve problems.",
+          "mode": "Assist",
+          "baselineHours": 6.1,
+          "futureHours": 3.1,
+          "hoursSaved": 3.1,
+          "savingPct": 50.0,
+          "decisionCompass": 7,
+          "cluster": "People / HR / Training",
+          "control": "Human review before use, source check, version control",
+          "oversight": "Review before decision/use"
+        }
+      ],
+      "riskCapabilityCells": [
+        {
+          "title": "High capability, high risk",
+          "text": "Use AI for preparation, comparison, drafting, and evidence organization. Keep approval, interpretation, and accountability human."
+        },
+        {
+          "title": "High capability, medium risk",
+          "text": "Good fit for Assist mode: standardized documentation, summaries, structured analysis, and routine follow-up."
+        },
+        {
+          "title": "Medium capability, high risk",
+          "text": "Use only in Advise mode where the work affects people, money, rights, compliance, or institutional trust."
+        },
+        {
+          "title": "Low capability or high accountability",
+          "text": "Keep human-led where legitimacy, empathy, final judgment, professional assurance, or strategic trade-offs dominate."
+        }
+      ],
+      "rebundledRole": [
+        "AI-augmented strategic direction",
+        "Board-facing proof and challenge",
+        "Executive control architecture"
+      ],
+      "controlArchitecture": [
+        "No autonomous AI approval for strategic, financial, legal, staffing, reputational, or board-level decisions.",
+        "All AI-assisted executive outputs require named human ownership.",
+        "Major decisions should include an assumptions log, source list, alternative options, and dissent or challenge note.",
+        "AI-generated board materials must be checked against source documents before circulation.",
+        "Sensitive data should be minimized or kept inside approved secure environments."
+      ]
+    },
+    {
+      "slug": "management-analysts",
+      "title": "Management Analyst",
+      "occupationTitle": "Management Analysts",
+      "onetCode": "13-1111.00",
+      "description": "Conduct organizational studies and evaluations, design systems and procedures, conduct work simplification and measurement studies, and prepare operations and procedures manuals to assist management in operating more efficiently and effectively. Includes program analysts and management consultants.",
+      "impactBand": "High augmentation, medium automation",
+      "controlBurden": "Medium-high",
+      "headline": "AI accelerates analysis, but does not own diagnosis.",
+      "publicMessage": "The role becomes less about assembling information and more about testing interpretation, designing change, and translating analysis into credible implementation.",
+      "executiveSummary": "Management analysis is highly exposed to AI-enabled time compression because the work is rich in data gathering, document review, benchmarking, option development, and recommendation drafting. The danger is not that AI produces too little, but that it produces plausible analysis without enough organizational context. AI-OS therefore treats AI as a research, synthesis, modeling, and first-draft engine while preserving human responsibility for diagnosis, stakeholder judgment, implementation design, and political feasibility.",
+      "pdfHref": "/ai-os/downloads/aios_management-analysts_assessment_summary.pdf",
+      "metrics": {
+        "tasks": 11,
+        "baselineMonthlyHours": 120.0,
+        "futureMonthlyHours": 55.3,
+        "hoursSaved": 64.7,
+        "savingPct": 53.9,
+        "futureFte": 0.46,
+        "capacityReleasedFte": 0.54,
+        "avgDecisionCompass": 5.8,
+        "compressionBand": "Very high"
+      },
+      "modes": [
+        {
+          "mode": "Automate",
+          "count": 3,
+          "pct": 27.3,
+          "baselineHours": 36.4,
+          "futureHours": 7.3
+        },
+        {
+          "mode": "Assist",
+          "count": 6,
+          "pct": 54.5,
+          "baselineHours": 52.5,
+          "futureHours": 26.2
+        },
+        {
+          "mode": "Advise",
+          "count": 2,
+          "pct": 18.2,
+          "baselineHours": 31.1,
+          "futureHours": 21.8
+        },
+        {
+          "mode": "Human-only",
+          "count": 0,
+          "pct": 0.0,
+          "baselineHours": 0,
+          "futureHours": 0
+        }
+      ],
+      "clusters": [
+        {
+          "label": "Data / Analysis / Reporting",
+          "count": 4,
+          "baselineHours": 40.0,
+          "pct": 33.4
+        },
+        {
+          "label": "Finance / Accounting / Budget",
+          "count": 3,
+          "baselineHours": 36.0,
+          "pct": 30.0
+        },
+        {
+          "label": "People / HR / Training",
+          "count": 2,
+          "baselineHours": 31.1,
+          "pct": 26.0
+        },
+        {
+          "label": "Compliance / Legal / Risk",
+          "count": 1,
+          "baselineHours": 9.9,
+          "pct": 8.2
+        },
+        {
+          "label": "Customer / Stakeholder Communication",
+          "count": 1,
+          "baselineHours": 3.0,
+          "pct": 2.5
+        }
+      ],
+      "priorityTasks": [
+        {
+          "task": "Analyze data gathered and develop solutions or alternative methods of proceeding.",
+          "mode": "Automate",
+          "baselineHours": 15.2,
+          "futureHours": 3.0,
+          "hoursSaved": 12.2,
+          "savingPct": 80.0,
+          "decisionCompass": 5,
+          "cluster": "Finance / Accounting / Budget",
+          "control": "Sample review, audit log, exception queue",
+          "oversight": "Exception review"
+        },
+        {
+          "task": "Plan study of work problems and procedures, such as organizational change, communications, information flow, integrated production methods, inventory control, or cost analysis.",
+          "mode": "Automate",
+          "baselineHours": 11.0,
+          "futureHours": 2.2,
+          "hoursSaved": 8.8,
+          "savingPct": 80.0,
+          "decisionCompass": 5,
+          "cluster": "Finance / Accounting / Budget",
+          "control": "Sample review, audit log, exception queue",
+          "oversight": "Exception review"
+        },
+        {
+          "task": "Review forms and reports and confer with management and users about format, distribution, and purpose, identifying problems and improvements.",
+          "mode": "Automate",
+          "baselineHours": 10.2,
+          "futureHours": 2.0,
+          "hoursSaved": 8.1,
+          "savingPct": 80.0,
+          "decisionCompass": 5,
+          "cluster": "Data / Analysis / Reporting",
+          "control": "Sample review, audit log, exception queue",
+          "oversight": "Exception review"
+        },
+        {
+          "task": "Document findings of study and prepare recommendations for implementation of new systems, procedures, or organizational changes.",
+          "mode": "Assist",
+          "baselineHours": 11.7,
+          "futureHours": 5.8,
+          "hoursSaved": 5.8,
+          "savingPct": 50.0,
+          "decisionCompass": 6,
+          "cluster": "Data / Analysis / Reporting",
+          "control": "Human review before use, source check, version control",
+          "oversight": "Review before decision/use"
+        },
+        {
+          "task": "Interview personnel and conduct on-site observation to ascertain unit functions, work performed, and methods, equipment, and personnel used.",
+          "mode": "Assist",
+          "baselineHours": 11.2,
+          "futureHours": 5.6,
+          "hoursSaved": 5.6,
+          "savingPct": 50.0,
+          "decisionCompass": 5,
+          "cluster": "Data / Analysis / Reporting",
+          "control": "Human review before use, source check, version control",
+          "oversight": "Review before decision/use"
+        }
+      ],
+      "riskCapabilityCells": [
+        {
+          "title": "High capability, high risk",
+          "text": "Use AI for preparation, comparison, drafting, and evidence organization. Keep approval, interpretation, and accountability human."
+        },
+        {
+          "title": "High capability, medium risk",
+          "text": "Good fit for Assist mode: standardized documentation, summaries, structured analysis, and routine follow-up."
+        },
+        {
+          "title": "Medium capability, high risk",
+          "text": "Use only in Advise mode where the work affects people, money, rights, compliance, or institutional trust."
+        },
+        {
+          "title": "Low capability or high accountability",
+          "text": "Keep human-led where legitimacy, empathy, final judgment, professional assurance, or strategic trade-offs dominate."
+        }
+      ],
+      "rebundledRole": [
+        "Evidence orchestration and synthesis",
+        "Human-led diagnosis and change design",
+        "Implementation governance and stakeholder translation"
+      ],
+      "controlArchitecture": [
+        "Require source traceability for research and benchmark claims.",
+        "Separate AI-generated options from human-approved recommendations.",
+        "Document assumptions, exclusions, and alternative explanations.",
+        "Validate proposed changes with affected stakeholders before implementation.",
+        "Treat AI outputs as draft analysis, not organizational diagnosis."
+      ]
+    },
+    {
+      "slug": "human-resources-specialists",
+      "title": "Human Resources Specialist",
+      "occupationTitle": "Human Resources Specialists",
+      "onetCode": "13-1071.00",
+      "description": "Recruit, screen, interview, or place individuals within an organization. May perform other activities in multiple human resources areas.",
+      "impactBand": "Assist-heavy, legally sensitive",
+      "controlBurden": "High",
+      "headline": "AI can support people work, but must not launder employment decisions.",
+      "publicMessage": "The future HR role becomes a governance-heavy people function: faster administration, but stronger fairness review, documentation, and human accountability.",
+      "executiveSummary": "Human Resources Specialists show strong potential for AI assistance in job analysis, document drafting, policy explanation, candidate communication, reporting, and preparation of structured materials. The control problem is severe because HR decisions affect people directly and can create legal, ethical, fairness, and reputational risk. AI-OS therefore allows AI to organize, draft, compare, and prepare, while keeping employment decisions, grievance handling, sensitive interpretation, and fairness judgments under accountable human control.",
+      "pdfHref": "/ai-os/downloads/aios_human-resources-specialists_assessment_summary.pdf",
+      "metrics": {
+        "tasks": 26,
+        "baselineMonthlyHours": 120.0,
+        "futureMonthlyHours": 60.9,
+        "hoursSaved": 59.1,
+        "savingPct": 49.2,
+        "futureFte": 0.51,
+        "capacityReleasedFte": 0.49,
+        "avgDecisionCompass": 5.8,
+        "compressionBand": "Very high"
+      },
+      "modes": [
+        {
+          "mode": "Automate",
+          "count": 4,
+          "pct": 15.4,
+          "baselineHours": 25.5,
+          "futureHours": 5.1
+        },
+        {
+          "mode": "Assist",
+          "count": 14,
+          "pct": 53.8,
+          "baselineHours": 51.4,
+          "futureHours": 25.7
+        },
+        {
+          "mode": "Advise",
+          "count": 8,
+          "pct": 30.8,
+          "baselineHours": 43.1,
+          "futureHours": 30.1
+        },
+        {
+          "mode": "Human-only",
+          "count": 0,
+          "pct": 0.0,
+          "baselineHours": 0,
+          "futureHours": 0
+        }
+      ],
+      "clusters": [
+        {
+          "label": "People / HR / Training",
+          "count": 10,
+          "baselineHours": 47.4,
+          "pct": 39.5
+        },
+        {
+          "label": "Compliance / Legal / Risk",
+          "count": 5,
+          "baselineHours": 26.1,
+          "pct": 21.8
+        },
+        {
+          "label": "Data / Analysis / Reporting",
+          "count": 6,
+          "baselineHours": 24.7,
+          "pct": 20.6
+        },
+        {
+          "label": "Customer / Stakeholder Communication",
+          "count": 4,
+          "baselineHours": 17.0,
+          "pct": 14.2
+        },
+        {
+          "label": "General Administrative / Operational",
+          "count": 1,
+          "baselineHours": 4.8,
+          "pct": 4.0
+        }
+      ],
+      "priorityTasks": [
+        {
+          "task": "Review employment applications and job orders to match applicants with job requirements.",
+          "mode": "Automate",
+          "baselineHours": 7.8,
+          "futureHours": 1.6,
+          "hoursSaved": 6.2,
+          "savingPct": 80.0,
+          "decisionCompass": 5,
+          "cluster": "People / HR / Training",
+          "control": "Sample review, audit log, exception queue",
+          "oversight": "Exception review"
+        },
+        {
+          "task": "Prepare or maintain employment records related to events, such as hiring, termination, leaves, transfers, or promotions, using human resources management system software.",
+          "mode": "Automate",
+          "baselineHours": 6.9,
+          "futureHours": 1.4,
+          "hoursSaved": 5.6,
+          "savingPct": 80.0,
+          "decisionCompass": 5,
+          "cluster": "Data / Analysis / Reporting",
+          "control": "Sample review, audit log, exception queue",
+          "oversight": "Exception review"
+        },
+        {
+          "task": "Inform job applicants of details such as duties and responsibilities, compensation, benefits, schedules, working conditions, or promotion opportunities.",
+          "mode": "Automate",
+          "baselineHours": 6.6,
+          "futureHours": 1.3,
+          "hoursSaved": 5.3,
+          "savingPct": 80.0,
+          "decisionCompass": 5,
+          "cluster": "People / HR / Training",
+          "control": "Sample review, audit log, exception queue",
+          "oversight": "Exception review"
+        },
+        {
+          "task": "Select qualified job applicants or refer them to managers, making hiring recommendations when appropriate.",
+          "mode": "Assist",
+          "baselineHours": 6.9,
+          "futureHours": 3.4,
+          "hoursSaved": 3.4,
+          "savingPct": 50.0,
+          "decisionCompass": 6,
+          "cluster": "People / HR / Training",
+          "control": "Human review before use, source check, version control",
+          "oversight": "Review before decision/use"
+        },
+        {
+          "task": "Analyze employment-related data and prepare required reports.",
+          "mode": "Automate",
+          "baselineHours": 4.2,
+          "futureHours": 0.8,
+          "hoursSaved": 3.4,
+          "savingPct": 80.0,
+          "decisionCompass": 5,
+          "cluster": "Data / Analysis / Reporting",
+          "control": "Sample review, audit log, exception queue",
+          "oversight": "Exception review"
+        }
+      ],
+      "riskCapabilityCells": [
+        {
+          "title": "High capability, high risk",
+          "text": "Use AI for preparation, comparison, drafting, and evidence organization. Keep approval, interpretation, and accountability human."
+        },
+        {
+          "title": "High capability, medium risk",
+          "text": "Good fit for Assist mode: standardized documentation, summaries, structured analysis, and routine follow-up."
+        },
+        {
+          "title": "Medium capability, high risk",
+          "text": "Use only in Advise mode where the work affects people, money, rights, compliance, or institutional trust."
+        },
+        {
+          "title": "Low capability or high accountability",
+          "text": "Keep human-led where legitimacy, empathy, final judgment, professional assurance, or strategic trade-offs dominate."
+        }
+      ],
+      "rebundledRole": [
+        "AI-assisted HR operations",
+        "Fairness and employment-risk review",
+        "Human-centered employee and manager advisory work"
+      ],
+      "controlArchitecture": [
+        "No autonomous hiring, rejection, discipline, promotion, or grievance decisioning.",
+        "Maintain human review of candidate-matching and screening outputs.",
+        "Check policy and legal interpretations before communicating externally.",
+        "Monitor bias risks in job descriptions, screening criteria, and candidate summaries.",
+        "Keep sensitive employee data inside approved systems and document access rules."
+      ]
+    },
+    {
+      "slug": "accountants-and-auditors",
+      "title": "Accountant and Auditor",
+      "occupationTitle": "Accountants and Auditors",
+      "onetCode": "13-2011.00",
+      "description": "Examine, analyze, and interpret accounting records to prepare financial statements, give advice, or audit and evaluate statements prepared by others. Install or advise on systems of recording costs or other financial and budgetary data.",
+      "impactBand": "Controlled automation and verification",
+      "controlBurden": "High",
+      "headline": "AI compresses process work if controls become stronger, not weaker.",
+      "publicMessage": "The role shifts from manual preparation toward exception handling, assurance design, control testing, and management interpretation.",
+      "executiveSummary": "Accountants and Auditors are a strong AI-OS case because many tasks involve structured records, reconciliation, report preparation, variance review, documentation, and evidence collation. These are highly compressible. The professional risk is that speed can weaken control discipline if outputs are accepted without traceability. AI-OS therefore treats AI as a controlled automation and verification layer: useful for checking, drafting, reconciling, and flagging exceptions, but not for unreviewed assurance, sign-off, or professional judgment.",
+      "pdfHref": "/ai-os/downloads/aios_accountants-and-auditors_assessment_summary.pdf",
+      "metrics": {
+        "tasks": 29,
+        "baselineMonthlyHours": 120.0,
+        "futureMonthlyHours": 56.0,
+        "hoursSaved": 64.0,
+        "savingPct": 53.4,
+        "futureFte": 0.47,
+        "capacityReleasedFte": 0.53,
+        "avgDecisionCompass": 6.7,
+        "compressionBand": "Very high"
+      },
+      "modes": [
+        {
+          "mode": "Automate",
+          "count": 6,
+          "pct": 20.7,
+          "baselineHours": 31.2,
+          "futureHours": 6.2
+        },
+        {
+          "mode": "Assist",
+          "count": 17,
+          "pct": 58.6,
+          "baselineHours": 62.1,
+          "futureHours": 31.0
+        },
+        {
+          "mode": "Advise",
+          "count": 6,
+          "pct": 20.7,
+          "baselineHours": 26.7,
+          "futureHours": 18.7
+        },
+        {
+          "mode": "Human-only",
+          "count": 0,
+          "pct": 0.0,
+          "baselineHours": 0,
+          "futureHours": 0
+        }
+      ],
+      "clusters": [
+        {
+          "label": "Finance / Accounting / Budget",
+          "count": 24,
+          "baselineHours": 96.4,
+          "pct": 80.3
+        },
+        {
+          "label": "Data / Analysis / Reporting",
+          "count": 3,
+          "baselineHours": 12.6,
+          "pct": 10.5
+        },
+        {
+          "label": "Compliance / Legal / Risk",
+          "count": 2,
+          "baselineHours": 11.0,
+          "pct": 9.2
+        }
+      ],
+      "priorityTasks": [
+        {
+          "task": "Review accounts for discrepancies and reconcile differences.",
+          "mode": "Automate",
+          "baselineHours": 6.4,
+          "futureHours": 1.3,
+          "hoursSaved": 5.1,
+          "savingPct": 80.0,
+          "decisionCompass": 5,
+          "cluster": "Finance / Accounting / Budget",
+          "control": "Sample review, audit log, exception queue",
+          "oversight": "Exception review"
+        },
+        {
+          "task": "Inspect account books and accounting systems for efficiency, effectiveness, and use of accepted accounting procedures to record transactions.",
+          "mode": "Automate",
+          "baselineHours": 6.3,
+          "futureHours": 1.3,
+          "hoursSaved": 5.0,
+          "savingPct": 80.0,
+          "decisionCompass": 5,
+          "cluster": "Finance / Accounting / Budget",
+          "control": "Sample review, audit log, exception queue",
+          "oversight": "Exception review"
+        },
+        {
+          "task": "Prepare adjusting journal entries.",
+          "mode": "Automate",
+          "baselineHours": 5.8,
+          "futureHours": 1.2,
+          "hoursSaved": 4.6,
+          "savingPct": 80.0,
+          "decisionCompass": 5,
+          "cluster": "Finance / Accounting / Budget",
+          "control": "Sample review, audit log, exception queue",
+          "oversight": "Exception review"
+        },
+        {
+          "task": "Report to management regarding the finances of establishment.",
+          "mode": "Automate",
+          "baselineHours": 5.2,
+          "futureHours": 1.0,
+          "hoursSaved": 4.2,
+          "savingPct": 80.0,
+          "decisionCompass": 5,
+          "cluster": "Data / Analysis / Reporting",
+          "control": "Sample review, audit log, exception queue",
+          "oversight": "Exception review"
+        },
+        {
+          "task": "Develop, implement, modify, and document recordkeeping and accounting systems, making use of current computer technology.",
+          "mode": "Automate",
+          "baselineHours": 4.5,
+          "futureHours": 0.9,
+          "hoursSaved": 3.6,
+          "savingPct": 80.0,
+          "decisionCompass": 5,
+          "cluster": "Finance / Accounting / Budget",
+          "control": "Sample review, audit log, exception queue",
+          "oversight": "Exception review"
+        }
+      ],
+      "riskCapabilityCells": [
+        {
+          "title": "High capability, high risk",
+          "text": "Use AI for preparation, comparison, drafting, and evidence organization. Keep approval, interpretation, and accountability human."
+        },
+        {
+          "title": "High capability, medium risk",
+          "text": "Good fit for Assist mode: standardized documentation, summaries, structured analysis, and routine follow-up."
+        },
+        {
+          "title": "Medium capability, high risk",
+          "text": "Use only in Advise mode where the work affects people, money, rights, compliance, or institutional trust."
+        },
+        {
+          "title": "Low capability or high accountability",
+          "text": "Keep human-led where legitimacy, empathy, final judgment, professional assurance, or strategic trade-offs dominate."
+        }
+      ],
+      "rebundledRole": [
+        "Automated reconciliation and evidence preparation",
+        "Exception-led professional review",
+        "Control, assurance, and management interpretation"
+      ],
+      "controlArchitecture": [
+        "Keep audit trails for AI-assisted reconciliations, classifications, and journal suggestions.",
+        "Use sample review, exception queues, and materiality thresholds.",
+        "Require human sign-off for financial statements, audit judgments, and compliance interpretations.",
+        "Preserve source-document links for all generated summaries.",
+        "Treat AI anomaly flags as investigative leads, not conclusions."
+      ]
+    },
+    {
+      "slug": "customer-service-representatives",
+      "title": "Customer Service Representative",
+      "occupationTitle": "Customer Service Representatives",
+      "onetCode": "43-4051.00",
+      "description": "Interact with customers to provide basic or scripted information in response to routine inquiries about products and services. May handle and resolve general complaints. Excludes individuals whose duties are primarily installation, sales, repair, and technical support.",
+      "impactBand": "High automation with escalation design",
+      "controlBurden": "High",
+      "headline": "AI can absorb routine flow, but escalation becomes the job design.",
+      "publicMessage": "The future frontline role is less script-reading and more escalation, trust repair, and resolution of cases that automation cannot safely close.",
+      "executiveSummary": "Customer service work is often presented as a high-automation case, but the AI-OS result is more disciplined. Routine information, record updating, case classification, standard responses, and triage can be compressed significantly. However, complaints, vulnerable customers, billing disputes, service failures, identity issues, and reputationally sensitive cases require escalation. The redesigned role is not simply smaller. It becomes more focused on exception handling, empathy, problem resolution, and accountable service recovery.",
+      "pdfHref": "/ai-os/downloads/aios_customer-service-representatives_assessment_summary.pdf",
+      "metrics": {
+        "tasks": 13,
+        "baselineMonthlyHours": 120.0,
+        "futureMonthlyHours": 72.4,
+        "hoursSaved": 47.6,
+        "savingPct": 39.7,
+        "futureFte": 0.6,
+        "capacityReleasedFte": 0.4,
+        "avgDecisionCompass": 6.7,
+        "compressionBand": "High"
+      },
+      "modes": [
+        {
+          "mode": "Automate",
+          "count": 1,
+          "pct": 7.7,
+          "baselineHours": 2.8,
+          "futureHours": 0.6
+        },
+        {
+          "mode": "Assist",
+          "count": 6,
+          "pct": 46.2,
+          "baselineHours": 51.3,
+          "futureHours": 25.7
+        },
+        {
+          "mode": "Advise",
+          "count": 6,
+          "pct": 46.2,
+          "baselineHours": 65.9,
+          "futureHours": 46.1
+        },
+        {
+          "mode": "Human-only",
+          "count": 0,
+          "pct": 0.0,
+          "baselineHours": 0,
+          "futureHours": 0
+        }
+      ],
+      "clusters": [
+        {
+          "label": "Finance / Accounting / Budget",
+          "count": 5,
+          "baselineHours": 54.9,
+          "pct": 45.8
+        },
+        {
+          "label": "Customer / Stakeholder Communication",
+          "count": 4,
+          "baselineHours": 42.0,
+          "pct": 35.0
+        },
+        {
+          "label": "Compliance / Legal / Risk",
+          "count": 2,
+          "baselineHours": 15.1,
+          "pct": 12.6
+        },
+        {
+          "label": "Technical / IT / Systems",
+          "count": 1,
+          "baselineHours": 4.7,
+          "pct": 3.9
+        },
+        {
+          "label": "General Administrative / Operational",
+          "count": 1,
+          "baselineHours": 3.3,
+          "pct": 2.7
+        }
+      ],
+      "priorityTasks": [
+        {
+          "task": "Keep records of customer interactions or transactions, recording details of inquiries, complaints, or comments, as well as actions taken.",
+          "mode": "Assist",
+          "baselineHours": 15.9,
+          "futureHours": 7.9,
+          "hoursSaved": 7.9,
+          "savingPct": 50.0,
+          "decisionCompass": 7,
+          "cluster": "Finance / Accounting / Budget",
+          "control": "Human review before use, source check, version control",
+          "oversight": "Review before decision/use"
+        },
+        {
+          "task": "Contact customers to respond to inquiries or to notify them of claim investigation results or any planned adjustments.",
+          "mode": "Assist",
+          "baselineHours": 12.5,
+          "futureHours": 6.3,
+          "hoursSaved": 6.3,
+          "savingPct": 50.0,
+          "decisionCompass": 7,
+          "cluster": "Customer / Stakeholder Communication",
+          "control": "Human review before use, source check, version control",
+          "oversight": "Review before decision/use"
+        },
+        {
+          "task": "Complete contract forms, prepare change of address records, or issue service discontinuance orders, using computers.",
+          "mode": "Assist",
+          "baselineHours": 11.7,
+          "futureHours": 5.8,
+          "hoursSaved": 5.8,
+          "savingPct": 50.0,
+          "decisionCompass": 7,
+          "cluster": "Compliance / Legal / Risk",
+          "control": "Human review before use, source check, version control",
+          "oversight": "Review before decision/use"
+        },
+        {
+          "task": "Confer with customers by telephone or in person to provide information about products or services, take or enter orders, cancel accounts, or obtain details of complaints.",
+          "mode": "Advise",
+          "baselineHours": 19.1,
+          "futureHours": 13.4,
+          "hoursSaved": 5.7,
+          "savingPct": 30.0,
+          "decisionCompass": 7,
+          "cluster": "Finance / Accounting / Budget",
+          "control": "Human decision owner, documented rationale, escalation path",
+          "oversight": "Review before decision/use"
+        },
+        {
+          "task": "Check to ensure that appropriate changes were made to resolve customers' problems.",
+          "mode": "Advise",
+          "baselineHours": 14.4,
+          "futureHours": 10.0,
+          "hoursSaved": 4.3,
+          "savingPct": 30.0,
+          "decisionCompass": 8,
+          "cluster": "Customer / Stakeholder Communication",
+          "control": "Human decision owner, documented rationale, escalation path",
+          "oversight": "Review before decision/use"
+        }
+      ],
+      "riskCapabilityCells": [
+        {
+          "title": "High capability, high risk",
+          "text": "Use AI for preparation, comparison, drafting, and evidence organization. Keep approval, interpretation, and accountability human."
+        },
+        {
+          "title": "High capability, medium risk",
+          "text": "Good fit for Assist mode: standardized documentation, summaries, structured analysis, and routine follow-up."
+        },
+        {
+          "title": "Medium capability, high risk",
+          "text": "Use only in Advise mode where the work affects people, money, rights, compliance, or institutional trust."
+        },
+        {
+          "title": "Low capability or high accountability",
+          "text": "Keep human-led where legitimacy, empathy, final judgment, professional assurance, or strategic trade-offs dominate."
+        }
+      ],
+      "rebundledRole": [
+        "Routine inquiry automation and triage",
+        "Human escalation and service recovery",
+        "Quality monitoring and customer trust protection"
+      ],
+      "controlArchitecture": [
+        "Define escalation triggers for complaints, vulnerability, billing disputes, identity issues, and reputational risk.",
+        "Require audit logs for AI-generated customer responses and case classifications.",
+        "Do not let AI close high-impact or unresolved grievance cases without human review.",
+        "Monitor customer satisfaction, complaint recurrence, and false-resolution patterns.",
+        "Keep humans available for empathy, ambiguity, and accountability."
+      ]
+    }
+  ]
+}
