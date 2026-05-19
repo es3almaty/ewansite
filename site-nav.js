@@ -4,8 +4,9 @@
     { label: "About", href: "/about.html" },
     { label: "AI Matrix Live", href: "/#ai-matrix-live" },
     { label: "Grey Swan", href: "/grey-swan.html" },
-    { label: "Work Rebundler", href: "/work-rebundler.html" },
-    { label: "ARC", href: "/arc/" },
+   { label: "Work Rebundler", href: "/work-rebundler.html" },
+{ label: "AI-OS Examples", href: "/ai-os/" },
+{ label: "ARC", href: "/arc/" },
     { label: "FARABI Audit", href: "/farabi-audit.html", highlight: true },
     { label: "The Virtuous City", href: "/essay.html" },
     { label: "Contact", href: "/#contact" }
