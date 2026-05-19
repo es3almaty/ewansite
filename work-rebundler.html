@@ -1,0 +1,921 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>AI-OS Work Rebundler | Ewan Simpson</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta
+    name="description"
+    content="Paste a job description and rebuild it as a task-level AI-OS role map, with task bundles, high-level AI ratings, and future role direction."
+  />
+
+  <!-- Shared site navigation. This replaces the fallback nav below when loaded. -->
+  <script src="/site-nav.js" defer></script>
+
+  <style>
+    :root {
+      --paper: #fafaf8;
+      --ink: #25211f;
+      --muted: #69625c;
+      --soft: #f1ebe3;
+      --line: #ded6ca;
+      --accent: #6b1f1f;
+      --accent-dark: #4f1717;
+      --gold: #b08a3c;
+      --white: #ffffff;
+      --shadow: 0 20px 60px rgba(37, 33, 31, 0.08);
+      --radius: 24px;
+      --max: 1180px;
+      --serif: Georgia, "Times New Roman", serif;
+      --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at top left, rgba(176, 138, 60, 0.14), transparent 30rem),
+        radial-gradient(circle at top right, rgba(107, 31, 31, 0.10), transparent 28rem),
+        var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      line-height: 1.55;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    /* Fallback nav. If /site-nav.js loads, it replaces this nav. */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(250, 250, 248, 0.96);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--line);
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 60px;
+      gap: 24px;
+    }
+
+    .nav-name {
+      font-family: var(--serif);
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--accent);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 18px;
+    }
+
+    .nav-links a {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+      white-space: nowrap;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--accent);
+    }
+
+    .wrap {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 48px 24px 72px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+      gap: 24px;
+      align-items: stretch;
+      margin-bottom: 28px;
+    }
+
+    .hero-main,
+    .panel {
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 34px;
+    }
+
+    .hero-main {
+      min-height: 330px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--gold);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2,
+    h3 {
+      font-family: var(--serif);
+      color: var(--accent);
+    }
+
+    h1 {
+      font-size: clamp(2.4rem, 6vw, 5rem);
+      line-height: 0.95;
+      margin: 0 0 20px;
+      letter-spacing: -0.045em;
+    }
+
+    h2 {
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      line-height: 1.08;
+      margin: 0 0 14px;
+      letter-spacing: -0.025em;
+    }
+
+    h3 {
+      margin-top: 28px;
+      margin-bottom: 12px;
+      font-size: 1.2rem;
+    }
+
+    p {
+      margin-top: 0;
+    }
+
+    .lead {
+      color: var(--muted);
+      font-size: 1.14rem;
+      max-width: 780px;
+    }
+
+    .method-card {
+      background: linear-gradient(135deg, var(--accent-dark), #1f3146);
+      color: white;
+      border-radius: var(--radius);
+      padding: 30px;
+      box-shadow: var(--shadow);
+    }
+
+    .method-card h2,
+    .method-card .eyebrow {
+      color: white;
+    }
+
+    .method-card p {
+      color: rgba(255, 255, 255, 0.78);
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .kpi {
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 18px;
+      padding: 16px;
+      background: rgba(255, 255, 255, 0.07);
+    }
+
+    .kpi strong {
+      display: block;
+      font-size: 1.6rem;
+      line-height: 1;
+    }
+
+    .kpi span {
+      display: block;
+      margin-top: 7px;
+      font-size: 0.86rem;
+      color: rgba(255, 255, 255, 0.72);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(320px, 0.88fr) minmax(0, 1.12fr);
+      gap: 24px;
+      align-items: start;
+      margin-bottom: 24px;
+    }
+
+    label {
+      display: block;
+      font-weight: 700;
+      margin: 16px 0 8px;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px 16px;
+      font-size: 1rem;
+      background: white;
+      color: var(--ink);
+      font-family: inherit;
+    }
+
+    textarea {
+      min-height: 280px;
+      resize: vertical;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    button,
+    .primary,
+    .secondary {
+      font-family: inherit;
+      border-radius: 999px;
+      padding: 12px 18px;
+      border: 1px solid var(--accent);
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.95rem;
+      display: inline-block;
+      text-decoration: none;
+    }
+
+    .primary {
+      background: var(--accent);
+      color: white;
+    }
+
+    .secondary {
+      background: transparent;
+      color: var(--accent);
+    }
+
+    button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .status {
+      margin-top: 18px;
+      color: var(--muted);
+      display: none;
+    }
+
+    .status.visible {
+      display: block;
+    }
+
+    .error {
+      color: #9b1c1c;
+      background: #fff0f0;
+      border: 1px solid #efcaca;
+      border-radius: 16px;
+      padding: 14px;
+      margin-top: 18px;
+      display: none;
+    }
+
+    .error.visible {
+      display: block;
+    }
+
+    .source-note {
+      background: var(--soft);
+      border-radius: 16px;
+      padding: 14px;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .task-list {
+      padding-left: 22px;
+    }
+
+    .task-list li {
+      margin-bottom: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .task-list span {
+      display: block;
+    }
+
+    .task-list em {
+      display: inline-block;
+      margin-top: 5px;
+      color: var(--accent);
+      font-size: 0.88rem;
+      font-style: normal;
+      font-weight: 700;
+    }
+
+    .bundle-grid,
+    .ratings-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .bundle-card,
+    .ratings-grid > div {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px;
+    }
+
+    .ratings-grid span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+    }
+
+    .rating {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 6px 10px;
+      background: var(--soft);
+      color: var(--accent-dark);
+      font-size: 0.9rem;
+      font-style: normal;
+      font-weight: 800;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    th,
+    td {
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid var(--line);
+      padding: 13px;
+    }
+
+    th {
+      background: var(--soft);
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .examples-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .example-card {
+      display: block;
+      min-height: 170px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: white;
+      padding: 18px;
+      text-decoration: none;
+      color: var(--ink);
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    }
+
+    .example-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+      border-color: rgba(107, 31, 31, 0.35);
+    }
+
+    .example-card strong {
+      display: block;
+      color: var(--accent);
+      font-size: 1.02rem;
+      margin-bottom: 8px;
+    }
+
+    .example-card span {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .example-meta {
+      display: inline-block;
+      margin-top: 14px;
+      color: var(--gold);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    footer {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 24px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 900px) {
+      nav {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 12px 20px;
+        gap: 8px;
+      }
+
+      .nav-links {
+        justify-content: flex-start;
+        gap: 12px 16px;
+      }
+
+      .hero,
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-main {
+        padding: 30px;
+      }
+
+      .bundle-grid,
+      .ratings-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Fallback navigation. /site-nav.js replaces this when available. -->
+  <nav aria-label="Main navigation">
+    <a class="nav-name" href="/">Ewan Simpson</a>
+    <div class="nav-links">
+      <a href="/#research">Research</a>
+      <a href="/about.html">About</a>
+      <a href="https://aimatrixlive.com">AI Matrix Live</a>
+      <a href="/grey-swan.html">Grey Swan</a>
+      <a href="/work-rebundler.html" class="active">Work Rebundler</a>
+      <a href="/ai-os/">AI-OS Examples</a>
+      <a href="/arc/">ARC</a>
+      <a href="/farabi-audit.html">FARABI Audit</a>
+      <a href="/essay.html">The Virtuous City</a>
+      <a href="/#contact">Contact</a>
+    </div>
+  </nav>
+
+  <main class="wrap">
+    <section class="hero">
+      <div class="hero-main">
+        <p class="eyebrow">Custom role analysis</p>
+        <h1>Paste a job description. Rebuild it as tasks.</h1>
+        <p class="lead">
+          This tool turns a role description into a structured task map, task bundles,
+          high-level AI-OS ratings, and a future role direction. It is a first-pass
+          diagnostic, not a final HR decision.
+        </p>
+        <div class="button-row">
+          <a class="primary" href="#role-input">Start analysis</a>
+          <a class="secondary" href="/occupation-atlas.html">Back to Occupation Atlas</a>
+          <a class="secondary" href="/ai-os/examples/">View AI-OS Examples</a>
+        </div>
+      </div>
+
+      <aside class="method-card">
+        <p class="eyebrow">Workbench logic</p>
+        <h2>From exposure scores to task rebundling</h2>
+        <p>
+          The public generator gives a fast first-pass map. The deeper AI-OS Workbench
+          adds task-time compression, AI modes, residual effort, Decision Compass risk,
+          proof burden, controls, and role redesign.
+        </p>
+        <div class="kpi-grid">
+          <div class="kpi">
+            <strong>Task</strong>
+            <span>Unit of analysis</span>
+          </div>
+          <div class="kpi">
+            <strong>4</strong>
+            <span>AI modes</span>
+          </div>
+          <div class="kpi">
+            <strong>5</strong>
+            <span>Decision Compass factors</span>
+          </div>
+          <div class="kpi">
+            <strong>Role</strong>
+            <span>Unit of redesign</span>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="layout" id="role-input">
+      <section class="panel">
+        <p class="eyebrow">Role input</p>
+        <h2>Describe the role</h2>
+
+        <label for="role-title">Job title</label>
+        <input id="role-title" type="text" placeholder="Example: Finance Officer" />
+
+        <label for="organization-context">Optional context</label>
+        <input
+          id="organization-context"
+          type="text"
+          placeholder="Example: university business school, bank operations, public agency"
+        />
+
+        <label for="role-description">Job description or responsibilities</label>
+        <textarea
+          id="role-description"
+          placeholder="Paste the job description, responsibilities, or role notes here..."
+        ></textarea>
+
+        <div class="button-row">
+          <button id="generate" class="primary" type="button">Generate task map</button>
+          <button id="load-example" class="secondary" type="button">Load example</button>
+        </div>
+
+        <p id="status" class="status">Analysing the role...</p>
+        <div id="error" class="error"></div>
+      </section>
+
+      <section id="output" class="panel">
+        <p class="eyebrow">Output logic</p>
+        <h2>First-pass AI-OS role profile</h2>
+        <p>
+          The tool will produce a task register, group tasks into work bundles,
+          rate the role at a high level, and suggest how the role may rebundle
+          under AI conditions.
+        </p>
+        <p class="source-note">
+          The next layer, the AI-OS Workbench, adds detailed AI modes, residual
+          effort, Decision Compass scores, proof burden, and capacity calculations.
+        </p>
+      </section>
+    </section>
+
+    <section class="panel">
+      <p class="eyebrow">Next step</p>
+      <h2>From public generator to deeper AI-OS work</h2>
+      <p>
+        This public generator is deliberately lightweight. A full AI-OS diagnostic
+        would validate the task register with local stakeholders, score permitted
+        AI use, identify governance and proof burdens, estimate residual effort,
+        and rebundle work into future roles.
+      </p>
+      <div class="button-row">
+        <a class="secondary" href="/occupation-atlas.html">Back to atlas</a>
+        <a class="primary" href="/aios-workbench.html">Open workbench</a>
+        <a class="secondary" href="/ai-os/">Open AI-OS examples</a>
+      </div>
+    </section>
+
+    <section class="panel" id="aios-examples">
+      <p class="eyebrow">AI-OS examples</p>
+      <h2>See the deeper Workbench logic in action</h2>
+      <p>
+        The five occupation examples show how the deeper Workbench layer assesses
+        task-time compression, AI modes, residual effort, Decision Compass risk,
+        control burden, and role rebundling across contrasting types of work.
+      </p>
+
+      <div class="examples-grid">
+        <a class="example-card" href="/ai-os/examples/chief-executives.html">
+          <strong>Chief Executives</strong>
+          <span>Low automation, high augmentation, high accountability.</span>
+          <span class="example-meta">42.8% task-time compression</span>
+        </a>
+
+        <a class="example-card" href="/ai-os/examples/management-analysts.html">
+          <strong>Management Analysts</strong>
+          <span>High augmentation knowledge work with medium automation potential.</span>
+          <span class="example-meta">53.9% task-time compression</span>
+        </a>
+
+        <a class="example-card" href="/ai-os/examples/human-resources-specialists.html">
+          <strong>Human Resources Specialists</strong>
+          <span>Assist-heavy people work with legal and ethical sensitivity.</span>
+          <span class="example-meta">49.2% task-time compression</span>
+        </a>
+
+        <a class="example-card" href="/ai-os/examples/accountants-and-auditors.html">
+          <strong>Accountants and Auditors</strong>
+          <span>Controlled automation, verification, and audit-trail logic.</span>
+          <span class="example-meta">53.4% task-time compression</span>
+        </a>
+
+        <a class="example-card" href="/ai-os/examples/customer-service-representatives.html">
+          <strong>Customer Service Representatives</strong>
+          <span>High automation potential with escalation-led human work.</span>
+          <span class="example-meta">39.7% task-time compression</span>
+        </a>
+      </div>
+
+      <div class="button-row">
+        <a class="primary" href="/ai-os/examples/">Open the full AI-OS example library</a>
+        <a class="secondary" href="/ai-os/">Read the AI-OS examples overview</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    © 2026 Ewan Simpson · AI-OS Work Rebundler prototype
+  </footer>
+
+  <script>
+    const EXAMPLE = {
+      roleTitle: "Finance Officer",
+      organizationContext: "University business school",
+      roleDescription:
+        "Responsible for processing supplier invoices, checking supporting documents, preparing payment files, maintaining budget records, responding to budget-holder queries, supporting monthly reporting, preparing evidence for audit, and escalating unusual or disputed transactions to the finance manager."
+    };
+
+    function escapeHtml(value) {
+      return String(value || "").replace(/[&<>'"]/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        "'": "&#39;",
+        '"': "&quot;"
+      }[char]));
+    }
+
+    function ratingClass(value) {
+      return "rating " + String(value || "").toLowerCase().replace(/\s+/g, "-");
+    }
+
+    function showStatus(show) {
+      document.getElementById("status").classList.toggle("visible", show);
+    }
+
+    function showError(message) {
+      const el = document.getElementById("error");
+
+      if (!message) {
+        el.textContent = "";
+        el.classList.remove("visible");
+        return;
+      }
+
+      el.textContent = message;
+      el.classList.add("visible");
+    }
+
+    function normalizeTasks(result) {
+      if (Array.isArray(result.tasks)) return result.tasks;
+      if (Array.isArray(result.representativeTasks)) return result.representativeTasks;
+      if (Array.isArray(result.taskRegister)) return result.taskRegister;
+      return [];
+    }
+
+    function renderResult(result) {
+      const output = document.getElementById("output");
+      const tasks = normalizeTasks(result);
+
+      output.innerHTML = `
+        <p class="eyebrow">AI-OS role profile</p>
+        <h2>${escapeHtml(result.roleTitle || "Role profile")}</h2>
+        <p>${escapeHtml(result.summary || "First-pass AI-OS task profile generated from the supplied role description.")}</p>
+
+        <p class="source-note">
+          Public generator output. This is a first-pass task-level interpretation, not a final HR, legal, or workforce decision.
+        </p>
+
+        <h3>Main outputs</h3>
+        <ul>
+          ${(result.outputs || [])
+            .map(output => `<li>${escapeHtml(typeof output === "string" ? output : output.output)}</li>`)
+            .join("") || "<li>No outputs identified.</li>"}
+        </ul>
+
+        <h3>Task breakdown</h3>
+        <ol class="task-list">
+          ${tasks
+            .map(task => `
+              <li>
+                <span>${escapeHtml(task.task || task.statement || task.description || "")}</span>
+                <em>
+                  ${escapeHtml(task.bundle || task.taskBundle || "Unclassified")}
+                  ${task.aiPotential ? " · " + escapeHtml(task.aiPotential) : ""}
+                  ${task.proofBurden ? " · Proof: " + escapeHtml(task.proofBurden) : ""}
+                </em>
+              </li>
+            `)
+            .join("") || "<li>No tasks generated.</li>"}
+        </ol>
+
+        <h3>Task bundles</h3>
+        <div class="bundle-grid">
+          ${(result.bundles || result.taskBundles || [])
+            .map(bundle => `
+              <div class="bundle-card">
+                <strong>${escapeHtml(bundle.name || bundle.bundle || "Bundle")}</strong>
+                <p>${escapeHtml(bundle.rationale || bundle.interpretation || "")}</p>
+              </div>
+            `)
+            .join("") || "<p class='muted'>No task bundles generated.</p>"}
+        </div>
+
+        <h3>High-level AI-OS ratings</h3>
+        <div class="ratings-grid">
+          ${Object.entries({
+            "AI compression potential": result.ratings?.compression,
+            "Human residual strength": result.ratings?.humanResidual,
+            "Proof/governance burden": result.ratings?.proofBurden,
+            "Rebundling urgency": result.ratings?.rebundlingUrgency,
+            "Augmentation potential": result.ratings?.augmentation
+          })
+            .map(([label, value]) => `
+              <div>
+                <span>${escapeHtml(label)}</span>
+                <strong class="${ratingClass(value || "Moderate")}">${escapeHtml(value || "Moderate")}</strong>
+              </div>
+            `)
+            .join("")}
+        </div>
+
+        <h3>Future role direction</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Current emphasis</th>
+              <th>Likely AI-era direction</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${(result.futureDirections || [])
+              .map(row => `
+                <tr>
+                  <td>${escapeHtml(row.current || row.currentEmphasis || "")}</td>
+                  <td>${escapeHtml(row.future || row.futureRoleDirection || "")}</td>
+                </tr>
+              `)
+              .join("") || "<tr><td colspan='2'>No future role directions generated.</td></tr>"}
+          </tbody>
+        </table>
+
+        <h3>Cautions</h3>
+        <ul>
+          ${(result.cautions || result.publicCautions || [])
+            .map(caution => `<li>${escapeHtml(caution)}</li>`)
+            .join("") || "<li>This is a preliminary public profile and should be validated locally.</li>"}
+        </ul>
+
+        <div class="button-row">
+          <button id="send-to-workbench" class="primary" type="button">Open in AI-OS Workbench</button>
+          <button id="clear-output" class="secondary" type="button">Clear output</button>
+        </div>
+      `;
+
+      document.getElementById("send-to-workbench")?.addEventListener("click", () => {
+        localStorage.setItem(
+          "aiosWorkbenchTasks",
+          JSON.stringify({
+            title: result.roleTitle || "Custom role",
+            summary: result.summary || "",
+            tasks: tasks.map(task => ({
+              task: task.task || task.statement || task.description || "",
+              bundle: task.bundle || task.taskBundle || "Unclassified"
+            }))
+          })
+        );
+
+        window.location.href = "/aios-workbench.html";
+      });
+
+      document.getElementById("clear-output")?.addEventListener("click", () => {
+        window.location.reload();
+      });
+    }
+
+    async function generateRoleMap() {
+      const button = document.getElementById("generate");
+      const roleTitle = document.getElementById("role-title").value.trim();
+      const organizationContext = document.getElementById("organization-context").value.trim();
+      const roleDescription = document.getElementById("role-description").value.trim();
+
+      showError("");
+
+      if (!roleTitle || !roleDescription) {
+        showError("Please add at least a job title and job description.");
+        return;
+      }
+
+      button.disabled = true;
+      showStatus(true);
+
+      try {
+        const response = await fetch("/.netlify/functions/analyze-role", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            roleTitle,
+            organizationContext,
+            roleDescription
+          })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+          throw new Error(data.error || "The role analysis failed.");
+        }
+
+        renderResult(data.result);
+      } catch (error) {
+        showError(error.message || "The role analysis failed. Please try again.");
+      } finally {
+        button.disabled = false;
+        showStatus(false);
+      }
+    }
+
+    function ensureAiosExamplesNav() {
+      const navLinks = document.querySelector(".nav-links");
+      if (!navLinks) return;
+
+      const alreadyPresent = Array.from(navLinks.querySelectorAll("a"))
+        .some(link => link.getAttribute("href") === "/ai-os/" || link.textContent.trim() === "AI-OS Examples");
+
+      if (alreadyPresent) return;
+
+      const a = document.createElement("a");
+      a.href = "/ai-os/";
+      a.textContent = "AI-OS Examples";
+
+      const workLink = Array.from(navLinks.querySelectorAll("a"))
+        .find(link => link.textContent.trim() === "Work Rebundler");
+
+      if (workLink && workLink.nextSibling) {
+        navLinks.insertBefore(a, workLink.nextSibling);
+      } else {
+        navLinks.appendChild(a);
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("generate")?.addEventListener("click", generateRoleMap);
+
+      document.getElementById("load-example")?.addEventListener("click", () => {
+        document.getElementById("role-title").value = EXAMPLE.roleTitle;
+        document.getElementById("organization-context").value = EXAMPLE.organizationContext;
+        document.getElementById("role-description").value = EXAMPLE.roleDescription;
+      });
+
+      /*
+        If /site-nav.js is still the older version and does not yet include
+        AI-OS Examples, this page-level patch inserts the link after the shared
+        nav has rendered. This prevents the page from silently losing the link.
+      */
+      window.setTimeout(ensureAiosExamplesNav, 100);
+      window.setTimeout(ensureAiosExamplesNav, 400);
+    });
+  </script>
+</body>
+</html>
