@@ -13,6 +13,16 @@
     { label: "Contact", href: "/#contact" }
   ];
 
+  const FOOTER_LINKS = [
+    { label: "Research", href: "/#research" },
+    { label: "About", href: "/about.html" },
+    { label: "ARC", href: "/arc/" },
+    { label: "FARABI Audit", href: "/farabi-audit.html" },
+    { label: "Work Rebundler", href: "/work-rebundler.html" },
+    { label: "Task Risk Atlas", href: "/task-risk-atlas.html" },
+    { label: "Contact", href: "/#contact" }
+  ];
+
   function canonicalPath(path) {
     if (!path) return "/";
     let clean = path.replace(/\/index\.html$/, "/");
@@ -25,6 +35,8 @@
     const currentPath = canonicalPath(window.location.pathname);
     const link = new URL(href, window.location.origin);
     const linkPath = canonicalPath(link.pathname);
+
+    if (link.origin !== window.location.origin) return false;
 
     if (linkPath === "/arc") {
       return currentPath === "/arc" || currentPath.startsWith("/arc/");
@@ -41,8 +53,22 @@
     return currentPath === linkPath;
   }
 
+  function createLink(item) {
+    const a = document.createElement("a");
+    a.href = item.href;
+    a.textContent = item.label;
+
+    if (isActiveLink(item.href)) {
+      a.classList.add("active");
+      a.setAttribute("aria-current", "page");
+    }
+
+    return a;
+  }
+
   function buildNav() {
     const nav = document.createElement("nav");
+    nav.className = "site-nav";
     nav.setAttribute("aria-label", "Main navigation");
 
     const name = document.createElement("a");
@@ -54,16 +80,7 @@
     links.className = "nav-links";
 
     NAV_ITEMS.forEach((item) => {
-      const a = document.createElement("a");
-      a.href = item.href;
-      a.textContent = item.label;
-
-      if (isActiveLink(item.href)) {
-        a.classList.add("active");
-        a.setAttribute("aria-current", "page");
-      }
-
-      links.appendChild(a);
+      links.appendChild(createLink(item));
     });
 
     nav.appendChild(name);
@@ -72,17 +89,49 @@
     return nav;
   }
 
+  function buildFooter() {
+    const footer = document.createElement("footer");
+    footer.className = "site-footer";
+    footer.setAttribute("aria-label", "Site footer");
+
+    const year = new Date().getFullYear();
+
+    footer.innerHTML = `
+      <div class="site-footer-inner">
+        <div class="site-footer-identity">
+          <a class="footer-name" href="/">Ewan Simpson, PhD</a>
+          <p>Higher education strategist and AI governance researcher · Narxoz Business School, Almaty</p>
+        </div>
+
+        <div class="site-footer-links" aria-label="Footer navigation">
+          ${FOOTER_LINKS.map(
+            (item) => `<a href="${item.href}">${item.label}</a>`
+          ).join("")}
+        </div>
+
+        <div class="site-footer-contact">
+          <span>© ${year} Ewan Simpson</span>
+          <span>ewansimpson.org</span>
+          <a href="mailto:ewan@ewansimpson.org">ewan@ewansimpson.org</a>
+        </div>
+      </div>
+    `;
+
+    return footer;
+  }
+
   function injectStyles() {
-    if (document.getElementById("site-nav-styles")) return;
+    if (document.getElementById("site-nav-footer-styles")) return;
 
     const style = document.createElement("style");
-    style.id = "site-nav-styles";
+    style.id = "site-nav-footer-styles";
+
     style.textContent = `
-      nav {
+      .site-nav {
         position: sticky;
         top: 0;
         z-index: 50;
-        background: rgba(250,250,248,0.96);
+        background: rgba(250, 250, 248, 0.96);
         backdrop-filter: blur(8px);
         border-bottom: 1px solid var(--rule, var(--line, #e6e0d8));
         padding: 0 40px;
@@ -117,7 +166,7 @@
         text-transform: uppercase;
         color: var(--mid, var(--muted, #5f5a55));
         text-decoration: none;
-        transition: color 0.2s;
+        transition: color 0.2s ease;
         white-space: nowrap;
       }
 
@@ -126,8 +175,79 @@
         color: var(--accent, #6b1f1f);
       }
 
+      .site-footer {
+        margin-top: 72px;
+        border-top: 1px solid var(--rule, var(--line, #e6e0d8));
+        background: rgba(250, 250, 248, 0.96);
+        color: var(--mid, var(--muted, #5f5a55));
+        padding: 32px 40px;
+      }
+
+      .site-footer-inner {
+        max-width: 1180px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: minmax(220px, 1.4fr) minmax(260px, 2fr);
+        gap: 24px 48px;
+        align-items: start;
+      }
+
+      .site-footer-identity {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .footer-name {
+        font-family: var(--serif, Georgia, "Times New Roman", serif);
+        font-size: 17px;
+        font-weight: 600;
+        color: var(--accent, #6b1f1f);
+        text-decoration: none;
+      }
+
+      .site-footer-identity p {
+        margin: 0;
+        font-size: 13px;
+        line-height: 1.55;
+        color: var(--mid, var(--muted, #5f5a55));
+      }
+
+      .site-footer-links {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 10px 18px;
+      }
+
+      .site-footer-links a,
+      .site-footer-contact a {
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--mid, var(--muted, #5f5a55));
+        text-decoration: none;
+      }
+
+      .site-footer-links a:hover,
+      .site-footer-contact a:hover {
+        color: var(--accent, #6b1f1f);
+      }
+
+      .site-footer-contact {
+        grid-column: 1 / -1;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 16px;
+        padding-top: 12px;
+        border-top: 1px solid var(--rule, var(--line, #e6e0d8));
+        font-size: 12px;
+        color: var(--mid, var(--muted, #5f5a55));
+      }
+
       @media (max-width: 900px) {
-        nav {
+        .site-nav {
           padding: 12px 20px;
           align-items: flex-start;
           flex-direction: column;
@@ -142,17 +262,47 @@
         .nav-links a {
           font-size: 11px;
         }
+
+        .site-footer {
+          padding: 28px 20px;
+        }
+
+        .site-footer-inner {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+
+        .site-footer-links {
+          justify-content: flex-start;
+        }
+
+        .site-footer-contact {
+          padding-top: 14px;
+        }
       }
     `;
 
     document.head.appendChild(style);
   }
 
-  function installNav() {
-    injectStyles();
+  function findExistingFooter() {
+    const explicitFooter = document.querySelector("footer.site-footer") || document.querySelector("footer");
+    if (explicitFooter) return explicitFooter;
 
+    const candidates = Array.from(document.body.querySelectorAll("p, div, small"));
+
+    return candidates.reverse().find((element) => {
+      const text = element.textContent.replace(/\s+/g, " ").trim();
+      return text.includes("© 2026 Ewan Simpson") && text.length < 300;
+    });
+  }
+
+  function installNav() {
     const newNav = buildNav();
-    const existingNav = document.querySelector("nav");
+    const existingNav =
+      document.querySelector("nav.site-nav") ||
+      document.querySelector("nav[aria-label='Main navigation']") ||
+      document.querySelector("nav");
 
     if (existingNav) {
       existingNav.replaceWith(newNav);
@@ -161,9 +311,26 @@
     }
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", installNav);
-  } else {
+  function installFooter() {
+    const newFooter = buildFooter();
+    const existingFooter = findExistingFooter();
+
+    if (existingFooter) {
+      existingFooter.replaceWith(newFooter);
+    } else {
+      document.body.appendChild(newFooter);
+    }
+  }
+
+  function installSiteFrame() {
+    injectStyles();
     installNav();
+    installFooter();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", installSiteFrame);
+  } else {
+    installSiteFrame();
   }
 })();
