@@ -1,6 +1,6 @@
 (function () {
   const NAV_ITEMS = [
-    { label: "Research", href: "/#research" },
+    { label: "Research", href: "/research.html" },
     { label: "About", href: "/about.html" },
     { label: "AI Matrix Live", href: "/#ai-matrix-live" },
     { label: "Grey Swan", href: "/grey-swan.html" },
@@ -14,7 +14,7 @@
   ];
 
   const FOOTER_LINKS = [
-    { label: "Research", href: "/#research" },
+    { label: "Research", href: "/research.html" },
     { label: "About", href: "/about.html" },
     { label: "ARC", href: "/arc/" },
     { label: "FARABI Audit", href: "/farabi-audit.html" },
