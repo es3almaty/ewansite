@@ -35,8 +35,94 @@
     }
     .eyebrow { font-size:11px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:var(--gold); margin-bottom:18px; }
     h1 { font-family:var(--serif); font-size:clamp(32px,4.5vw,48px); font-weight:600; line-height:1.18; color:var(--accent); margin-bottom:24px; }
-    .hero-body { font-size:17px; line-height:1.78; color:var(--mid); max-width:580px; }
-    .hero-body p + p { margin-top:14px; }
+   .hero-body { font-size:17px; line-height:1.78; color:var(--mid); max-width:580px; }
+.hero-body p + p { margin-top:14px; }
+
+.hero-subtitle {
+  font-size:15px;
+  font-weight:600;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin:-10px 0 22px;
+  line-height:1.6;
+  max-width:620px;
+}
+
+.start-map {
+  margin-top:34px;
+  max-width:620px;
+  background:#ffffff;
+  border:1px solid var(--rule);
+  border-radius:6px;
+  padding:24px;
+  box-shadow:0 4px 18px rgba(0,0,0,0.035);
+}
+
+.start-map-label {
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:0.16em;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin-bottom:12px;
+}
+
+.start-map h2 {
+  font-family:var(--serif);
+  font-size:20px;
+  line-height:1.35;
+  color:var(--accent);
+  margin-bottom:10px;
+}
+
+.start-map p {
+  font-size:14px;
+  line-height:1.7;
+  color:var(--mid);
+  margin-bottom:16px;
+}
+
+.start-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.start-item {
+  display:block;
+  text-decoration:none;
+  color:inherit;
+  border:1px solid var(--rule);
+  border-radius:4px;
+  padding:12px 13px;
+  background:#FAFAF8;
+  transition:border-color 0.2s, transform 0.2s;
+}
+
+.start-item:hover {
+  border-color:var(--gold);
+  transform:translateY(-1px);
+}
+
+.start-item strong {
+  display:block;
+  font-size:12px;
+  font-weight:700;
+  color:var(--accent);
+  margin-bottom:4px;
+}
+
+.start-item span {
+  display:block;
+  font-size:12px;
+  line-height:1.55;
+  color:var(--soft);
+}
+
+@media (max-width:680px) {
+  .start-grid { grid-template-columns:1fr; }
+}
 
     .hero-photo { position:sticky; top:80px; }
     .hero-photo-wrap {
