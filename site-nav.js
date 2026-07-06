@@ -2,7 +2,7 @@
   const NAV_ITEMS = [
     { label: "Research", href: "/research.html" },
     { label: "About", href: "/about.html" },
-    { label: "AI Matrix Live", href: "/#ai-matrix-live" },
+    { label: "AI Matrix Live", href: "https://aimatrixlive.com", external: true },
     { label: "Grey Swan", href: "/grey-swan.html" },
     { label: "Work Rebundler", href: "/work-rebundler.html" },
     { label: "Task Risk Atlas", href: "/task-risk-atlas.html" },
@@ -20,6 +20,7 @@
     { label: "FARABI Audit", href: "/farabi-audit.html" },
     { label: "Work Rebundler", href: "/work-rebundler.html" },
     { label: "Task Risk Atlas", href: "/task-risk-atlas.html" },
+    { label: "Grey Swan", href: "/grey-swan.html" },
     { label: "Contact", href: "/#contact" }
   ];
 
@@ -34,9 +35,10 @@
   function isActiveLink(href) {
     const currentPath = canonicalPath(window.location.pathname);
     const link = new URL(href, window.location.origin);
-    const linkPath = canonicalPath(link.pathname);
 
     if (link.origin !== window.location.origin) return false;
+
+    const linkPath = canonicalPath(link.pathname);
 
     if (linkPath === "/arc") {
       return currentPath === "/arc" || currentPath.startsWith("/arc/");
@@ -57,6 +59,11 @@
     const a = document.createElement("a");
     a.href = item.href;
     a.textContent = item.label;
+
+    if (item.external) {
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+    }
 
     if (isActiveLink(item.href)) {
       a.classList.add("active");
@@ -104,9 +111,7 @@
         </div>
 
         <div class="site-footer-links" aria-label="Footer navigation">
-          ${FOOTER_LINKS.map(
-            (item) => `<a href="${item.href}">${item.label}</a>`
-          ).join("")}
+          ${FOOTER_LINKS.map((item) => `<a href="${item.href}">${item.label}</a>`).join("")}
         </div>
 
         <div class="site-footer-contact">
@@ -147,7 +152,7 @@
         font-family: var(--serif, Georgia, "Times New Roman", serif);
         font-size: 17px;
         font-weight: 600;
-        color: var(--accent, #6b1f1f);
+        color: var(--accent, #1A3A5C);
         text-decoration: none;
         white-space: nowrap;
       }
@@ -172,7 +177,7 @@
 
       .nav-links a:hover,
       .nav-links a.active {
-        color: var(--accent, #6b1f1f);
+        color: var(--accent, #1A3A5C);
       }
 
       .site-footer {
@@ -202,7 +207,7 @@
         font-family: var(--serif, Georgia, "Times New Roman", serif);
         font-size: 17px;
         font-weight: 600;
-        color: var(--accent, #6b1f1f);
+        color: var(--accent, #1A3A5C);
         text-decoration: none;
       }
 
@@ -232,7 +237,7 @@
 
       .site-footer-links a:hover,
       .site-footer-contact a:hover {
-        color: var(--accent, #6b1f1f);
+        color: var(--accent, #1A3A5C);
       }
 
       .site-footer-contact {
@@ -299,6 +304,7 @@
 
   function installNav() {
     const newNav = buildNav();
+
     const existingNav =
       document.querySelector("nav.site-nav") ||
       document.querySelector("nav[aria-label='Main navigation']") ||
