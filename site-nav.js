@@ -2,7 +2,7 @@
   const NAV_ITEMS = [
     { label: "Research", href: "/research.html" },
     { label: "About", href: "/about.html" },
-    { label: "AI Matrix Live", href: "https://aimatrixlive.com", external: true },
+    { label: "AI Matrix Live", href: "/ai-matrix-live.html" },
     { label: "Grey Swan", href: "/grey-swan.html" },
     { label: "Work Rebundler", href: "/work-rebundler.html" },
     { label: "Task Risk Atlas", href: "/task-risk-atlas.html" },
