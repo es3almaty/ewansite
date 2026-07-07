@@ -1,1 +1,454 @@
+<!DOCTYPE html>
+<html lang="en"><!-- ai matrix live internal page v2 -->
+<head>
+  <script src="/site-nav.js" defer></script>
 
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>AI Matrix Live - Access Is Not Agency</title>
+  <meta name="description" content="AI Matrix Live is a public dashboard based on Ewan Simpson's AI Matrix framework, separating AI access from agency across countries and institutions."/>
+
+  <link rel="canonical" href="https://ewansimpson.org/ai-matrix-live.html"/>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after {
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    :root {
+      --ink:#1A1A1A;
+      --mid:#4A4A4A;
+      --soft:#7A7A7A;
+      --rule:#E0E0E0;
+      --bg:#FAFAF8;
+      --accent:#1A3A5C;
+      --gold:#C4922A;
+      --serif:'Lora', Georgia, serif;
+      --sans:'Inter', system-ui, sans-serif;
+    }
+
+    html {
+      scroll-behavior:smooth;
+    }
+
+    body {
+      background:var(--bg);
+      color:var(--ink);
+      font-family:var(--sans);
+      font-size:16px;
+      line-height:1.7;
+    }
+
+    nav {
+      position:sticky;
+      top:0;
+      z-index:50;
+      background:rgba(250,250,248,0.96);
+      backdrop-filter:blur(8px);
+      border-bottom:1px solid var(--rule);
+      padding:0 40px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      min-height:60px;
+      gap:24px;
+    }
+
+    .nav-name {
+      font-family:var(--serif);
+      font-size:17px;
+      font-weight:600;
+      color:var(--accent);
+      text-decoration:none;
+      white-space:nowrap;
+    }
+
+    .nav-links {
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+      gap:18px;
+    }
+
+    .nav-links a {
+      font-size:12px;
+      font-weight:500;
+      letter-spacing:0.06em;
+      text-transform:uppercase;
+      color:var(--mid);
+      text-decoration:none;
+      transition:color 0.2s;
+      white-space:nowrap;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color:var(--accent);
+    }
+
+    main {
+      max-width:960px;
+      margin:0 auto;
+      padding:84px 40px 76px;
+    }
+
+    .eyebrow {
+      font-size:11px;
+      font-weight:700;
+      letter-spacing:0.16em;
+      text-transform:uppercase;
+      color:var(--gold);
+      margin-bottom:18px;
+    }
+
+    h1 {
+      font-family:var(--serif);
+      font-size:clamp(34px,5vw,54px);
+      font-weight:600;
+      line-height:1.15;
+      color:var(--accent);
+      margin-bottom:20px;
+      max-width:760px;
+    }
+
+    .lede {
+      font-size:18px;
+      line-height:1.78;
+      color:var(--mid);
+      max-width:760px;
+      margin-bottom:16px;
+    }
+
+    .lede + .lede {
+      margin-bottom:38px;
+    }
+
+    .hero-panel {
+      background:#fff;
+      border:1px solid var(--rule);
+      border-radius:8px;
+      padding:28px;
+      box-shadow:0 4px 18px rgba(0,0,0,0.035);
+      margin-bottom:42px;
+    }
+
+    .hero-panel h2 {
+      font-family:var(--serif);
+      font-size:22px;
+      color:var(--accent);
+      line-height:1.35;
+      margin-bottom:12px;
+    }
+
+    .hero-panel p {
+      font-size:15px;
+      line-height:1.75;
+      color:var(--mid);
+      margin-bottom:16px;
+      max-width:780px;
+    }
+
+    .cta-row {
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-top:22px;
+    }
+
+    .button {
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:11px 16px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+      letter-spacing:0.06em;
+      text-transform:uppercase;
+      text-decoration:none;
+      transition:transform 0.2s, border-color 0.2s, color 0.2s, background 0.2s;
+    }
+
+    .button.primary {
+      background:var(--accent);
+      color:#fff;
+      border:1px solid var(--accent);
+    }
+
+    .button.secondary {
+      background:#fff;
+      color:var(--accent);
+      border:1px solid var(--rule);
+    }
+
+    .button:hover {
+      transform:translateY(-1px);
+      border-color:var(--gold);
+    }
+
+    .grid {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+      margin:42px 0;
+    }
+
+    .card {
+      background:#fff;
+      border:1px solid var(--rule);
+      border-radius:6px;
+      padding:22px;
+    }
+
+    .card-label {
+      font-size:10px;
+      font-weight:700;
+      letter-spacing:0.14em;
+      text-transform:uppercase;
+      color:var(--gold);
+      margin-bottom:10px;
+    }
+
+    .card h3 {
+      font-family:var(--serif);
+      font-size:18px;
+      color:var(--accent);
+      line-height:1.35;
+      margin-bottom:8px;
+    }
+
+    .card p {
+      font-size:14px;
+      line-height:1.68;
+      color:var(--mid);
+    }
+
+    .framework-strip {
+      margin-top:44px;
+      padding-top:26px;
+      border-top:1px solid var(--rule);
+    }
+
+    .framework-strip h2 {
+      font-family:var(--serif);
+      font-size:24px;
+      color:var(--accent);
+      margin-bottom:14px;
+    }
+
+    .framework-strip p {
+      font-size:15px;
+      line-height:1.75;
+      color:var(--mid);
+      max-width:780px;
+      margin-bottom:14px;
+    }
+
+    .link-list {
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:20px;
+    }
+
+    .link-list a {
+      display:inline-flex;
+      align-items:center;
+      font-size:11px;
+      font-weight:700;
+      letter-spacing:0.06em;
+      text-transform:uppercase;
+      color:var(--accent);
+      text-decoration:none;
+      border:1px solid var(--rule);
+      border-radius:3px;
+      padding:7px 12px;
+      background:#fff;
+      transition:border-color 0.2s, color 0.2s;
+    }
+
+    .link-list a:hover {
+      color:var(--gold);
+      border-color:var(--gold);
+    }
+
+    footer {
+      border-top:1px solid var(--rule);
+      padding:32px 40px;
+      text-align:center;
+      font-size:12px;
+      color:var(--soft);
+      letter-spacing:0.04em;
+    }
+
+    footer a {
+      color:var(--soft);
+      text-decoration:none;
+    }
+
+    footer a:hover {
+      color:var(--accent);
+    }
+
+    @media (max-width:900px) {
+      nav {
+        padding:12px 20px;
+        align-items:flex-start;
+        flex-direction:column;
+        gap:8px;
+      }
+
+      .nav-links {
+        justify-content:flex-start;
+        gap:12px 16px;
+      }
+
+      .nav-links a {
+        font-size:11px;
+      }
+    }
+
+    @media (max-width:720px) {
+      main {
+        padding:58px 20px 56px;
+      }
+
+      .grid {
+        grid-template-columns:1fr;
+      }
+
+      .hero-panel {
+        padding:22px;
+      }
+
+      footer {
+        padding:24px 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <a class="nav-name" href="/">Ewan Simpson</a>
+    <div class="nav-links">
+      <a href="/research.html">Research</a>
+      <a href="/about.html">About</a>
+      <a href="/ai-matrix-live.html">AI Matrix Live</a>
+      <a href="/grey-swan.html">Grey Swan</a>
+      <a href="/work-rebundler.html">Work Rebundler</a>
+      <a href="/task-risk-atlas.html">Task Risk Atlas</a>
+      <a href="/ai-os/">AI-OS Examples</a>
+      <a href="/arc/">ARC</a>
+      <a href="/farabi-audit.html">FARABI Audit</a>
+      <a href="/essay.html">The Virtuous City</a>
+      <a href="/#contact">Contact</a>
+    </div>
+  </nav>
+
+  <main>
+    <div class="eyebrow">AI Matrix Live</div>
+
+    <h1>Access is not agency. Adoption is not empowerment.</h1>
+
+    <p class="lede">
+      AI Matrix Live exists because AI adoption numbers tell only half the story. A country, organization, or individual can have widespread access to AI tools while still becoming more dependent, less capable of judgment, and more exposed to systems they do not govern.
+    </p>
+
+    <p class="lede">
+      The dashboard separates access from agency. It asks whether AI use is strengthening human and institutional capability, or whether it is producing a more polished form of dependency.
+    </p>
+
+    <div class="hero-panel">
+      <h2>Why the AI Matrix matters</h2>
+
+      <p>
+        Most AI adoption narratives measure spread: who is using the tools, how often, and in what sectors. That matters, but it is not enough. The more important question is whether AI use increases the capacity to think, decide, verify, create, govern, and act.
+      </p>
+
+      <p>
+        The AI Matrix was developed to make that distinction visible. It separates access to AI from agency with AI. High access with low agency is not empowerment. It is dependency with better interfaces.
+      </p>
+
+      <p>
+        AI Matrix Live turns that framework into a public dashboard, allowing countries to be compared not only by adoption, but by the relationship between AI use and human capability.
+      </p>
+
+      <div class="cta-row">
+        <a class="button primary" href="https://aimatrixlive.com" target="_blank" rel="noopener noreferrer">Open AI Matrix Live</a>
+        <a class="button secondary" href="https://aimatrixlive.com/framework" target="_blank" rel="noopener noreferrer">Read the framework</a>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <div class="card-label">Core distinction</div>
+        <h3>Access can rise while agency falls</h3>
+        <p>
+          AI diffusion can look impressive while judgment, capability, and institutional control are quietly weakened. The Matrix makes this risk visible.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Measurement problem</div>
+        <h3>Adoption is the wrong finish line</h3>
+        <p>
+          Adoption data tells us who is using AI. It does not tell us whether people and institutions are becoming more capable because of it.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Global lens</div>
+        <h3>The world is not Silicon Valley</h3>
+        <p>
+          AI adoption looks different across countries with different infrastructures, languages, labor markets, education systems, and governance capacity.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Wider framework</div>
+        <h3>A dashboard, not a data toy</h3>
+        <p>
+          AI Matrix Live is the public measurement layer of a wider research agenda on agency, dependency, institutional capability, assessment, and foresight.
+        </p>
+      </div>
+    </div>
+
+    <div class="framework-strip">
+      <h2>Part of a wider body of work</h2>
+
+      <p>
+        AI Matrix Live sits inside a broader research architecture. The AI Matrix defines the access-agency distinction. Orchestrated Intelligence and IHACC examine human-AI knowledge work. The Dynamic Research Continuum addresses research systems. The AI Passport and FARABI focus on proof, credentials, and assessment credibility. Grey Swan connects these questions to institutional foresight.
+      </p>
+
+      <p>
+        The common question is simple: how do people, universities, organizations, and societies use AI without surrendering judgment, proof, and agency?
+      </p>
+
+      <div class="link-list">
+        <a href="https://aimatrixlive.com" target="_blank" rel="noopener noreferrer">Open dashboard</a>
+        <a href="/research.html">Research catalogue</a>
+        <a href="/farabi-audit.html">FARABI Audit</a>
+        <a href="/grey-swan.html">Grey Swan</a>
+        <a href="/arc/">ARC Advisory</a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    &copy; 2026 Ewan Simpson &nbsp;&middot;&nbsp;
+    <a href="https://nbs.narxoz.kz/" target="_blank" rel="noopener noreferrer">Narxoz Business School</a>, Almaty
+    &nbsp;&middot;&nbsp;
+    <a href="/about.html">About</a>
+  </footer>
+
+</body>
+</html>
